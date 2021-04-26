@@ -11,5 +11,6 @@
             <div><input type="submit" value="Sign In"/></div>
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
+        <a href="/registration">Add new user</a>
     </body>
 </html>
