@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -16,14 +17,13 @@ public class GreetingController {
     @Autowired
     private MessageRepo messageRepo;
 
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="Hello World") String name, Model model) {
-        model.addAttribute("name", name);
+    @GetMapping("/")
+    public String greeting(Model model) {
         //возвращаем имя файла который мы хотим отобразить
         return "greeting";
     }
 
-    @GetMapping
+    @GetMapping("/main")
     public String main(Map<String, Object> model)
     {
         Iterable<Message> messages = messageRepo.findAll();
@@ -32,7 +32,7 @@ public class GreetingController {
         return "main";
     }
 
-    @PostMapping
+    @PostMapping("/main")
     public String add(@RequestParam String header,
                       @RequestParam String theme,
                       @RequestParam String text,
@@ -45,6 +45,22 @@ public class GreetingController {
         messageRepo.save(message);
 
         Iterable<Message> messages = messageRepo.findAll();
+        model.put("messages", messages);
+
+        return "main";
+    }
+
+    @PostMapping("filter")
+    public String filter(@RequestParam String filter,
+                         Map<String, Object> model)
+    {
+        Iterable<Message> messages;
+
+        if(filter != null && !filter.isEmpty()) {
+            messages = messageRepo.findByText(filter);
+        } else {
+            messages = messageRepo.findAll();
+        }
         model.put("messages", messages);
 
         return "main";

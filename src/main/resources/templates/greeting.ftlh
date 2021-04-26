@@ -7,7 +7,8 @@
 <body>
 
 <div>
-    ${name}
+    Hello, user
+    <a href="/main">Main page</a>
 </div>
 </body>
 </html>
