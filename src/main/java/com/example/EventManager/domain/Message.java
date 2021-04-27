@@ -18,6 +18,8 @@ public class Message {
     @JoinColumn(name = "user_id")
     private User author;
 
+    private String filename;
+
     public Message(){
     }
 
@@ -79,5 +81,13 @@ public class Message {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }
