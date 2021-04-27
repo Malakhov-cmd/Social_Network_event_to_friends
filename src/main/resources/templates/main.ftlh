@@ -1,14 +1,7 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-<form action="/logout" method="post">
-            <input type="submit" value="Sign Out"/>
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        </form>
+<#import "parts/common.ftlh" as c>
+<#import "parts/login.ftlh" as l>
+<@c.page>
+        <@l.logout />
         <div>
                   <form method="POST">
                     <input type="text" name="header" placeholder="Enter header to you post">
@@ -30,8 +23,9 @@
         <ul>
             <#list messages as message>
                     <li>${message.getId()} ${message.getHeader()} ${message.getTheme()} ${message.getText()} ${message.getDate()} <strong>${message.getAuthorName()}</strong></li>
+                    <#else>
+                    No messages yet
             </#list>
         </ul>
     </div>
-</body>
-</html>
+</@c.page>
