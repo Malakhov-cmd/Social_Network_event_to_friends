@@ -13,9 +13,8 @@
                   </form>
         </div>
                 <div>
-                  <form method="POST" action="filter">
-                    <input type="text" name="filter">
-                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                  <form method="get" action="/main">
+                    <input type="text" name="filter" value="${filter}">
                     <button type="submit">find</button>
                   </form>
                 </div>
