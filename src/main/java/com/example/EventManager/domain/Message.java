@@ -1,9 +1,6 @@
 package com.example.EventManager.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
@@ -16,16 +13,31 @@ public class Message {
     private String theme;
     private String text;
     private String date;
-    private String author;
+    //показываем каким образом все будет обображаться в базе данных и подгружаем всю информацию о пользователе
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
 
     public Message(){
     }
 
-    public Message(String header, String theme, String text, String date, String author) {
+    public Message(String header, String theme, String text, String date, User author) {
         this.header = header;
         this.theme = theme;
         this.text = text;
         this.date = date;
+        this.author = author;
+    }
+
+    public String getAuthorName(){
+        return author != null ? author.getUsername() : "<none>";
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
         this.author = author;
     }
 
@@ -67,13 +79,5 @@ public class Message {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 }

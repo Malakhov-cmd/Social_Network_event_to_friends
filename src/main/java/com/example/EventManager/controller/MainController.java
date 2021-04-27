@@ -1,8 +1,10 @@
 package com.example.EventManager.controller;
 
 import com.example.EventManager.domain.Message;
+import com.example.EventManager.domain.User;
 import com.example.EventManager.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,14 +35,14 @@ public class MainController {
     }
 
     @PostMapping("/main")
-    public String add(@RequestParam String header,
+    public String add(@AuthenticationPrincipal User user,
+                      @RequestParam String header,
                       @RequestParam String theme,
                       @RequestParam String text,
                       @RequestParam String date,
-                      @RequestParam String author,
                       Map<String, Object> model)
     {
-        Message message = new Message(header, theme, text, date, author);
+        Message message = new Message(header, theme, text, date, user);
 
         messageRepo.save(message);
 

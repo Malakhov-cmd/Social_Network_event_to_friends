@@ -15,7 +15,6 @@
                     <input type="text" name="theme" placeholder="Enter theme to you post">
                     <input type="text" name="text" placeholder="Enter text to you post">
                     <input type="text" name="date" placeholder="Enter date to you post">
-                    <input type="text" name="author" placeholder="Enter header to you post">
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <button type="submit">Add</button>
                   </form>
@@ -30,7 +29,7 @@
     <div>
         <ul>
             <#list messages as message>
-                    <li>${message.getId()} ${message.getHeader()} ${message.getTheme()} ${message.getText()} ${message.getDate()} ${message.getAuthor()}</li>
+                    <li>${message.getId()} ${message.getHeader()} ${message.getTheme()} ${message.getText()} ${message.getDate()} <strong>${message.getAuthorName()}</strong></li>
             </#list>
         </ul>
     </div>
