@@ -54,281 +54,297 @@
       </div>
     </div>
     <div>
-      <div class="card-columns">
+      <div class="card-columns m-3">
         <#list messages as message>
-        <#if message.getActivityType()=="Sporty">
-          <div class="card text-white bg-success mb-3">
-            <#if message.filename??>
-              <img src="/img/${message.filename}" class="card-img-top">
-            </#if>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <h5 class="card-title">${message.getHeader()}</h5>
-              </li>
-              <li class="list-group-item">
-                <h5 class="card-title"></h5>${message.getTheme()}</h5>
-              </li>
-              <li class="list-group-item">
-                <div class="card-text m-2">
-                  <span>${message.getText()}</span>
-                </div>
-              <li class="list-group-item">
-                <p class="card-text">
-                  <small class="text-muted">
-                    <i>${message.getDate()}</i>
-                  </small>
-                </p>
-              </li>
-              <li class="list-group-item">
-                <div class="card-footer text-muted">
-                  <strong>${message.getAuthorName()}</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        <#elseif message.getActivityType()=="Tourism">
-                  <div class="card text-white bg-warning mb-3">
-                    <#if message.filename??>
-                      <img src="/img/${message.filename}" class="card-img-top">
-                    </#if>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">
-                        <h5 class="card-title">${message.getHeader()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-text m-2">
-                          <span>${message.getText()}</span>
-                        </div>
-                      <li class="list-group-item">
-                        <p class="card-text">
-                          <small class="text-muted">
-                            <i>${message.getDate()}</i>
-                          </small>
-                        </p>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-footer text-muted">
-                          <strong>${message.getAuthorName()}</strong>
-                        </div>
-                      </li>
-                    </ul>
+          <#if message.getActivityType()=="Sporty">
+            <div class="card bg-success mb-3">
+              <#if message.filename??>
+                <img src="/img/${message.filename}" class="card-img-top">
+              </#if>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h5 class="card-title">${message.getHeader()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-text m-2">
+                    <span>${message.getText()}</span>
                   </div>
-        <#elseif message.getActivityType()=="Alcohol">
-                  <div class="card text-white bg-danger mb-3">
-                    <#if message.filename??>
-                      <img src="/img/${message.filename}" class="card-img-top">
-                    </#if>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">
-                        <h5 class="card-title">${message.getHeader()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-text m-2">
-                          <span>${message.getText()}</span>
-                        </div>
-                      <li class="list-group-item">
-                        <p class="card-text">
-                          <small class="text-muted">
-                            <i>${message.getDate()}</i>
-                          </small>
-                        </p>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-footer text-muted">
-                          <strong>${message.getAuthorName()}</strong>
-                        </div>
-                      </li>
-                    </ul>
+                </li>
+                <li class="list-group-item">
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <i>${message.getDate()}</i>
+                    </small>
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-footer text-muted">
+                    <strong>${message.getAuthorName()}</strong>
                   </div>
-        <#elseif message.getActivityType()=="Conversation">
-                  <div class="card text-white bg-primary mb-3">
-                    <#if message.filename??>
-                      <img src="/img/${message.filename}" class="card-img-top">
-                    </#if>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">
-                        <h5 class="card-title">${message.getHeader()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-text m-2">
-                          <span>${message.getText()}</span>
-                        </div>
-                      <li class="list-group-item">
-                        <p class="card-text">
-                          <small class="text-muted">
-                            <i>${message.getDate()}</i>
-                          </small>
-                        </p>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-footer text-muted">
-                          <strong>${message.getAuthorName()}</strong>
-                        </div>
-                      </li>
-                    </ul>
+                </li>
+              </ul>
+            </div>
+          </#if>
+          <#if message.getActivityType()=="Tourism">
+            <div class="card bg-warning mb-3">
+              <#if message.filename??>
+                <img src="/img/${message.filename}" class="card-img-top">
+              </#if>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h5 class="card-title">${message.getHeader()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-text m-2">
+                    <span>${message.getText()}</span>
                   </div>
-        <#elseif message.getActivityType()=="Game">
-                  <div class="card text-white bg-info mb-3">
-                    <#if message.filename??>
-                      <img src="/img/${message.filename}" class="card-img-top">
-                    </#if>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">
-                        <h5 class="card-title">${message.getHeader()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-text m-2">
-                          <span>${message.getText()}</span>
-                        </div>
-                      <li class="list-group-item">
-                        <p class="card-text">
-                          <small class="text-muted">
-                            <i>${message.getDate()}</i>
-                          </small>
-                        </p>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-footer text-muted">
-                          <strong>${message.getAuthorName()}</strong>
-                        </div>
-                      </li>
-                    </ul>
+                </li>
+                <li class="list-group-item">
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <i>${message.getDate()}</i>
+                    </small>
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-footer text-muted">
+                    <strong>${message.getAuthorName()}</strong>
                   </div>
-        <#elseif message.getActivityType()=="Movie">
-                  <div class="card bg-light mb-3">
-                    <#if message.filename??>
-                      <img src="/img/${message.filename}" class="card-img-top">
-                    </#if>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">
-                        <h5 class="card-title">${message.getHeader()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-text m-2">
-                          <span>${message.getText()}</span>
-                        </div>
-                      <li class="list-group-item">
-                        <p class="card-text">
-                          <small class="text-muted">
-                            <i>${message.getDate()}</i>
-                          </small>
-                        </p>
-                      </li>
-                      <li class="list-group-item">
-                        <div class="card-footer text-muted">
-                          <strong>${message.getAuthorName()}</strong>
-                        </div>
-                      </li>
-                    </ul>
+                </li>
+              </ul>
+            </div>
+          </#if>
+          <#if message.getActivityType()=="Alcohol">
+            <div class="card bg-danger mb-3">
+              <#if message.filename??>
+                <img src="/img/${message.filename}" class="card-img-top">
+              </#if>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h5 class="card-title">${message.getHeader()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-text m-2">
+                    <span>${message.getText()}</span>
                   </div>
-        <#elseif message.getActivityType()=="Club">
-                            <div class="card text-white bg-danger mb-3">
-                            <#if message.filename??>
-                              <img src="/img/${message.filename}" class="card-img-top">
-                            </#if>
-                            <ul class="list-group list-group-flush">
-                              <li class="list-group-item">
-                                <h5 class="card-title">${message.getHeader()}</h5>
-                              </li>
-                              <li class="list-group-item">
-                                <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                              </li>
-                              <li class="list-group-item">
-                                <div class="card-text m-2">
-                                  <span>${message.getText()}</span>
-                                </div>
-                              <li class="list-group-item">
-                                <p class="card-text">
-                                  <small class="text-muted">
-                                    <i>${message.getDate()}</i>
-                                  </small>
-                                </p>
-                              </li>
-                              <li class="list-group-item">
-                                <div class="card-footer text-muted">
-                                  <strong>${message.getAuthorName()}</strong>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-        <#elseif message.getActivityType()=="Bar">
-                            <div class="card text-white bg-dark mb-3">
-                            <#if message.filename??>
-                              <img src="/img/${message.filename}" class="card-img-top">
-                            </#if>
-                            <ul class="list-group list-group-flush">
-                              <li class="list-group-item">
-                                <h5 class="card-title">${message.getHeader()}</h5>
-                              </li>
-                              <li class="list-group-item">
-                                <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                              </li>
-                              <li class="list-group-item">
-                                <div class="card-text m-2">
-                                  <span>${message.getText()}</span>
-                                </div>
-                              <li class="list-group-item">
-                                <p class="card-text">
-                                  <small class="text-muted">
-                                    <i>${message.getDate()}</i>
-                                  </small>
-                                </p>
-                              </li>
-                              <li class="list-group-item">
-                                <div class="card-footer text-muted">
-                                  <strong>${message.getAuthorName()}</strong>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-        <#else message.getActivityType()=="Just walk">
-                            <div class="card text-white bg-success mb-3">
-                            <#if message.filename??>
-                              <img src="/img/${message.filename}" class="card-img-top">
-                            </#if>
-                            <ul class="list-group list-group-flush">
-                              <li class="list-group-item">
-                                <h5 class="card-title">${message.getHeader()}</h5>
-                              </li>
-                              <li class="list-group-item">
-                                <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                              </li>
-                              <li class="list-group-item">
-                                <div class="card-text m-2">
-                                  <span>${message.getText()}</span>
-                                </div>
-                              <li class="list-group-item">
-                                <p class="card-text">
-                                  <small class="text-muted">
-                                    <i>${message.getDate()}</i>
-                                  </small>
-                                </p>
-                              </li>
-                              <li class="list-group-item">
-                                <div class="card-footer text-muted">
-                                  <strong>${message.getAuthorName()}</strong>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                  </#if>
+                </li>
+                <li class="list-group-item">
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <i>${message.getDate()}</i>
+                    </small>
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-footer text-muted">
+                    <strong>${message.getAuthorName()}</strong>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </#if>
+          <#if message.getActivityType()=="Conversation">
+            <div class="card bg-primary mb-3">
+              <#if message.filename??>
+                <img src="/img/${message.filename}" class="card-img-top">
+              </#if>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h5 class="card-title">${message.getHeader()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-text m-2">
+                    <span>${message.getText()}</span>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <i>${message.getDate()}</i>
+                    </small>
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-footer text-muted">
+                    <strong>${message.getAuthorName()}</strong>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </#if>
+          <#if message.getActivityType()=="Game">
+            <div class="card bg-info mb-3">
+              <#if message.filename??>
+                <img src="/img/${message.filename}" class="card-img-top">
+              </#if>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h5 class="card-title">${message.getHeader()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-text m-2">
+                    <span>${message.getText()}</span>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <i>${message.getDate()}</i>
+                    </small>
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-footer text-muted">
+                    <strong>${message.getAuthorName()}</strong>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </#if>
+          <#if message.getActivityType()=="Movie">
+            <div class="card bg-light mb-3">
+              <#if message.filename??>
+                <img src="/img/${message.filename}" class="card-img-top">
+              </#if>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h5 class="card-title">${message.getHeader()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-text m-2">
+                    <span>${message.getText()}</span>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <i>${message.getDate()}</i>
+                    </small>
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-footer text-muted">
+                    <strong>${message.getAuthorName()}</strong>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </#if>
+          <#if message.getActivityType()=="Club">
+            <div class="card bg-danger mb-3">
+              <#if message.filename??>
+                <img src="/img/${message.filename}" class="card-img-top">
+              </#if>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h5 class="card-title">${message.getHeader()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-text m-2">
+                    <span>${message.getText()}</span>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <i>${message.getDate()}</i>
+                    </small>
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-footer text-muted">
+                    <strong>${message.getAuthorName()}</strong>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </#if>
+          <#if message.getActivityType()=="Bar">
+            <div class="card bg-dark mb-3">
+              <#if message.filename??>
+                <img src="/img/${message.filename}" class="card-img-top">
+              </#if>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h5 class="card-title">${message.getHeader()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-text m-2">
+                    <span>${message.getText()}</span>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <i>${message.getDate()}</i>
+                    </small>
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-footer text-muted">
+                    <strong>${message.getAuthorName()}</strong>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </#if>
+          <#if message.getActivityType()=="Just walk">
+            <div class="card bg-success mb-3">
+              <#if message.filename??>
+                <img src="/img/${message.filename}" class="card-img-top">
+              </#if>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h5 class="card-title">${message.getHeader()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-text m-2">
+                    <span>${message.getText()}</span>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <i>${message.getDate()}</i>
+                    </small>
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <div class="card-footer text-muted">
+                    <strong>${message.getAuthorName()}</strong>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </#if>
         </#list>
       </div>
     </div>
-
   </@c.page>
