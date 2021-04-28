@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -55,11 +56,13 @@ public class MainController {
     public String add(@AuthenticationPrincipal User user,
                       @RequestParam String header,
                       @RequestParam String theme,
+                      @RequestParam String activityType,
                       @RequestParam String text,
-                      @RequestParam String date,
                       Map<String, Object> model,
                       @RequestParam("file") MultipartFile file) throws IOException {
-        Message message = new Message(header, theme, text, date, user);
+        Message message = new Message(header, theme, activityType, text, user);
+
+        System.out.println(activityType);
 
         if(file != null && !file.getOriginalFilename().isEmpty())
         {
@@ -77,8 +80,11 @@ public class MainController {
 
             message.setFilename(resultFileName);
         }
-
+        Date date = new Date();
+        message.setDate(date.toString());
         messageRepo.save(message);
+
+        model.put("activity", activityType);
 
         Iterable<Message> messages = messageRepo.findAll();
         model.put("messages", messages);

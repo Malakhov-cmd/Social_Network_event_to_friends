@@ -19,16 +19,24 @@ public class Message {
     private User author;
 
     private String filename;
-
+    private String activityType;
     public Message(){
     }
 
-    public Message(String header, String theme, String text, String date, User author) {
+    public Message(String header, String theme, String activityType, String text, User author) {
         this.header = header;
         this.theme = theme;
         this.text = text;
-        this.date = date;
+        this.activityType = activityType;
         this.author = author;
+    }
+
+    public String getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
     }
 
     public String getAuthorName(){
