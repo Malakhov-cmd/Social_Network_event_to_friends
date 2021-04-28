@@ -61,7 +61,7 @@ public class MainController {
                       @RequestParam("file") MultipartFile file) throws IOException {
         Message message = new Message(header, theme, text, date, user);
 
-        if(file != null)
+        if(file != null && !file.getOriginalFilename().isEmpty())
         {
             File uploadDir = new File(uploadPath);
 
