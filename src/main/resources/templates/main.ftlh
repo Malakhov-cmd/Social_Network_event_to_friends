@@ -1,25 +1,45 @@
 <#import "parts/common.ftlh" as c>
 <@c.page>
-        <div>
-        <span><a href="/user">User list</a></span>
+        <div class="form-row">
+        <div class="form-group col-md-6">
+                  <form method="get" action="/main" class="form-inline">
+                        <input type="text" name="filter" value="${filter?ifExists}" class="form-control" placeholder="Search">
+                        <button type="submit" class="btn btn-primary ml-2">find</button>
+                  </form>
         </div>
-        <div>
+        </div>
+         <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Add new message
+          </a>
+        <div class="collapse" id="collapseExample">
+            <div class="form-group mb-3">
                   <form method="POST" enctype="multipart/form-data">
-                    <input type="text" name="header" placeholder="Enter header to you post">
-                    <input type="text" name="theme" placeholder="Enter theme to you post">
-                    <input type="text" name="text" placeholder="Enter text to you post">
-                    <input type="file" name="file">
-                    <input type="text" name="date" placeholder="Enter date to you post">
+                    <div class="form-group mt-4">
+                    <input type="text" class="form-control" name="header" placeholder="Enter header to you post">
+                    </div>
+                    <div class="form-group">
+                    <input type="text" class="form-control" name="theme" placeholder="Enter theme to you post">
+                    </div>
+                    <div class="form-group">
+                    <input type="text" class="form-control" name="text" placeholder="Enter text to you post">
+                    </div>
+                    <div class="form-group">
+                    <div class="custom-file">
+                        <input type="file" id="customFile" name="file">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <input type="text" class="form-control" name="date" placeholder="Enter date to you post">
+                    </div>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                    <button type="submit">Add</button>
+
+                    <div class="form-group">
+                    <button type="submit" class="btn btn-primary ml-2">Add</button>
+                    </div>
                   </form>
+            </div>
         </div>
-                <div>
-                  <form method="get" action="/main">
-                    <input type="text" name="filter" value="${filter?ifExists}">
-                    <button type="submit">find</button>
-                  </form>
-                </div>
     <div>
         <ul>
             <#list messages as message>
