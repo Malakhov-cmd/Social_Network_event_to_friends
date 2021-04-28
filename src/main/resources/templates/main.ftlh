@@ -41,19 +41,25 @@
             </div>
         </div>
     <div>
-        <ul>
+    <div class="card-columns">
             <#list messages as message>
-                    <li>
-                        ${message.getId()} ${message.getHeader()} ${message.getTheme()} ${message.getText()} ${message.getDate()} <strong>${message.getAuthorName()}</strong>
-                        <div>
-                            <#if message.filename??>
-                                <img src="/img/${message.filename}">
-                            </#if>
-                        </div>
-                    </li>
+                    <div class="card my-3">
+                    <#if message.filename??>
+                          <img src="/img/${message.filename}" class="card-img-top">
+                    </#if>
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                    <div class="m-2">
+                         ${message.getTheme()}
+                         <span>${message.getText()}</span>
+                          <i>${message.getDate()}</i>
+                    </div>
+                    <div class="card-footer text-muted">
+                          <strong>${message.getAuthorName()}</strong>
+                    </div>
+                    </div>
                     <#else>
                     No messages yet
             </#list>
-        </ul>
+    </div>
     </div>
 </@c.page>
