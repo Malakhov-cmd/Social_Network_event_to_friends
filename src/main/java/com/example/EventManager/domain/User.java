@@ -23,6 +23,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    public boolean isAdmin()
+    {
+        return getRoles().contains(Role.ADMIN);
+    }
+
     public Long getId() {
         return id;
     }

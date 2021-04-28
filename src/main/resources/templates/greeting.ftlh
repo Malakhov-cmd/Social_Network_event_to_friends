@@ -2,7 +2,6 @@
 
 <@c.page>
 <div>
-    Hello, user
-    <a href="/main">Main page</a>
+    <h5>Hello, guest</h5>
 </div>
 </@c.page>
