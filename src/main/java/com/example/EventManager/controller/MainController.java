@@ -108,8 +108,17 @@ public class MainController {
                              @PathVariable("user") User user,
                              Model model)
     {
-        System.out.println(currentUser.getUsername());
-        System.out.println(user.getUsername());
+        if(currentUser == null)
+        {
+            return "main";
+        }
+
+        Iterable<User> userList = userRepo.findAll();
+        model.addAttribute("userList", userList);
+
+        model.addAttribute("user", user);
         return "profile";
     }
+
+    @GetMapping("/dialog/{dialog}")
 }

@@ -18,10 +18,21 @@ public class User implements UserDetails {
     private String password;
     private boolean isActive;
 
+    private String avatarFilename;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    public boolean hasAvatar()
+    {
+        if(avatarFilename == "" || avatarFilename.isEmpty())
+        {
+            return false;
+        }
+        return true;
+    }
 
     public boolean isAdmin()
     {
@@ -34,6 +45,14 @@ public class User implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getAvatarFilename() {
+        return avatarFilename;
+    }
+
+    public void setAvatarFilename(String avatarFilename) {
+        this.avatarFilename = avatarFilename;
     }
 
     public String getUsername() {
