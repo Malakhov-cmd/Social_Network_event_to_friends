@@ -11,9 +11,14 @@
       <li class="nav-item">
         <a class="nav-link" href="/">Home</a>
       </li>
+      <#if user??>
+      <li class="nav-item">
+        <a class="nav-link" href="/profile/${currentUserId}">My profile</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="/main">Messages</a>
       </li>
+      </#if>
       <#if isAdmin>
       <li class="nav-item">
         <a class="nav-link" href="/user">User list</a>
@@ -21,6 +26,11 @@
       </#if>
     </ul>
     <div class="navbar-text">${name}</div>
-    <@l.logout />
+    <#if currentUserId==-1>
+      <button type="submit" class="btn btn-primary ml-2">Sign in</button>
+      <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+    <#else>
+      <@l.logout />
+    </#if>
   </div>
 </nav>

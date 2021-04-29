@@ -3,12 +3,14 @@ package com.example.EventManager.controller;
 import com.example.EventManager.domain.Message;
 import com.example.EventManager.domain.User;
 import com.example.EventManager.repos.MessageRepo;
+import com.example.EventManager.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +25,8 @@ import java.util.UUID;
 public class MainController {
     @Autowired
     private MessageRepo messageRepo;
+    @Autowired
+    private UserRepo userRepo;
 
     //получение значение properties
     @Value("${upload.path}")
@@ -97,5 +101,15 @@ public class MainController {
                          Map<String, Object> model)
     {
         return "main";
+    }
+
+    @GetMapping("/profile/{user}")
+    public String getProfile(@AuthenticationPrincipal User currentUser,
+                             @PathVariable("user") User user,
+                             Model model)
+    {
+        System.out.println(currentUser.getUsername());
+        System.out.println(user.getUsername());
+        return "profile";
     }
 }
