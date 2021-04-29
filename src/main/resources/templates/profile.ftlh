@@ -1,4 +1,5 @@
 <#import "parts/common.ftlh" as c>
+
   <@c.page>
     <div class="container mt-5 mb-5">
           <div class="row">
@@ -58,11 +59,17 @@
         </tr>
       </thead>
       <tbody>
-        <#list userList as user>
+        <#list userList as anotherUser>
         <tr>
-          <th scope="row">${user_index}</th>
-          <td>${user.username}</td>
-          <td>${user.id}</td>
+          <#if >
+          <#include "parts/securityDialog.ftlh" ${anotherUser.username}>
+          <a class="nav-link" href="/dialog/${dialogId}">
+            <th scope="row">${anotherUser_index}</th>
+            <td>${anotherUser.username}</td>
+            <td>${anotherUser.id}</td>
+            <td hidden  name="secondUser">${anotherUser}</td>
+            <td hidden name="firstUser">${user}</td>
+          </a>
         </tr>
         </#list>
       </tbody>

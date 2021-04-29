@@ -1,7 +1,11 @@
 package com.example.EventManager.controller;
 
+import com.example.EventManager.domain.Dialog;
+import com.example.EventManager.domain.DialogMessage;
 import com.example.EventManager.domain.Message;
 import com.example.EventManager.domain.User;
+import com.example.EventManager.repos.DialogMessageRepo;
+import com.example.EventManager.repos.DialogRepo;
 import com.example.EventManager.repos.MessageRepo;
 import com.example.EventManager.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,11 @@ public class MainController {
     private MessageRepo messageRepo;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private DialogRepo dialogRepo;
+    @Autowired
+    private DialogMessageRepo dialogMessageRepo;
+
 
     //получение значение properties
     @Value("${upload.path}")
@@ -121,4 +130,21 @@ public class MainController {
     }
 
     @GetMapping("/dialog/{dialog}")
+    public String getDialog(@PathVariable("dialog") Dialog dialog,
+                            @RequestParam("firstUser") User firstUser,
+                            @RequestParam("secondUser") User secondUser,
+                            Model model)
+    {
+        Dialog newDialog = null;
+        if(dialog.getId() == null || dialog.getId() < 1)
+        {
+            newDialog = new Dialog(firstUser, secondUser, null);
+        }
+
+        if (newDialog != null) {
+            dialogRepo.save(newDialog);
+        }
+        model.addAttribute("dialog", newDialog);
+        return "dialog";
+    }
 }

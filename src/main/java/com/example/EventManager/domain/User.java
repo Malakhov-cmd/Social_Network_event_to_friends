@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,6 +26,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_dialog_id")
+    private List<Dialog> dialogList;
+
     public boolean hasAvatar()
     {
         if(avatarFilename == "" || avatarFilename.isEmpty())
@@ -32,6 +37,18 @@ public class User implements UserDetails {
             return false;
         }
         return true;
+    }
+
+    public Integer getIdDialog(User first, User second)
+    {
+        for(Dialog dialog : dialogList)
+        {
+            if(dialog.getFirstUser() == first && dialog.getSecondUser() == second)
+            {
+                return dialog.getId();
+            }
+        }
+        return -1;
     }
 
     public boolean isAdmin()
@@ -111,5 +128,13 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Dialog> getDialogList() {
+        return dialogList;
+    }
+
+    public void setDialogList(List<Dialog> dialogList) {
+        this.dialogList = dialogList;
     }
 }

@@ -16,6 +16,8 @@ public class Dialog {
     @JoinColumn(name = "dialog_id")
     private List<DialogMessage> dialogMessageList;
 
+    public Dialog(){}
+
     public Dialog(User firstUser, User secondUser, List<DialogMessage> dialogMessageList) {
         this.firstUser = firstUser;
         this.secondUser = secondUser;
