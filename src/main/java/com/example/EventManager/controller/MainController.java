@@ -122,11 +122,16 @@ public class MainController {
 
         HashMap<User, Integer> userIdDialog = new HashMap<>();
         List<User> userList = userRepo.findAll();
+
+        user.setDialogList(dialogRepo.findAll());
         for(int i = 0; i < userList.size(); i++)
         {
             if(!user.getId().equals(userList.get(i).getId()))
             {
                 userIdDialog.put(userList.get(i), user.getIdDialog(user, userList.get(i)));
+                System.out.println("User to connect name: " + userList.get(i).getUsername());
+                System.out.println("Id dialog: " + user.getIdDialog(user, userList.get(i)));
+                System.out.println();
             }
         }
 
@@ -143,14 +148,12 @@ public class MainController {
                             @PathVariable("user2") User secondUser,
                             Model model)
     {
-        System.out.println("dialogId: " + dialogId);
-        System.out.println("firstID: " + firstUser.getId());
-        System.out.println("second: " + secondUser.getId());
-
         Dialog newDialog = null;
         if(dialogId == null || dialogId < 1)
         {
             newDialog = new Dialog(firstUser, secondUser, null);
+        } else {
+            newDialog = dialogRepo.findByid(dialogId);
         }
 
         if (newDialog != null) {
