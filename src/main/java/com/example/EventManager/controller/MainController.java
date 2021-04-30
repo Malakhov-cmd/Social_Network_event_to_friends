@@ -131,22 +131,24 @@ public class MainController {
         }
 
         model.addAttribute("userList", userList);
-
-
         model.addAttribute("userIdDialog", userIdDialog);
-
         model.addAttribute("user", user);
+
         return "profile";
     }
 
-    @GetMapping("/dialog/{dialog}")
-    public String getDialog(@PathVariable("dialog") Dialog dialog,
-                            @RequestParam("firstUser") User firstUser,
-                            @RequestParam("secondUser") User secondUser,
+    @GetMapping("/dialog/{dialogId}/{user1}/{user2}")
+    public String getDialog(@PathVariable("dialogId") Integer dialogId,
+                            @PathVariable("user1") User firstUser,
+                            @PathVariable("user2") User secondUser,
                             Model model)
     {
+        System.out.println("dialogId: " + dialogId);
+        System.out.println("firstID: " + firstUser.getId());
+        System.out.println("second: " + secondUser.getId());
+
         Dialog newDialog = null;
-        if(dialog.getId() == null || dialog.getId() < 1)
+        if(dialogId == null || dialogId < 1)
         {
             newDialog = new Dialog(firstUser, secondUser, null);
         }

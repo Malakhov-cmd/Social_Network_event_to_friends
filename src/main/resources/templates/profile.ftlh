@@ -60,7 +60,7 @@
       </thead>
       <tbody>
         <#list userIdDialog as key, value>
-        <tr onclick="window.location.href='/dialog/${value}'; return false">
+        <tr onclick="window.location.href='/dialog/${value}/${user.id}/${key.id}'; return false">
             <th scope="row">${key_index}</th>
             <td>${key.username}</td>
             <td>${key.id}</td>
