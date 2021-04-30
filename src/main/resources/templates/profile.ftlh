@@ -1,5 +1,5 @@
-<#import "parts/common.ftlh" as c>
 
+<#import "parts/common.ftlh" as c>
   <@c.page>
     <div class="container mt-5 mb-5">
           <div class="row">
@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-    <table class="table table-striped mt-6">
+    <table class="table table-hover mt-6">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -59,17 +59,13 @@
         </tr>
       </thead>
       <tbody>
-        <#list userList as anotherUser>
-        <tr>
-          <#if >
-          <#include "parts/securityDialog.ftlh" ${anotherUser.username}>
-          <a class="nav-link" href="/dialog/${dialogId}">
-            <th scope="row">${anotherUser_index}</th>
-            <td>${anotherUser.username}</td>
-            <td>${anotherUser.id}</td>
-            <td hidden  name="secondUser">${anotherUser}</td>
+        <#list userIdDialog as key, value>
+        <tr onclick="window.location.href='/dialog/${value}'; return false">
+            <th scope="row">${key_index}</th>
+            <td>${key.username}</td>
+            <td>${key.id}</td>
+            <td hidden  name="secondUser">${key}</td>
             <td hidden name="firstUser">${user}</td>
-          </a>
         </tr>
         </#list>
       </tbody>

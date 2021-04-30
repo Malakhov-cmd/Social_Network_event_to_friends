@@ -5,7 +5,7 @@
         name = user.getUsername()
         currentUserId = user.getId()
         isAdmin = user.isAdmin()
-        dialogId = user.getIdDialog(user1, user2)>
+        dialogId = user.getIdDialog(user, user2)>
     <#else>
     <#assign
         name = "unknown"

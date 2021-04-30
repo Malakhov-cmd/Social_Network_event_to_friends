@@ -21,9 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class MainController {
@@ -122,8 +120,20 @@ public class MainController {
             return "main";
         }
 
-        Iterable<User> userList = userRepo.findAll();
+        HashMap<User, Integer> userIdDialog = new HashMap<>();
+        List<User> userList = userRepo.findAll();
+        for(int i = 0; i < userList.size(); i++)
+        {
+            if(!user.getId().equals(userList.get(i).getId()))
+            {
+                userIdDialog.put(userList.get(i), user.getIdDialog(user, userList.get(i)));
+            }
+        }
+
         model.addAttribute("userList", userList);
+
+
+        model.addAttribute("userIdDialog", userIdDialog);
 
         model.addAttribute("user", user);
         return "profile";

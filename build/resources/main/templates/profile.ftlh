@@ -1,3 +1,4 @@
+
 <#import "parts/common.ftlh" as c>
   <@c.page>
     <div class="container mt-5 mb-5">
@@ -49,7 +50,7 @@
         </div>
       </div>
     </div>
-    <table class="table table-striped mt-6">
+    <table class="table table-hover mt-6">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -58,11 +59,13 @@
         </tr>
       </thead>
       <tbody>
-        <#list userList as user>
-        <tr>
-          <th scope="row">${user_index}</th>
-          <td>${user.username}</td>
-          <td>${user.id}</td>
+        <#list userIdDialog as key, value>
+        <tr onclick="window.location.href='/dialog/${value}'; return false">
+            <th scope="row">${key_index}</th>
+            <td>${key.username}</td>
+            <td>${key.id}</td>
+            <td hidden  name="secondUser">${key}</td>
+            <td hidden name="firstUser">${user}</td>
         </tr>
         </#list>
       </tbody>

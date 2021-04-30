@@ -27,7 +27,11 @@
     </ul>
     <div class="navbar-text">${name}</div>
     <#if currentUserId==-1>
-      <button type="submit" class="btn btn-primary ml-2">Sign in</button>
+      <button type="submit" class="btn btn-primary ml-2">
+      <a href="/login" target="_parent" style="color: white; text-decoration: none;">
+        Sign in
+      </a>
+      </button>
       <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     <#else>
       <@l.logout />
