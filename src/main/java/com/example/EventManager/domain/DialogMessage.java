@@ -46,6 +46,8 @@ public class DialogMessage {
         return from;
     }
 
+    public Long getFromId() {return from.getId();}
+
     public void setFrom(User from) {
         this.from = from;
     }

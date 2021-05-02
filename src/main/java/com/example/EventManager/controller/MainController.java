@@ -117,20 +117,15 @@ public class MainController {
         HashMap<User, Integer> userIdDialog = new HashMap<>();
         List<User> userList = userRepo.findAll();
         for (int i = 0; i < userList.size(); i++) {
-            System.out.println("UserList: " + userList.get(i).getUsername());
         }
 
         user.setDialogList(dialogRepo.findAll());
         for (int i = 0; i < user.getDialogList().size(); i++) {
-            System.out.println("dialogId: " + user.getDialogList().get(i).getId());
         }
 
         for (int i = 0; i < userList.size(); i++) {
             if (!user.getId().equals(userList.get(i).getId())) {
                 userIdDialog.put(userList.get(i), user.getIdDialog(user, userList.get(i)));
-                System.out.println("User to connect name: " + userList.get(i).getUsername());
-                System.out.println("Id dialog: " + user.getIdDialog(user, userList.get(i)));
-                System.out.println();
             }
         }
 
@@ -163,7 +158,8 @@ public class MainController {
             model.addAttribute("dialog", dialog);
             model.addAttribute("dialogSize", dialog.getDialogMessageList().size());
 
-            model.addAttribute("user", firstUser);
+            model.addAttribute("user", firstUser.getId());
+            model.addAttribute("target", secondUser.getId());
             model.addAttribute("dialogMessList", dialog.getDialogMessageList());
         } else {
             System.out.println("GET true null");
@@ -230,7 +226,7 @@ public class MainController {
             dialogRepo.flush();
         }
 
-        DialogMessage newSecondDialogMessage = new DialogMessage(secondUser, firstUser, MessageText);
+        DialogMessage newSecondDialogMessage = new DialogMessage(firstUser, secondUser, MessageText);
         List<DialogMessage> dialogMesSecond = secondDialog.getDialogMessageList();
         dialogMesSecond.add(newSecondDialogMessage);
         secondDialog.setDialogMessageList(dialogMesSecond);
@@ -246,7 +242,8 @@ public class MainController {
         System.out.println("Second add message: " + dialogMessageRepo.findByid(newSecondDialogMessage.getId()).getText());
 
         model.addAttribute("dialogSize", dialogFirst.getDialogMessageList().size());
-        model.addAttribute("user", firstUser);
+        model.addAttribute("user", firstUser.getId());
+        model.addAttribute("target", secondUser.getId());
         model.addAttribute("dialogMessList", dialogFirst.getDialogMessageList());
         model.addAttribute("NewDialogMessage", newDialogMessage);
 
