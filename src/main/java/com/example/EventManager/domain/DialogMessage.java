@@ -1,28 +1,36 @@
 package com.example.EventManager.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.sql.Date;
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
 
 @Entity
+@Table(name = "dialog_Mes")
 public class DialogMessage {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
 
-    private User to;
+    @Column(name = "usr_from")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User from;
 
-    private Date date;
+    @Column(name = "usr_to")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private User to;
+
+    @Column(name = "date_recived")
+    private String date;
+
+    @Column(name = "mes_txt")
     private String text;
 
     public DialogMessage(){}
 
-    public DialogMessage(User to, User from, String text) {
-        this.to = to;
+    public DialogMessage(User from, User to, String text) {
         this.from = from;
+        this.to = to;
         this.text = text;
     }
 
@@ -34,14 +42,6 @@ public class DialogMessage {
         this.id = id;
     }
 
-    public User getTo() {
-        return to;
-    }
-
-    public void setTo(User to) {
-        this.to = to;
-    }
-
     public User getFrom() {
         return from;
     }
@@ -50,11 +50,19 @@ public class DialogMessage {
         this.from = from;
     }
 
-    public Date getDate() {
+    public User getTo() {
+        return to;
+    }
+
+    public void setTo(User to) {
+        this.to = to;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

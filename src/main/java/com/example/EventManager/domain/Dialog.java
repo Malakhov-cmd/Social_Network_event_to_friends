@@ -1,5 +1,7 @@
 package com.example.EventManager.domain;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,8 +14,10 @@ public class Dialog {
     private User firstUser;
     private User secondUser;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "dialog_id")
+    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JoinColumn(name = "dialog_id")
+    @ElementCollection
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<DialogMessage> dialogMessageList;
 
     public Dialog(){}

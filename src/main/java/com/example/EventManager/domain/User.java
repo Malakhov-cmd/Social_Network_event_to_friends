@@ -1,11 +1,11 @@
 package com.example.EventManager.domain;
 
-import com.example.EventManager.repos.DialogRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.annotations.CollectionType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.ObjectStreamClass;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -28,9 +28,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_dialog_id")
+    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JoinColumn(name = "user_dialog_id")
+    @ElementCollection
     private List<Dialog> dialogList;
+
+    public User(){}
 
     public boolean hasAvatar()
     {
@@ -45,7 +48,8 @@ public class User implements UserDetails {
     {
         for(Dialog dialog : dialogList)
         {
-            if(dialog.getFirstUser() == first && dialog.getSecondUser() == second)
+            if(dialog.getFirstUser().getId().equals(first.getId())
+                    && dialog.getSecondUser().getId().equals(second.getId()))
             {
                 return dialog.getId();
             }

@@ -1,8 +1,7 @@
 package com.example.EventManager.repos;
 
 import com.example.EventManager.domain.DialogMessage;
-import com.example.EventManager.domain.Message;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DialogMessageRepo extends CrudRepository<DialogMessage, Long> {
+public interface DialogMessageRepo extends JpaRepository<DialogMessage, Long> {
 }
