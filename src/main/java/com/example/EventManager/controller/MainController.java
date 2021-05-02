@@ -153,7 +153,6 @@ public class MainController {
             newDialog = dialogRepo.findByid(dialogId);
         }
         dialogRepo.save(newDialog);
-
         dialogRepo.flush();
 
         Dialog dialog = dialogRepo.findByid(newDialog.getId());
@@ -163,6 +162,9 @@ public class MainController {
             System.out.println("GET not null");
             model.addAttribute("dialog", dialog);
             model.addAttribute("dialogSize", dialog.getDialogMessageList().size());
+
+            model.addAttribute("user", firstUser);
+            model.addAttribute("dialogMessList", dialog.getDialogMessageList());
         } else {
             System.out.println("GET true null");
             model.addAttribute("dialog", null);
