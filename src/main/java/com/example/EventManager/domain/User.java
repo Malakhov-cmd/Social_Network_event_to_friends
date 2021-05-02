@@ -1,6 +1,8 @@
 package com.example.EventManager.domain;
 
+import com.example.EventManager.repos.DialogRepo;
 import org.hibernate.annotations.CollectionType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,8 +30,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JoinColumn(name = "user_dialog_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @JoinColumn(name = "user_dialog_id")
     @ElementCollection
     private List<Dialog> dialogList;
 

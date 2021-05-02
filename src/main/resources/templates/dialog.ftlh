@@ -1,14 +1,14 @@
 <#import "parts/common.ftlh" as c>
   <@c.page>
   <div class="container">
-  <#if !dialog??>
+  <#if dialogSize==0>
     No messages yet
-  <else>
+  <#else>
     <#list dialogMessList as dialogMes>
     <div class="row">
       <div class="col-sm">
         <#if dialogMes.getFrom()!=user>
-          dialogMes.getText()
+          ${dialogMes.getText()}
         </#if>
       </div>
       <div class="col-sm">
@@ -16,7 +16,7 @@
       </div>
       <div class="col-sm">
         <#if dialogMes.getFrom()==user>
-              dialogMes.getText()
+              ${dialogMes.getText()}
         </#if>
       </div>
       </div>

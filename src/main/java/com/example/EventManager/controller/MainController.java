@@ -47,11 +47,10 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(@RequestParam(required = false, defaultValue = "") String filter,
-                        Model model)
-    {
+                       Model model) {
         Iterable<Message> messages = messageRepo.findAll();
 
-        if(filter != null && !filter.isEmpty()) {
+        if (filter != null && !filter.isEmpty()) {
             messages = messageRepo.findByText(filter);
         } else {
             messages = messageRepo.findAll();
@@ -75,12 +74,10 @@ public class MainController {
 
         System.out.println(activityType);
 
-        if(file != null && !file.getOriginalFilename().isEmpty())
-        {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
 
-            if(uploadDir.exists())
-            {
+            if (uploadDir.exists()) {
                 uploadDir.mkdir();
             }
 
@@ -105,36 +102,31 @@ public class MainController {
 
     @PostMapping("filter")
     public String filter(@RequestParam String filter,
-                         Map<String, Object> model)
-    {
+                         Map<String, Object> model) {
         return "main";
     }
 
     @GetMapping("/profile/{user}")
     public String getProfile(@AuthenticationPrincipal User currentUser,
                              @PathVariable("user") User user,
-                             Model model)
-    {
-        if(currentUser == null)
-        {
+                             Model model) {
+        if (currentUser == null) {
             return "main";
         }
 
         HashMap<User, Integer> userIdDialog = new HashMap<>();
         List<User> userList = userRepo.findAll();
-        for (int i=0; i<userList.size(); i++){
+        for (int i = 0; i < userList.size(); i++) {
             System.out.println("UserList: " + userList.get(i).getUsername());
         }
 
         user.setDialogList(dialogRepo.findAll());
-        for (int i=0; i< user.getDialogList().size(); i++){
+        for (int i = 0; i < user.getDialogList().size(); i++) {
             System.out.println("dialogId: " + user.getDialogList().get(i).getId());
         }
 
-        for(int i = 0; i < userList.size(); i++)
-        {
-            if(!user.getId().equals(userList.get(i).getId()))
-            {
+        for (int i = 0; i < userList.size(); i++) {
+            if (!user.getId().equals(userList.get(i).getId())) {
                 userIdDialog.put(userList.get(i), user.getIdDialog(user, userList.get(i)));
                 System.out.println("User to connect name: " + userList.get(i).getUsername());
                 System.out.println("Id dialog: " + user.getIdDialog(user, userList.get(i)));
@@ -153,11 +145,9 @@ public class MainController {
     public String getDialog(@PathVariable("dialogId") Integer dialogId,
                             @PathVariable("user1") User firstUser,
                             @PathVariable("user2") User secondUser,
-                            Model model)
-    {
+                            Model model) {
         Dialog newDialog;
-        if(dialogId == null || dialogId < 1)
-        {
+        if (dialogId == null || dialogId < 1) {
             newDialog = new Dialog(firstUser, secondUser, new ArrayList<>());
         } else {
             newDialog = dialogRepo.findByid(dialogId);
@@ -167,12 +157,15 @@ public class MainController {
         dialogRepo.flush();
 
         Dialog dialog = dialogRepo.findByid(newDialog.getId());
-
-        if(!dialog.getDialogMessageList().isEmpty()
-            || dialog.getDialogMessageList() != null) {
-            model.addAttribute("dialog", dialog.getDialogMessageList());
+        System.out.println("GET:" + dialog.getId());
+        if (!dialog.getDialogMessageList().isEmpty()
+                || dialog.getDialogMessageList() != null) {
+            System.out.println("GET not null");
+            model.addAttribute("dialog", dialog);
+            model.addAttribute("dialogSize", dialog.getDialogMessageList().size());
         } else {
-            model.addAttribute("dialog", false);
+            System.out.println("GET true null");
+            model.addAttribute("dialog", null);
         }
         return "dialog";
     }
@@ -182,44 +175,79 @@ public class MainController {
                               @PathVariable("dialogId") Integer dialogId,
                               @PathVariable("user1") User firstUser,
                               @PathVariable("user2") User secondUser,
-                              Model model)
-    {
-        if(dialogId != -1)
-        {
-            Dialog dialog = dialogRepo.findByid(dialogId);
-
-            if(dialog.getDialogMessageList().isEmpty()
-                || dialog.getDialogMessageList() == null)
-            {
-                dialog.setDialogMessageList(new ArrayList<>());
+                              Model model) {
+        if(dialogId == -1){
+            List<Dialog> list = dialogRepo.findAll();
+            for (Dialog dialog:
+                 list) {
+                if(dialog.getFirstUser().getId().equals(firstUser.getId())
+                        && dialog.getSecondUser().getId().equals(secondUser.getId()))
+                {
+                    dialogId = dialog.getId();
+                }
             }
-            List<DialogMessage> dialogMes = dialog.getDialogMessageList();
-            DialogMessage newDialogMessage = new DialogMessage(firstUser, secondUser, MessageText);
-            dialogMes.add(newDialogMessage);
+        }
 
-            if(dialogRepo.findByid(secondUser.getId().intValue()) == null)
-            {
-                Dialog newSecondMessage = new Dialog(secondUser, firstUser, new ArrayList<>());
-                dialogRepo.save(newSecondMessage);
-                dialogRepo.flush();
+        System.out.println("POST: " + dialogId);
+
+        Dialog dialogFirst = dialogRepo.findByid(dialogId);
+        if (dialogFirst.getDialogMessageList().isEmpty()
+                || dialogFirst.getDialogMessageList() == null) {
+            System.out.println("First was empty");
+            dialogFirst.setDialogMessageList(new ArrayList<>());
+        }
+        List<DialogMessage> dialogMes = dialogFirst.getDialogMessageList();
+        DialogMessage newDialogMessage = new DialogMessage(firstUser, secondUser, MessageText);
+
+        dialogMessageRepo.save(newDialogMessage);
+        dialogMessageRepo.flush();
+
+        dialogMes.add(newDialogMessage);
+        dialogFirst.setDialogMessageList(dialogMes);
+
+        dialogRepo.save(dialogFirst);
+        dialogRepo.flush();
+
+        System.out.println("First add message(size): " + dialogRepo.findByid(dialogFirst.getId()).getDialogMessageList().size());
+        System.out.println("Message from first: " + dialogMessageRepo.findByid(newDialogMessage.getId()).getText());
+
+        Dialog secondDialog = null;
+        for (Dialog dialog2:
+             dialogRepo.findAll()) {
+            if (dialog2.getFirstUser().getId().equals(secondUser.getId())
+                && dialog2.getSecondUser().getId().equals(firstUser.getId())) {
+               secondDialog = dialog2;
+                System.out.println("Found second dialog side");
             }
+        }
 
-            Dialog secondDialog = dialogRepo.findByid(secondUser.getId().intValue());
-            DialogMessage newSecondDialogMessage = new DialogMessage(secondUser, firstUser, MessageText);
-            secondDialog.getDialogMessageList().add(newSecondDialogMessage);
-
-            dialogRepo.save(dialog);
-            dialogRepo.flush();
+        if(secondDialog == null) {
+            System.out.println("Not Found");
+            secondDialog = new Dialog(secondUser, firstUser, new ArrayList<>());
             dialogRepo.save(secondDialog);
             dialogRepo.flush();
-            dialogMessageRepo.save(newDialogMessage);
-            dialogMessageRepo.flush();
-            dialogMessageRepo.save(newSecondDialogMessage);
-            dialogMessageRepo.flush();
-
-            model.addAttribute("dialogMessList", dialog.getDialogMessageList());
-            model.addAttribute("NewDialogMessage", newDialogMessage);
         }
+
+        DialogMessage newSecondDialogMessage = new DialogMessage(secondUser, firstUser, MessageText);
+        List<DialogMessage> dialogMesSecond = secondDialog.getDialogMessageList();
+        dialogMesSecond.add(newSecondDialogMessage);
+        secondDialog.setDialogMessageList(dialogMesSecond);
+
+
+        dialogRepo.save(secondDialog);
+        dialogRepo.flush();
+
+        dialogMessageRepo.save(newSecondDialogMessage);
+        dialogMessageRepo.flush();
+
+        System.out.println("Dialog check: " + dialogRepo.findByid(secondDialog.getId()).getId());
+        System.out.println("Second add message: " + dialogMessageRepo.findByid(newSecondDialogMessage.getId()).getText());
+
+        model.addAttribute("dialogSize", dialogFirst.getDialogMessageList().size());
+        model.addAttribute("user", firstUser);
+        model.addAttribute("dialogMessList", dialogFirst.getDialogMessageList());
+        model.addAttribute("NewDialogMessage", newDialogMessage);
+
         return "dialog";
     }
 }
