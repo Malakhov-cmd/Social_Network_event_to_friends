@@ -3,6 +3,10 @@ package com.example.EventManager.domain;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Comparator;
 
 @Entity
 @Table(name = "dialog_Mes")
@@ -75,4 +79,11 @@ public class DialogMessage {
     public void setText(String text) {
         this.text = text;
     }
+
+    public static final Comparator<DialogMessage> CompareByDate = new Comparator<DialogMessage>() {
+        @Override
+        public int compare(DialogMessage o1, DialogMessage o2) {
+            return o1.getId() - o2.getId();
+        }
+    };
 }

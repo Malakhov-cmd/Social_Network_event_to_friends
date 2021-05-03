@@ -160,7 +160,7 @@ public class MainController {
 
             model.addAttribute("user", firstUser.getId());
             model.addAttribute("target", secondUser.getId());
-            model.addAttribute("dialogMessList",  Collections.so dialog.getDialogMessageList());
+            model.addAttribute("dialogMessList", dialog.getDialogMessageList());
         } else {
             System.out.println("GET true null");
             model.addAttribute("dialog", null);

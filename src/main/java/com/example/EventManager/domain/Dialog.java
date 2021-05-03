@@ -3,6 +3,7 @@ package com.example.EventManager.domain;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -52,6 +53,7 @@ public class Dialog {
     }
 
     public List<DialogMessage> getDialogMessageList() {
+        Collections.sort( dialogMessageList, DialogMessage.CompareByDate);
         return dialogMessageList;
     }
 
