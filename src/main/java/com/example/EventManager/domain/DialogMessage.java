@@ -3,9 +3,6 @@ package com.example.EventManager.domain;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Comparator;
 
 @Entity

@@ -20,6 +20,11 @@ public class Message {
 
     private String filename;
     private String activityType;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "votemessage_id")
+    private VoteMessage voteMessage;
+
     public Message(){
     }
 

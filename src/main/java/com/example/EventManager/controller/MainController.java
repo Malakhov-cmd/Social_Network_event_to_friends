@@ -1,13 +1,7 @@
 package com.example.EventManager.controller;
 
-import com.example.EventManager.domain.Dialog;
-import com.example.EventManager.domain.DialogMessage;
-import com.example.EventManager.domain.Message;
-import com.example.EventManager.domain.User;
-import com.example.EventManager.repos.DialogMessageRepo;
-import com.example.EventManager.repos.DialogRepo;
-import com.example.EventManager.repos.MessageRepo;
-import com.example.EventManager.repos.UserRepo;
+import com.example.EventManager.domain.*;
+import com.example.EventManager.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,6 +27,10 @@ public class MainController {
     private DialogRepo dialogRepo;
     @Autowired
     private DialogMessageRepo dialogMessageRepo;
+    @Autowired
+    private VoteMessageRepo voteMessageRepo;
+    @Autowired
+    private VoteRepo voteRepo;
 
 
     //получение значение properties
@@ -70,9 +68,8 @@ public class MainController {
                       @RequestParam String text,
                       Map<String, Object> model,
                       @RequestParam("file") MultipartFile file) throws IOException {
+        Date date = new Date();
         Message message = new Message(header, theme, activityType, text, user);
-
-        System.out.println(activityType);
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -88,8 +85,20 @@ public class MainController {
 
             message.setFilename(resultFileName);
         }
-        Date date = new Date();
+
         message.setDate(date.toString());
+
+        VoteMessage voteMessage = new VoteMessage(user);
+
+        Vote autoVotedAuthor = new Vote(user);
+        autoVotedAuthor.setDecision("Agree");
+        autoVotedAuthor.setDate(date.toString());
+        voteRepo.save(autoVotedAuthor);
+
+        List<Vote> votedUser = voteMessage.getVotedUsers();
+        votedUser.add(autoVotedAuthor);
+        voteMessageRepo.save(voteMessage);
+
         messageRepo.save(message);
 
         model.put("activity", activityType);

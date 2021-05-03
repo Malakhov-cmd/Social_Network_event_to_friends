@@ -1,13 +1,9 @@
 package com.example.EventManager.domain;
 
-import com.example.EventManager.repos.DialogRepo;
-import org.hibernate.annotations.CollectionType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.ObjectStreamClass;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +30,11 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_dialog_id")
     @ElementCollection
     private List<Dialog> dialogList;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @JoinColumn(name = "user_votemessage_id")
+    @ElementCollection
+    private List<VoteMessage> voteList;
 
     public User(){}
 
