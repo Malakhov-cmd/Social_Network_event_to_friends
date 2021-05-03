@@ -152,7 +152,7 @@ public class MainController {
 
         Dialog dialog = dialogRepo.findByid(newDialog.getId());
         System.out.println("GET:" + dialog.getId());
-        if (!dialog.getDialogMessageList().isEmpty()
+        if (!dialog. getDialogMessageList().isEmpty()
                 || dialog.getDialogMessageList() != null) {
             System.out.println("GET not null");
             model.addAttribute("dialog", dialog);
