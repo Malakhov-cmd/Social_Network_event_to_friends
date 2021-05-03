@@ -160,7 +160,7 @@ public class MainController {
 
             model.addAttribute("user", firstUser.getId());
             model.addAttribute("target", secondUser.getId());
-            model.addAttribute("dialogMessList", dialog.getDialogMessageList());
+            model.addAttribute("dialogMessList",  Collections.so dialog.getDialogMessageList());
         } else {
             System.out.println("GET true null");
             model.addAttribute("dialog", null);
@@ -195,7 +195,12 @@ public class MainController {
             dialogFirst.setDialogMessageList(new ArrayList<>());
         }
         List<DialogMessage> dialogMes = dialogFirst.getDialogMessageList();
+
+        Date dateMess = new Date();
+        String currentDate = dateMess.toString();
+
         DialogMessage newDialogMessage = new DialogMessage(firstUser, secondUser, MessageText);
+        newDialogMessage.setDate(currentDate);
 
         dialogMessageRepo.save(newDialogMessage);
         dialogMessageRepo.flush();
@@ -227,6 +232,7 @@ public class MainController {
         }
 
         DialogMessage newSecondDialogMessage = new DialogMessage(firstUser, secondUser, MessageText);
+        newSecondDialogMessage.setDate(currentDate);
         List<DialogMessage> dialogMesSecond = secondDialog.getDialogMessageList();
         dialogMesSecond.add(newSecondDialogMessage);
         secondDialog.setDialogMessageList(dialogMesSecond);
