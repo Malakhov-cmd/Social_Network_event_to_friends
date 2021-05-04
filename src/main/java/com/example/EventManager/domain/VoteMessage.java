@@ -18,6 +18,11 @@ public class VoteMessage {
     @ElementCollection
     private List<Vote> votedUsers = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @JoinColumn(name = "vote_message_dialog_id")
+    @ElementCollection
+    private VoteMessageDialog voteMessageDialog;
+
     public VoteMessage() {}
 
     public VoteMessage(User author)
@@ -39,6 +44,14 @@ public class VoteMessage {
 
     public void setVotedUsers(List<Vote> votedUsers) {
         this.votedUsers = votedUsers;
+    }
+
+    public VoteMessageDialog getVoteMessageDialog() {
+        return voteMessageDialog;
+    }
+
+    public void setVoteMessageDialog(VoteMessageDialog voteMessageDialog) {
+        this.voteMessageDialog = voteMessageDialog;
     }
 
     public List<Vote> getVoteAgree()
