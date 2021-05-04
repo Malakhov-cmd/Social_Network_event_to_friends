@@ -53,7 +53,7 @@ public class MainController {
         Iterable<Message> messages = messageRepo.findAll();
 
         if (filter != null && !filter.isEmpty()) {
-            messages = messageRepo.findByText(filter);
+            messages = messageRepo.findByHeader(filter);
         } else {
             messages = messageRepo.findAll();
         }
