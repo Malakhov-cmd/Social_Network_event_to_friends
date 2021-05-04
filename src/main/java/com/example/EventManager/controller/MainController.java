@@ -99,15 +99,14 @@ public class MainController {
         List<Vote> votedUser = voteMessage.getVotedUsers();
         votedUser.add(autoVotedAuthor);
         voteMessage.setVotedUsers(votedUser);
+
+        VoteMessageDialog voteMessageDialog = new VoteMessageDialog(user);
+        voteMessage.setVoteMessageDialog(voteMessageDialog);
+
         voteMessageRepo.save(voteMessage);
 
         message.setVoteMessage(voteMessage);
         messageRepo.save(message);
-
-        /*List<VoteMessage> listVoteMessage = user.getVoteMessages();
-        listVoteMessage.add(voteMessage);
-        user.setVoteMessages(listVoteMessage);
-        userRepo.save(user);*/
 
         model.put("activity", activityType);
 
@@ -315,6 +314,7 @@ public class MainController {
         model.addAttribute("usersUnVoted", unVoted);
         model.addAttribute("countUsers", userRepo.findAll().size());
         model.addAttribute("showDiagram", true);
+        model.addAttribute("voteMessageDialog", thisVoteMessage.getVoteMessageDialog());
         return "vote";
     }
 
@@ -370,7 +370,16 @@ public class MainController {
             System.out.println("Status:" + true);
             model.addAttribute("voteItems", true);
         }
-
+        model.addAttribute("voteMessageDialog", thisVoteMessage.getVoteMessageDialog());
         return "vote";
+    }
+
+    @GetMapping("/vote/discussion/${message.id}/${voteMessageDialog.id}/${user.id}")
+    public String getVoteMessageDialog(@PathVariable Integer messageId,
+                                       @PathVariable Integer voteMessageDialogId,
+                                       @PathVariable User user,
+                                       Model model)
+    {
+        return "voteDialog";
     }
 }
