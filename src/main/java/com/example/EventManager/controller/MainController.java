@@ -104,10 +104,10 @@ public class MainController {
         message.setVoteMessage(voteMessage);
         messageRepo.save(message);
 
-        List<VoteMessage> listVoteMessage = user.getVoteMessages();
+        /*List<VoteMessage> listVoteMessage = user.getVoteMessages();
         listVoteMessage.add(voteMessage);
         user.setVoteMessages(listVoteMessage);
-        userRepo.save(user);
+        userRepo.save(user);*/
 
         model.put("activity", activityType);
 
@@ -280,20 +280,25 @@ public class MainController {
     {
         Message message = messageRepo.findById(messageId);
         VoteMessage thisVoteMessage = message.getVoteMessage();
+
         model.addAttribute("message", message);
         model.addAttribute("user", user);
 
-        if (!message.getAuthor().getId().equals(user.getId()))
-        {
-            //if(message.getVoteMessage().getVotedUsers().contains(user.))
-            model.addAttribute("voteItems", true);
-        } else {
-            model.addAttribute("voteItems", false);
-        }
-
+        boolean isAlreadyVoted = false;
         for (Vote vote:
              thisVoteMessage.getVotedUsers()) {
-            System.out.println("get voted user" + vote.getDecision());
+            if(vote.getUser().getId().equals(user.getId()))
+            {
+                isAlreadyVoted = true;
+            }
+        }
+
+        if(isAlreadyVoted || message.getAuthor().getId().equals(user.getId())){
+            System.out.println("Status:" + false);
+            model.addAttribute("voteItems", false);
+        } else {
+            System.out.println("Status:" + true);
+            model.addAttribute("voteItems", true);
         }
 
         List<Vote> listAgree = thisVoteMessage.getVoteAgree();
@@ -348,6 +353,24 @@ public class MainController {
         model.addAttribute("usersUnVoted", unVoted);
         model.addAttribute("countUsers", userRepo.findAll().size());
         model.addAttribute("showDiagram", true);
+
+        boolean isAlreadyVoted = false;
+        for (Vote vote:
+                thisVoteMessage.getVotedUsers()) {
+            if(vote.getUser().getId().equals(user.getId()))
+            {
+                isAlreadyVoted = true;
+            }
+        }
+
+        if(isAlreadyVoted || message.getAuthor().getId().equals(user.getId())){
+            System.out.println("Status:" + false);
+            model.addAttribute("voteItems", false);
+        } else {
+            System.out.println("Status:" + true);
+            model.addAttribute("voteItems", true);
+        }
+
         return "vote";
     }
 }

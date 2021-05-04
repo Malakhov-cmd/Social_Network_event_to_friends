@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private List<Dialog> dialogList;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_votemessage_id")
+    @JoinColumn(name = "user_vote_message_id")
     @ElementCollection
     private List<VoteMessage> voteMessages = new ArrayList<>();
 

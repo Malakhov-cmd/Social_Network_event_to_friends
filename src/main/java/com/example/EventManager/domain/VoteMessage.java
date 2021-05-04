@@ -10,10 +10,11 @@ public class VoteMessage {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
+    @Column(name = "message_author")
     private User author;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
-    @JoinColumn(name = "voteMessage_id")
+    @JoinColumn(name = "vote_message_id")
     @ElementCollection
     private List<Vote> votedUsers = new ArrayList<>();
 
