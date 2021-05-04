@@ -44,7 +44,8 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String filter,
+    public String main(@AuthenticationPrincipal User user,
+                        @RequestParam(required = false, defaultValue = "") String filter,
                        Model model) {
         Iterable<Message> messages = messageRepo.findAll();
 
@@ -56,7 +57,7 @@ public class MainController {
 
         model.addAttribute("messages", messages);
         model.addAttribute("filter", filter);
-
+        model.addAttribute("user", user);
         return "main";
     }
 
@@ -97,15 +98,22 @@ public class MainController {
 
         List<Vote> votedUser = voteMessage.getVotedUsers();
         votedUser.add(autoVotedAuthor);
+        voteMessage.setVotedUsers(votedUser);
         voteMessageRepo.save(voteMessage);
 
+        message.setVoteMessage(voteMessage);
         messageRepo.save(message);
+
+        List<VoteMessage> listVoteMessage = user.getVoteMessages();
+        listVoteMessage.add(voteMessage);
+        user.setVoteMessages(listVoteMessage);
+        userRepo.save(user);
 
         model.put("activity", activityType);
 
         Iterable<Message> messages = messageRepo.findAll();
         model.put("messages", messages);
-
+        model.put("user", user);
         return "main";
     }
 
@@ -263,5 +271,83 @@ public class MainController {
         model.addAttribute("NewDialogMessage", newDialogMessage);
 
         return "dialog";
+    }
+
+    @GetMapping("/vote/{messageId}/{user}")
+    public String getVoted(@PathVariable Integer messageId,
+                           @PathVariable User user,
+                           Model model)
+    {
+        Message message = messageRepo.findById(messageId);
+        VoteMessage thisVoteMessage = message.getVoteMessage();
+        model.addAttribute("message", message);
+        model.addAttribute("user", user);
+
+        if (!message.getAuthor().getId().equals(user.getId()))
+        {
+            //if(message.getVoteMessage().getVotedUsers().contains(user.))
+            model.addAttribute("voteItems", true);
+        } else {
+            model.addAttribute("voteItems", false);
+        }
+
+        for (Vote vote:
+             thisVoteMessage.getVotedUsers()) {
+            System.out.println("get voted user" + vote.getDecision());
+        }
+
+        List<Vote> listAgree = thisVoteMessage.getVoteAgree();
+        List<Vote> listAgainst = thisVoteMessage.getVoteAgainst();
+        List<Vote> listAbstain = thisVoteMessage.getVoteAbstain();
+
+
+        model.addAttribute("usersVotedAgree", listAgree);
+        model.addAttribute("usersVotedAgainst", listAgainst);
+        model.addAttribute("usersVotedAbstain", listAbstain);
+        int unVoted = userRepo.findAll().size() - listAgree.size()
+                -  listAgainst.size() - listAbstain.size();
+
+        model.addAttribute("usersUnVoted", unVoted);
+        model.addAttribute("countUsers", userRepo.findAll().size());
+        model.addAttribute("showDiagram", true);
+        return "vote";
+    }
+
+    @PostMapping("/vote/{messageId}/{user}")
+    public String setVote(@PathVariable Integer messageId,
+                          @PathVariable User user,
+                          @RequestParam("voteChoose") String voteChoose,
+                          Model model)
+    {
+        Date dateMess = new Date();
+
+        Message message = messageRepo.findById(messageId);
+        VoteMessage thisVoteMessage = message.getVoteMessage();
+
+        if(!message.getAuthor().getId().equals(user.getId())) {
+            Vote vote = new Vote(user);
+            vote.setDecision(voteChoose);
+            vote.setDate(dateMess.toString());
+
+            voteRepo.save(vote);
+
+            List<Vote> voteList = thisVoteMessage.getVotedUsers();
+            voteList.add(vote);
+            thisVoteMessage.setVotedUsers(voteList);
+
+            voteMessageRepo.save(thisVoteMessage);
+        }
+        model.addAttribute("message", message);
+        model.addAttribute("user", user);
+        model.addAttribute("usersVotedAgree", thisVoteMessage.getVoteAgree());
+        model.addAttribute("usersVotedAgainst", thisVoteMessage.getVoteAgainst());
+        model.addAttribute("usersVotedAbstain", thisVoteMessage.getVoteAbstain());
+        int unVoted = userRepo.findAll().size() - thisVoteMessage.getVoteAgree().size()
+                -  thisVoteMessage.getVoteAgainst().size() - thisVoteMessage.getVoteAbstain().size();
+
+        model.addAttribute("usersUnVoted", unVoted);
+        model.addAttribute("countUsers", userRepo.findAll().size());
+        model.addAttribute("showDiagram", true);
+        return "vote";
     }
 }

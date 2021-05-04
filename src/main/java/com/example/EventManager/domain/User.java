@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -31,10 +32,10 @@ public class User implements UserDetails {
     @ElementCollection
     private List<Dialog> dialogList;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_votemessage_id")
     @ElementCollection
-    private List<VoteMessage> voteList;
+    private List<VoteMessage> voteMessages = new ArrayList<>();
 
     public User(){}
 
@@ -145,5 +146,13 @@ public class User implements UserDetails {
 
     public void setDialogList(List<Dialog> dialogList) {
         this.dialogList = dialogList;
+    }
+
+    public List<VoteMessage> getVoteMessages() {
+        return voteMessages;
+    }
+
+    public void setVoteMessages(List<VoteMessage> voteMessages) {
+        this.voteMessages = voteMessages;
     }
 }

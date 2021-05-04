@@ -61,31 +61,33 @@
               <#if message.filename??>
                 <img src="/img/${message.filename}" class="card-img-top">
               </#if>
-              <ul class="list-group list-group-flush bg-success">
-                <li class="list-group-item bg-success">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
                   <h5 class="card-title">${message.getHeader()}</h5>
                 </li>
-                <li class="list-group-item bg-success">
+                <li class="list-group-item">
                   <h5 class="card-title"></h5>${message.getTheme()}</h5>
                 </li>
-                <li class="list-group-item bg-success">
+                <li class="list-group-item">
                   <div class="card-text m-2">
                     <span>${message.getText()}</span>
                   </div>
                 </li>
-                <li class="list-group-item bg-success">
+                <li class="list-group-item">
                   <p class="card-text">
                     <small class="text-muted">
                       <i>${message.getDate()}</i>
                     </small>
                   </p>
                 </li>
-                <li class="list-group-item bg-success">
+                <li class="list-group-item">
                   <div class="card-footer text-muted">
                     <strong>${message.getAuthorName()}</strong>
                   </div>
                 </li>
               </ul>
+              <button type="button" class="btn btn-primary"
+              onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
             </div>
           </#if>
           <#if message.getActivityType()=="Tourism">
@@ -93,26 +95,26 @@
               <#if message.filename??>
                 <img src="/img/${message.filename}" class="card-img-top">
               </#if>
-              <ul class="list-group list-group-flush bg-warning">
-                <li class="list-group-item bg-warning">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
                   <h5 class="card-title">${message.getHeader()}</h5>
                 </li>
-                <li class="list-group-item bg-warning">
+                <li class="list-group-item">
                   <h5 class="card-title"></h5>${message.getTheme()}</h5>
                 </li>
-                <li class="list-group-item bg-warning">
+                <li class="list-group-item">
                   <div class="card-text m-2">
                     <span>${message.getText()}</span>
                   </div>
                 </li>
-                <li class="list-group-item bg-warning">
+                <li class="list-group-item">
                   <p class="card-text">
                     <small class="text-muted">
                       <i>${message.getDate()}</i>
                     </small>
                   </p>
                 </li>
-                <li class="list-group-item bg-warning">
+                <li class="list-group-item">
                   <div class="card-footer text-muted">
                     <strong>${message.getAuthorName()}</strong>
                   </div>
@@ -125,26 +127,26 @@
               <#if message.filename??>
                 <img src="/img/${message.filename}" class="card-img-top">
               </#if>
-              <ul class="list-group bg-danger list-group-flush">
-                <li class="list-group-item bg-danger">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
                   <h5 class="card-title">${message.getHeader()}</h5>
                 </li>
-                <li class="list-group-item bg-danger">
+                <li class="list-group-item">
                   <h5 class="card-title"></h5>${message.getTheme()}</h5>
                 </li>
-                <li class="list-group-item bg-danger">
+                <li class="list-group-item">
                   <div class="card-text m-2">
                     <span>${message.getText()}</span>
                   </div>
                 </li>
-                <li class="list-group-item bg-danger">
+                <li class="list-group-item">
                   <p class="card-text">
                     <small class="text-muted">
                       <i>${message.getDate()}</i>
                     </small>
                   </p>
                 </li>
-                <li class="list-group-item bg-danger">
+                <li class="list-group-item">
                   <div class="card-footer text-muted">
                     <strong>${message.getAuthorName()}</strong>
                   </div>
@@ -157,26 +159,26 @@
               <#if message.filename??>
                 <img src="/img/${message.filename}" class="card-img-top">
               </#if>
-              <ul class="list-group list-group-flush bg-primary">
-                <li class="list-group-item bg-primary">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
                   <h5 class="card-title">${message.getHeader()}</h5>
                 </li>
-                <li class="list-group-item bg-primary">
+                <li class="list-group-item">
                   <h5 class="card-title"></h5>${message.getTheme()}</h5>
                 </li>
-                <li class="list-group-item bg-primary">
+                <li class="list-group-item">
                   <div class="card-text m-2">
                     <span>${message.getText()}</span>
                   </div>
                 </li>
-                <li class="list-group-item bg-primary">
+                <li class="list-group-item">
                   <p class="card-text">
                     <small class="text-muted">
                       <i>${message.getDate()}</i>
                     </small>
                   </p>
                 </li>
-                <li class="list-group-item bg-primary">
+                <li class="list-group-item">
                   <div class="card-footer text-muted">
                     <strong>${message.getAuthorName()}</strong>
                   </div>
@@ -189,26 +191,26 @@
               <#if message.filename??>
                 <img src="/img/${message.filename}" class="card-img-top">
               </#if>
-              <ul class="list-group list-group-flush bg-info">
-                <li class="list-group-item bg-info">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
                   <h5 class="card-title">${message.getHeader()}</h5>
                 </li>
-                <li class="list-group-item bg-info">
+                <li class="list-group-item">
                   <h5 class="card-title"></h5>${message.getTheme()}</h5>
                 </li>
-                <li class="list-group-item bg-info">
+                <li class="list-group-item">
                   <div class="card-text m-2">
                     <span>${message.getText()}</span>
                   </div>
                 </li>
-                <li class="list-group-item bg-info">
+                <li class="list-group-item">
                   <p class="card-text">
                     <small class="text-muted">
                       <i>${message.getDate()}</i>
                     </small>
                   </p>
                 </li>
-                <li class="list-group-item bg-info">
+                <li class="list-group-item">
                   <div class="card-footer text-muted">
                     <strong>${message.getAuthorName()}</strong>
                   </div>
@@ -221,26 +223,26 @@
               <#if message.filename??>
                 <img src="/img/${message.filename}" class="card-img-top">
               </#if>
-              <ul class="list-group list-group-flush bg-light">
-                <li class="list-group-item bg-light">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
                   <h5 class="card-title">${message.getHeader()}</h5>
                 </li>
-                <li class="list-group-item bg-light">
+                <li class="list-group-item">
                   <h5 class="card-title"></h5>${message.getTheme()}</h5>
                 </li>
-                <li class="list-group-item bg-light">
+                <li class="list-group-item">
                   <div class="card-text m-2">
                     <span>${message.getText()}</span>
                   </div>
                 </li>
-                <li class="list-group-item bg-light">
+                <li class="list-group-item">
                   <p class="card-text">
                     <small class="text-muted">
                       <i>${message.getDate()}</i>
                     </small>
                   </p>
                 </li>
-                <li class="list-group-item bg-light">
+                <li class="list-group-item">
                   <div class="card-footer text-muted">
                     <strong>${message.getAuthorName()}</strong>
                   </div>
@@ -253,26 +255,26 @@
               <#if message.filename??>
                 <img src="/img/${message.filename}" class="card-img-top">
               </#if>
-              <ul class="list-group list-group-flush bg-danger">
-                <li class="list-group-item bg-danger">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
                   <h5 class="card-title">${message.getHeader()}</h5>
                 </li>
-                <li class="list-group-item bg-danger">
+                <li class="list-group-item">
                   <h5 class="card-title"></h5>${message.getTheme()}</h5>
                 </li>
-                <li class="list-group-item bg-danger">
+                <li class="list-group-item">
                   <div class="card-text m-2">
                     <span>${message.getText()}</span>
                   </div>
                 </li>
-                <li class="list-group-item bg-danger">
+                <li class="list-group-item">
                   <p class="card-text">
                     <small class="text-muted">
                       <i>${message.getDate()}</i>
                     </small>
                   </p>
                 </li>
-                <li class="list-group-item bg-danger">
+                <li class="list-group-item">
                   <div class="card-footer text-muted">
                     <strong>${message.getAuthorName()}</strong>
                   </div>
@@ -285,26 +287,26 @@
               <#if message.filename??>
                 <img src="/img/${message.filename}" class="card-img-top">
               </#if>
-              <ul class="list-group list-group-flush bg-dark">
-                <li class="list-group-item bg-dark">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
                   <h5 class="card-title">${message.getHeader()}</h5>
                 </li>
-                <li class="list-group-item bg-dark">
+                <li class="list-group-item">
                   <h5 class="card-title"></h5>${message.getTheme()}</h5>
                 </li>
-                <li class="list-group-item bg-dark">
+                <li class="list-group-item">
                   <div class="card-text m-2">
                     <span>${message.getText()}</span>
                   </div>
                 </li>
-                <li class="list-group-item bg-dark">
+                <li class="list-group-item">
                   <p class="card-text">
                     <small class="text-muted">
                       <i>${message.getDate()}</i>
                     </small>
                   </p>
                 </li>
-                <li class="list-group-item bg-dark">
+                <li class="list-group-item">
                   <div class="card-footer text-muted">
                     <strong>${message.getAuthorName()}</strong>
                   </div>
@@ -317,26 +319,26 @@
               <#if message.filename??>
                 <img src="/img/${message.filename}" class="card-img-top">
               </#if>
-              <ul class="list-group list-group-flush bg-success">
-                <li class="list-group-item bg-success">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
                   <h5 class="card-title">${message.getHeader()}</h5>
                 </li>
-                <li class="list-group-item bg-success">
+                <li class="list-group-item">
                   <h5 class="card-title"></h5>${message.getTheme()}</h5>
                 </li>
-                <li class="list-group-item bg-success">
+                <li class="list-group-item">
                   <div class="card-text m-2">
                     <span>${message.getText()}</span>
                   </div>
                 </li>
-                <li class="list-group-item bg-success">
+                <li class="list-group-item">
                   <p class="card-text">
                     <small class="text-muted">
                       <i>${message.getDate()}</i>
                     </small>
                   </p>
                 </li>
-                <li class="list-group-item bg-success">
+                <li class="list-group-item">
                   <div class="card-footer text-muted">
                     <strong>${message.getAuthorName()}</strong>
                   </div>

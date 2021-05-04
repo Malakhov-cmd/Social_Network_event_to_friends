@@ -39,4 +39,44 @@ public class VoteMessage {
     public void setVotedUsers(List<Vote> votedUsers) {
         this.votedUsers = votedUsers;
     }
+
+    public List<Vote> getVoteAgree()
+    {
+        List<Vote> voteList = new ArrayList<>();
+        for (Vote vote:
+             votedUsers) {
+            if (vote.getDecision().equals("Agree"))
+            {
+                System.out.println("CHECK: success ");
+                voteList.add(vote);
+            }
+        }
+        return voteList;
+    }
+
+    public List<Vote> getVoteAgainst()
+    {
+        List<Vote> voteList = new ArrayList<>();
+        for (Vote vote:
+                votedUsers) {
+            if (vote.getDecision().equals("Against"))
+            {
+                voteList.add(vote);
+            }
+        }
+        return voteList;
+    }
+
+    public List<Vote> getVoteAbstain()
+    {
+        List<Vote> voteList = new ArrayList<>();
+        for (Vote vote:
+                votedUsers) {
+            if (vote.getDecision().equals("Abstain"))
+            {
+                voteList.add(vote);
+            }
+        }
+        return voteList;
+    }
 }

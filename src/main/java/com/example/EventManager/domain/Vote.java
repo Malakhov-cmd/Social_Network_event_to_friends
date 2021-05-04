@@ -27,6 +27,8 @@ public class Vote {
     @Column(name = "date_voted")
     private String date;
 
+    public Vote() {}
+
     public Vote(User user) {
         this.user = user;
         //option.add("Agree");

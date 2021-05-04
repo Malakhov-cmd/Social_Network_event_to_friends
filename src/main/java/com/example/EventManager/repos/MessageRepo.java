@@ -9,4 +9,5 @@ public interface MessageRepo extends CrudRepository<Message, Long> {
     List<Message> findByTheme(String theme);
     List<Message> findByText(String text);
     List<Message> findByAuthor(String author);
+    Message findById(Integer id);
 }

@@ -103,4 +103,12 @@ public class Message {
     public void setFilename(String filename) {
         this.filename = filename;
     }
+
+    public VoteMessage getVoteMessage() {
+        return voteMessage;
+    }
+
+    public void setVoteMessage(VoteMessage voteMessage) {
+        this.voteMessage = voteMessage;
+    }
 }
