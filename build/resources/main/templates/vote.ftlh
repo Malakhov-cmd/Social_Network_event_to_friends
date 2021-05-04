@@ -357,5 +357,7 @@
             onchange="input_text4.value = rangeinput4.value" />
         </div>
       </form>
+      <button type="button" class="btn btn-primary"
+      onclick="window.location.href='/vote/discussion/${message.id}/${voteMessageDialog.id}/${user.id}'; return false">Discuss</button>
     </#if>
   </@c.page>

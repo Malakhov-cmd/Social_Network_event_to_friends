@@ -18,7 +18,7 @@ public class VoteMessage {
     @ElementCollection
     private List<Vote> votedUsers = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false)
     @JoinColumn(name = "vote_message_dialog_id")
     @ElementCollection
     private VoteMessageDialog voteMessageDialog;

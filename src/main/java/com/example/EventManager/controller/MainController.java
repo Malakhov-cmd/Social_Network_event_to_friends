@@ -31,7 +31,10 @@ public class MainController {
     private VoteMessageRepo voteMessageRepo;
     @Autowired
     private VoteRepo voteRepo;
-
+    @Autowired
+    private VoteMessageDialogRepo voteMessageDialogRepo;
+    @Autowired
+    private VoteMessageDialogMesRepo voteMessageDialogMesRepo;
 
     //получение значение properties
     @Value("${upload.path}")
@@ -374,12 +377,53 @@ public class MainController {
         return "vote";
     }
 
-    @GetMapping("/vote/discussion/${message.id}/${voteMessageDialog.id}/${user.id}")
+    @GetMapping("/vote/discussion/{messageId}/{voteMessageDialogId}/{user}")
     public String getVoteMessageDialog(@PathVariable Integer messageId,
                                        @PathVariable Integer voteMessageDialogId,
                                        @PathVariable User user,
                                        Model model)
     {
+        Message message = messageRepo.findById(messageId);
+        VoteMessageDialog voteMessageDialog = voteMessageDialogRepo.findById(voteMessageDialogId);
+
+        List<VoteMessageDialogMes> listMessage = voteMessageDialog.getDialogMessageList();
+
+        model.addAttribute("user", user);
+        model.addAttribute("message", message);
+        model.addAttribute("dialog", voteMessageDialog);
+        model.addAttribute("listMessages", listMessage);
+        model.addAttribute("dialogSize", listMessage.size());
+        return "voteDialog";
+    }
+
+    @PostMapping("/vote/discussion/{messageId}/{voteMessageDialogId}/{user}")
+    public String postVoteMessageDialog(@PathVariable Integer messageId,
+                                        @PathVariable Integer voteMessageDialogId,
+                                        @PathVariable User user,
+                                        Model model,
+                                        @RequestParam String MessageText)
+    {
+        Date dateMes = new Date();
+
+        Message message = messageRepo.findById(messageId);
+        VoteMessageDialog voteMessageDialog = voteMessageDialogRepo.findById(voteMessageDialogId);
+
+        VoteMessageDialogMes dialogMessage = new VoteMessageDialogMes(user);
+        dialogMessage.setText(MessageText);
+        dialogMessage.setDate(dateMes.toString());
+        voteMessageDialogMesRepo.save(dialogMessage);
+
+        List<VoteMessageDialogMes> listMessage = voteMessageDialog.getDialogMessageList();
+        listMessage.add(dialogMessage);
+        voteMessageDialog.setDialogMessageList(listMessage);
+        voteMessageDialogRepo.save(voteMessageDialog);
+
+        model.addAttribute("user", user);
+        model.addAttribute("message", message);
+        model.addAttribute("dialog", voteMessageDialog);
+        model.addAttribute("listMessages", listMessage);
+        model.addAttribute("dialogSize", listMessage.size());
+
         return "voteDialog";
     }
 }

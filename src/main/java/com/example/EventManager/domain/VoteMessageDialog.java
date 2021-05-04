@@ -8,8 +8,10 @@ import java.util.List;
 public class VoteMessageDialog {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
 
+    @Column(name = "vote_message_dialog_user")
     private User currentUser;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
