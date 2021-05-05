@@ -35,6 +35,8 @@ public class MainController {
     private VoteMessageDialogRepo voteMessageDialogRepo;
     @Autowired
     private VoteMessageDialogMesRepo voteMessageDialogMesRepo;
+    @Autowired
+    private RoomRepo roomRepo;
 
     //получение значение properties
     @Value("${upload.path}")
@@ -42,7 +44,6 @@ public class MainController {
 
     @GetMapping("/")
     public String greeting(Model model) {
-        //возвращаем имя файла который мы хотим отобразить
         return "greeting";
     }
 
@@ -125,7 +126,7 @@ public class MainController {
         return "main";
     }
 
-    @GetMapping("/profile/{user}")
+    /*@GetMapping("/profile/{user}")
     public String getProfile(@AuthenticationPrincipal User currentUser,
                              @PathVariable("user") User user,
                              Model model) {
@@ -153,7 +154,7 @@ public class MainController {
         model.addAttribute("user", user);
 
         return "profile";
-    }
+    }*/
 
     @GetMapping("/dialog/{dialogId}/{user1}/{user2}")
     public String getDialog(@PathVariable("dialogId") Integer dialogId,

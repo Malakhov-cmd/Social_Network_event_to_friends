@@ -16,7 +16,10 @@
         <a class="nav-link" href="/profile/${currentUserId}">My profile</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/main">Messages</a>
+        <a class="nav-link" href="/dialog/${currentUserId}">Dialogs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/room/${currentUserId}">Rooms</a>
       </li>
       </#if>
       <#if isAdmin>

@@ -11,24 +11,28 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "admin_room")
+    @Column(name = "room_message_admin_room")
     private User admin;
 
+    @Column(name = "room_name")
+    private String roomName;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
-    @JoinColumn(name = "participant_room")
+    @JoinColumn(name = "room_message_participant_room")
     @ElementCollection
     private List<User> participants = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
-    @JoinColumn(name = "mess_room")
+    @JoinColumn(name = "room_message_mess_room")
     @ElementCollection
     private List<Message> roomMessage = new ArrayList<>();
 
     public Room() {}
 
-    public Room(User admin)
+    public Room(User admin, String roomName)
     {
         this.admin = admin;
+        this.roomName = roomName;
     }
 
     public User getAdmin() {
