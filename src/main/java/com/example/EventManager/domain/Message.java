@@ -13,7 +13,7 @@ public class Message {
     private String theme;
     private String text;
     private String date;
-    //показываем каким образом все будет обображаться в базе данных и подгружаем всю информацию о пользователе
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
@@ -24,6 +24,10 @@ public class Message {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "votemessage_id")
     private VoteMessage voteMessage;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "room_to_message")
+    private Room room;
 
     public Message(){
     }

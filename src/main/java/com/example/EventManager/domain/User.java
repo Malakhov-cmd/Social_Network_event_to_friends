@@ -37,7 +37,25 @@ public class User implements UserDetails {
     @ElementCollection
     private List<VoteMessage> voteMessages = new ArrayList<>();
 
-    private List<User> 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "usr_friends_list")
+    @ElementCollection
+    private List<User> friendList = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "usr_friend_request")
+    @ElementCollection
+    private List<User> friendRequestList = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "usr_friend_respond")
+    @ElementCollection
+    private List<User> friendRespondList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @JoinColumn(name = "usr_rooms")
+    @ElementCollection
+    private List<Room> rooms = new ArrayList<>();
 
     public User(){}
 
@@ -156,5 +174,37 @@ public class User implements UserDetails {
 
     public void setVoteMessages(List<VoteMessage> voteMessages) {
         this.voteMessages = voteMessages;
+    }
+
+    public List<User> getFriendList() {
+        return friendList;
+    }
+
+    public void setFriendList(List<User> friendList) {
+        this.friendList = friendList;
+    }
+
+    public List<User> getFriendRequestList() {
+        return friendRequestList;
+    }
+
+    public void setFriendRequestList(List<User> friendRequestList) {
+        this.friendRequestList = friendRequestList;
+    }
+
+    public List<User> getFriendRespondList() {
+        return friendRespondList;
+    }
+
+    public void setFriendRespondList(List<User> friendRespondList) {
+        this.friendRespondList = friendRespondList;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
 }
