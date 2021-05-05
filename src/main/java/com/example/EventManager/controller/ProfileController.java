@@ -26,60 +26,102 @@ public class ProfileController {
     @GetMapping("/profile/{user}")
     public String getProfile(@AuthenticationPrincipal User currentUser,
                              @PathVariable("user") User user,
-                             Model model)
-    {
-        if (currentUser == null) {
-            return "main";
+                             Model model) {
+        User userUpdated = userRepo.findByid(user.getId());
+
+        List<User> friendList = userUpdated.getFriendList();
+
+        boolean isFriend = false;
+
+        for (User usr :
+                friendList) {
+            if (usr.getId().equals(currentUser.getId())) {
+                isFriend = true;
+            }
+        }
+        if (isFriend) {
+            model.addAttribute("isFriend", true);
+        } else {
+            model.addAttribute("isFriend", false);
         }
 
-        List<User> friendList = user.getFriendList();
-
         model.addAttribute("friendList", friendList);
-        model.addAttribute("user", user);
-        model.addAttribute("requestFriendCount", user.getFriendRequestList().size());
-        model.addAttribute("respondFriendCount", user.getFriendRespondList().size());
-        model.addAttribute("FriendListSize", user.getFriendList().size());
+        model.addAttribute("user", userUpdated);
+        model.addAttribute("requestFriendCount", userUpdated.getFriendRequestList().size());
+        model.addAttribute("respondFriendCount", userUpdated.getFriendRespondList().size());
+        model.addAttribute("FriendListSize", userUpdated.getFriendList().size());
         return "profile";
     }
 
     @PostMapping("/profile/{user}")
     public String postProfile(@AuthenticationPrincipal User currentUser,
                               @PathVariable("user") User user,
-                              @RequestParam Long friendId,
-                              Model model)
-    {
+                              @RequestParam(required = false) Long friendId,
+                              Model model) {
         User futureFriend = userRepo.findByid(friendId);
 
-        System.out.println("FURURE FRIEND ID: " + futureFriend.getId());
+        if (!currentUser.getId().equals(user.getId())) {
+            User currentUserUpdated = userRepo.findByid(currentUser.getId());
 
-        if(futureFriend.getId() == null
-            || futureFriend.getId() < 1)
-        {
-            model.addAttribute("friend" , null);
-        } else {
-            List<User> listRespond = user.getFriendRespondList();
-            listRespond.add(futureFriend);
+            List<User> currentFriend = currentUserUpdated.getFriendList();
+            currentFriend.remove(user);
+            currentUserUpdated.setFriendList(currentFriend);
 
-            List<User> listRequest = futureFriend.getFriendRequestList();
-            listRequest.add(user);
+            List<User> userFriend = user.getFriendList();
+            userFriend.remove(currentUserUpdated);
+            user.setFriendList(userFriend);
 
+            userRepo.save(currentUserUpdated);
             userRepo.save(user);
-            userRepo.save(futureFriend);
 
+            User updatedUser = userRepo.findByid(user.getId());
+
+            model.addAttribute("isFriend", false);
+            model.addAttribute("friendList", updatedUser.getFriendList());
             model.addAttribute("friend", futureFriend);
-            model.addAttribute("user", user);
-            model.addAttribute("requestFriendCount", user.getFriendRequestList().size());
-            model.addAttribute("respondFriendCount", user.getFriendRespondList().size());
-            model.addAttribute("FriendListSize", user.getFriendList().size());
-        }
+            model.addAttribute("user", updatedUser);
+            model.addAttribute("requestFriendCount", updatedUser.getFriendRequestList().size());
+            model.addAttribute("respondFriendCount", updatedUser.getFriendRespondList().size());
+            model.addAttribute("FriendListSize", updatedUser.getFriendList().size());
+        } else {
+            if (futureFriend.getId() == null
+                    || futureFriend.getId() < 1) {
+                model.addAttribute("friendList", user.getFriendList());
+                model.addAttribute("friend", null);
+            } else {
+                if (user.getFriendList().contains(futureFriend)
+                        || user.getFriendRespondList().contains(futureFriend)) {
+                    model.addAttribute("friendList", user.getFriendList());
+                    model.addAttribute("friend", futureFriend);
+                    model.addAttribute("user", user);
+                    model.addAttribute("requestFriendCount", user.getFriendRequestList().size());
+                    model.addAttribute("respondFriendCount", user.getFriendRespondList().size());
+                    model.addAttribute("FriendListSize", user.getFriendList().size());
+                } else {
+                    List<User> listRespond = user.getFriendRespondList();
+                    listRespond.add(futureFriend);
 
+                    List<User> listRequest = futureFriend.getFriendRequestList();
+                    listRequest.add(user);
+
+                    userRepo.save(user);
+                    userRepo.save(futureFriend);
+
+                    model.addAttribute("friendList", user.getFriendList());
+                    model.addAttribute("friend", futureFriend);
+                    model.addAttribute("user", user);
+                    model.addAttribute("requestFriendCount", user.getFriendRequestList().size());
+                    model.addAttribute("respondFriendCount", user.getFriendRespondList().size());
+                    model.addAttribute("FriendListSize", user.getFriendList().size());
+                }
+            }
+        }
         return "profile";
     }
 
     @GetMapping("/confirmationrequest/{user}")
-    public String getConfirmation( @PathVariable("user") User user,
-                                   Model model)
-    {
+    public String getConfirmation(@PathVariable("user") User user,
+                                  Model model) {
         List<User> userRequest = user.getFriendRequestList();
 
         model.addAttribute("futureFriendRequest", userRequest);
@@ -91,22 +133,22 @@ public class ProfileController {
     public String postConfirmation(@PathVariable("user") User user,
                                    @RequestParam String design,
                                    @RequestParam Long secondUser,
-                                   Model model)
-    {
+                                   Model model) {
         User potentialFriend = userRepo.findByid(secondUser);
 
-        switch (design)
-        {
-            case("add"):
+        switch (design) {
+            case ("add"):
                 List<User> userFriend = user.getFriendList();
+                List<User> potentialFriendList = potentialFriend.getFriendList();
                 userFriend.add(potentialFriend);
+                potentialFriendList.add(user);
 
                 user.setFriendList(userFriend);
+                potentialFriend.setFriendList(potentialFriendList);
 
                 List<User> userRequest = user.getFriendRequestList();
                 List<User> potentialFriendRespond = potentialFriend.getFriendRespondList();
-                if(userRequest.contains(potentialFriend))
-                {
+                if (userRequest.contains(potentialFriend)) {
                     userRequest.remove(potentialFriend);
                     user.setFriendRequestList(userRequest);
                     potentialFriendRespond.remove(user);
@@ -115,8 +157,7 @@ public class ProfileController {
 
                 List<User> userRespond = user.getFriendRespondList();
                 List<User> potentialRequest = potentialFriend.getFriendRequestList();
-                if (userRespond.contains(potentialFriend))
-                {
+                if (userRespond.contains(potentialFriend)) {
                     userRespond.remove(potentialFriend);
                     user.setFriendRespondList(userRespond);
                     potentialRequest.remove(user);
@@ -124,13 +165,12 @@ public class ProfileController {
                 }
                 userRepo.save(user);
                 userRepo.save(potentialFriend);
-            break;
+                break;
             case ("reject"):
                 userRequest = user.getFriendRequestList();
                 potentialFriendRespond = potentialFriend.getFriendRespondList();
 
-                if(userRequest.contains(potentialFriend))
-                {
+                if (userRequest.contains(potentialFriend)) {
                     userRequest.remove(potentialFriend);
                     user.setFriendRequestList(userRequest);
                     potentialFriendRespond.remove(user);
@@ -139,8 +179,7 @@ public class ProfileController {
 
                 userRespond = user.getFriendRespondList();
                 potentialRequest = potentialFriend.getFriendRequestList();
-                if (userRespond.contains(potentialFriend))
-                {
+                if (userRespond.contains(potentialFriend)) {
                     userRespond.remove(potentialFriend);
                     user.setFriendRespondList(userRespond);
                     potentialRequest.remove(user);
@@ -148,7 +187,7 @@ public class ProfileController {
                 }
                 userRepo.save(user);
                 userRepo.save(potentialFriend);
-            break;
+                break;
             case ("noting"):
                 break;
         }
@@ -162,8 +201,7 @@ public class ProfileController {
 
     @GetMapping("/respondlist/{user}")
     public String getRespond(@PathVariable("user") User user,
-                             Model model)
-    {
+                             Model model) {
         List<User> userRespond = user.getFriendRespondList();
 
         model.addAttribute("userRespond", userRespond);

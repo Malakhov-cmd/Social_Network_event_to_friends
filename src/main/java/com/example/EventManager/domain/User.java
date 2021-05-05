@@ -37,19 +37,29 @@ public class User implements UserDetails {
     @ElementCollection
     private List<VoteMessage> voteMessages = new ArrayList<>();
 
-    @Column(name = "user_friend_list")
-    @ElementCollection
+    @ManyToMany
+    @JoinTable(
+            name = "user_friends",
+            joinColumns = { @JoinColumn(name = "friend_id") }
+    )
     private List<User> friendList = new ArrayList<>();
 
-    @Column(name = "user_friend_request")
-    @ElementCollection
+    @ManyToMany
+    @JoinTable(
+            name = "user_friends_request",
+            joinColumns = { @JoinColumn(name = "friend_request_id") }
+    )
     private List<User> friendRequestList = new ArrayList<>();
 
-    @Column(name = "user_friend_respond")
-    @ElementCollection
+    @ManyToMany
+    @JoinTable(
+            name = "user_friends_respond",
+            joinColumns = { @JoinColumn(name = "friend_respond_id") }
+    )
     private List<User> friendRespondList = new ArrayList<>();
 
-    @Column(name = "user_rooms")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @JoinColumn(name = "user_rooms")
     @ElementCollection
     private List<Room> rooms = new ArrayList<>();
 
