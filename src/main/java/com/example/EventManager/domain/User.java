@@ -37,6 +37,8 @@ public class User implements UserDetails {
     @ElementCollection
     private List<VoteMessage> voteMessages = new ArrayList<>();
 
+    private List<User> 
+
     public User(){}
 
     public boolean hasAvatar()
