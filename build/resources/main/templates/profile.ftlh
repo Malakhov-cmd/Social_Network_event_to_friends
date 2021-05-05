@@ -41,8 +41,26 @@
             </#if>
           </div>
         </div>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <button type="button" class="btn btn-primary"
+             onclick="window.location.href='/confirmationrequest/${user.id}'; return false">
+              Request friend
+              <span class="badge badge-primary badge-pill">${requestFriendCount}</span>
+              <span class="sr-only">unread messages</span>
+            </button>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <button type="button" class="btn btn-primary"
+            onclick="window.location.href='/respondlist/${user.id}'; return false">
+              Respond friend
+              <span class="badge badge-primary badge-pill">${respondFriendCount}</span>
+              <span class="sr-only">unread messages</span>
+            </button>
+          </li>
+        </ul>
       </form>
-      <button type="button" class="btn btn-primary"
+      <button type="button" class="btn btn-primary btn-lg btn-block"
         onclick="window.location.href='/dialogs/${user.id}'; return false">Dialogs</button>
       <form method="post">
         <div class="form-group">
@@ -70,13 +88,15 @@
           </tr>
         </thead>
         <tbody>
-          <#list friendList as friend>
-            <tr onclick="window.location.href='/profile/${friend.id}'; return false">
-              <th scope="row">${friend_index}</th>
-              <td>${friend.username}</td>
-              <td>${friend.id}</td>
-            </tr>
-          </#list>
+          <#if FriendListSize!=0>
+            <#list friendList as friend>
+              <tr onclick="window.location.href='/profile/${friend.id}'; return false">
+                <th scope="row">${friend_index}</th>
+                <td>${friend.username}</td>
+                <td>${friend.id}</td>
+              </tr>
+            </#list>
+          </#if>
         </tbody>
       </table>
     </@c.page>
