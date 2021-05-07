@@ -82,7 +82,7 @@
           <div class="form-group">
             <button type="submit" class="btn btn-primary ml-2">Create</button>
           </div>
-          <#if userToCreateDialogNotFounded == true>
+          <#if userToCreateDialogNotFounded==true>
             <p>User not founded</p>
           </#if>
         </form>
@@ -96,13 +96,63 @@
             <button type="submit" class="btn btn-primary ml-2">Find</button>
           </div>
         </form>
-        <div class="container mt-5 mb-5">
-          <div class="row">
-            <div class="col align-self-center">
-              <p class="lead"> Friend list </p>
+
+        <div class="accordion" id="accordionExample">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  Create room
+                </button>
+              </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                <form method="post">
+                  <div class="form-group">
+                    <label for="roomName">Find friend</label>
+                    <textarea class="form-control" id="roomName" rows="1" name="roomName"></textarea>
+                  </div>
+
+                  <div class="placeHold" hidden>
+
+                  </div>
+
+                  <div class="frientSelected">
+                    <div class="form-group">
+                      <#if FriendListSize!=0>
+                        <#list friendList as friend>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <input type="checkbox" class="inputFriend" id="${friend_index}"
+                                  aria-label="Checkbox for following text input" value="${friend.username} ">
+                              </div>
+                            </div>
+                            <input type="text" readonly class="form-control" aria-label="Text input with checkbox"
+                              value="${friend.username}">
+                          </div>
+                        </#list>
+                      </#if>
+                    </div>
+                  </div>
+                  <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary ml-2">Create</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
+          <div class="container mt-5 mb-5">
+            <div class="row">
+              <div class="col align-self-center">
+                <p class="lead"> Friend list </p>
+              </div>
+            </div>
+          </div>
       </#if>
       <#if currentUser.id!=user.id && isFriend==true>
         <form method="post">
@@ -135,4 +185,23 @@
           </#if>
         </tbody>
       </table>
+      <script>
+        const inputs = document.querySelectorAll('.inputFriend');
+        console.log(inputs.length);
+        const placeHold = document.querySelector('.placeHold');
+        console.log("Hello")
+        inputs.forEach(el => {
+          el.addEventListener('click', () => {
+            placeHold.textContent = '';
+
+            let input_checkeds = document.querySelectorAll('input:checked');
+            console.log(input_checkeds.length);
+
+
+            input_checkeds.forEach(el_checked => {
+              placeHold.insertAdjacentHTML('beforeend', el_checked.value);
+            });
+          });
+        });
+      </script>
     </@c.page>
