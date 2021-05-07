@@ -27,10 +27,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_dialog_id")
     @ElementCollection
-    private List<Dialog> dialogList;
+    private List<Dialog> dialogList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_vote_message_id")

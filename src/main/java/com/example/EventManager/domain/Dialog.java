@@ -3,20 +3,26 @@ package com.example.EventManager.domain;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Entity
-public class Dialog {
+public class Dialog implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
 
+    @Column(name = "dialog_first_user")
     private User firstUser;
+
+    @Column(name = "dialog_second_user")
     private User secondUser;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
-    @JoinColumn(name = "dialog_id")
+    @JoinColumn(name = "dialog_message_id")
     @ElementCollection
     private List<DialogMessage> dialogMessageList;
 

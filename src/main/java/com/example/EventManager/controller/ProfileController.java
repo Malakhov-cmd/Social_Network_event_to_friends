@@ -1,8 +1,11 @@
 package com.example.EventManager.controller;
 
+import com.example.EventManager.domain.Dialog;
 import com.example.EventManager.domain.User;
+import com.example.EventManager.repos.DialogMessageRepo;
 import com.example.EventManager.repos.DialogRepo;
 import com.example.EventManager.repos.UserRepo;
+import org.graalvm.compiler.lir.LIRInstruction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,6 +24,8 @@ public class ProfileController {
     private UserRepo userRepo;
     @Autowired
     private DialogRepo dialogRepo;
+    @Autowired
+    private DialogMessageRepo dialogMessageRepo;
 
     @GetMapping("/profile/{user}")
     public String getProfile(@AuthenticationPrincipal User currentUser,
@@ -43,6 +49,7 @@ public class ProfileController {
             model.addAttribute("isFriend", false);
         }
 
+        model.addAttribute("userToCreateDialogNotFounded", false);
         model.addAttribute("friendList", friendList);
         model.addAttribute("user", userUpdated);
         model.addAttribute("requestFriendCount", userUpdated.getFriendRequestList().size());
@@ -51,13 +58,16 @@ public class ProfileController {
         return "profile";
     }
 
+
     @PostMapping("/profile/{user}")
     public String postProfile(@AuthenticationPrincipal User currentUser,
                               @PathVariable("user") User user,
                               @RequestParam(required = false) Long friendId,
+                              @RequestParam(required = false) Long userToDialog,
                               Model model) {
         User futureFriend = userRepo.findByid(friendId);
 
+        //удаление из друзей
         if (!currentUser.getId().equals(user.getId())) {
             User currentUserUpdated = userRepo.findByid(currentUser.getId());
 
@@ -74,6 +84,7 @@ public class ProfileController {
 
             User updatedUser = userRepo.findByid(user.getId());
 
+            model.addAttribute("userToCreateDialogNotFounded", false);
             model.addAttribute("isFriend", false);
             model.addAttribute("friendList", updatedUser.getFriendList());
             model.addAttribute("friend", futureFriend);
@@ -82,38 +93,91 @@ public class ProfileController {
             model.addAttribute("respondFriendCount", updatedUser.getFriendRespondList().size());
             model.addAttribute("FriendListSize", updatedUser.getFriendList().size());
         } else {
-            if (futureFriend.getId() == null
-                    || futureFriend.getId() < 1) {
-                model.addAttribute("friendList", user.getFriendList());
-                model.addAttribute("friend", null);
-            } else {
-                if (user.getFriendList().contains(futureFriend)
-                        || user.getFriendRespondList().contains(futureFriend)) {
-                    model.addAttribute("friendList", user.getFriendList());
-                    model.addAttribute("friend", futureFriend);
-                    model.addAttribute("user", user);
-                    model.addAttribute("requestFriendCount", user.getFriendRequestList().size());
-                    model.addAttribute("respondFriendCount", user.getFriendRespondList().size());
-                    model.addAttribute("FriendListSize", user.getFriendList().size());
+            //создание диалога
+            if (userToDialog != null
+                    && userToDialog >= 1) {
+                User dialogUser = userRepo.findByid(userToDialog);
+
+                if (dialogUser == null) {
+                    model.addAttribute("userToCreateDialogNotFounded", true);
                 } else {
-                    List<User> listRespond = user.getFriendRespondList();
-                    listRespond.add(futureFriend);
 
-                    List<User> listRequest = futureFriend.getFriendRequestList();
-                    listRequest.add(user);
+                    Integer dialogFromFirstId = null;
+                    Integer dialogFromSecondId = null;
 
-                    userRepo.save(user);
-                    userRepo.save(futureFriend);
+                    for (Dialog dialog
+                            : dialogRepo.findAll()) {
+                        if (dialog.getFirstUser().getId().equals(user.getId())
+                                && dialog.getSecondUser().getId().equals(dialogUser.getId())) {
+                            dialogFromFirstId = dialog.getId();
+                        } else {
+                            if (dialog.getFirstUser().getId().equals(dialogUser.getId())
+                                    && dialog.getSecondUser().getId().equals(user.getId())) {
+                                dialogFromSecondId = dialog.getId();
+                            }
+                        }
+                    }
 
+                    if (dialogFromFirstId == null || dialogFromSecondId == null) {
+                        Dialog uploadedDialogFromFirst = null;
+                        Dialog uploadedDialogFromSecond = null;
+
+                        Dialog newDialogFromFirst = new Dialog(user, dialogUser, new ArrayList<>());
+                        dialogRepo.save(newDialogFromFirst);
+                        uploadedDialogFromFirst = dialogRepo.findByid(newDialogFromFirst.getId());
+
+                        Dialog newDialogFromSecond = new Dialog(dialogUser, user, new ArrayList<>());
+                        dialogRepo.save(newDialogFromSecond);
+                        uploadedDialogFromSecond = dialogRepo.findByid(newDialogFromSecond.getId());
+
+
+                        List<Dialog> userDialogList = user.getDialogList();
+                        List<Dialog> secondUserToDialogList = dialogUser.getDialogList();
+
+                        userDialogList.add(uploadedDialogFromFirst);
+                        secondUserToDialogList.add(uploadedDialogFromSecond);
+
+                        user.setDialogList(userDialogList);
+                        dialogUser.setDialogList(secondUserToDialogList);
+
+                        userRepo.save(dialogUser);
+                        userRepo.save(user);
+                    }
+                }
+            } else {
+                //добавление друга
+                if (futureFriend == null) {
+                    model.addAttribute("userToCreateDialogNotFounded", false);
                     model.addAttribute("friendList", user.getFriendList());
-                    model.addAttribute("friend", futureFriend);
+                    model.addAttribute("friend", null);
                     model.addAttribute("user", user);
                     model.addAttribute("requestFriendCount", user.getFriendRequestList().size());
                     model.addAttribute("respondFriendCount", user.getFriendRespondList().size());
                     model.addAttribute("FriendListSize", user.getFriendList().size());
+
+                    return "profile";
+                } else {
+                    if (!user.getFriendList().contains(futureFriend)
+                            || !user.getFriendRespondList().contains(futureFriend)) {
+                        List<User> listRespond = user.getFriendRespondList();
+                        listRespond.add(futureFriend);
+
+                        List<User> listRequest = futureFriend.getFriendRequestList();
+                        listRequest.add(user);
+
+                        userRepo.save(user);
+                        userRepo.save(futureFriend);
+                    }
                 }
             }
         }
+        model.addAttribute("userToCreateDialogNotFounded", false);
+        model.addAttribute("friendList", user.getFriendList());
+        model.addAttribute("friend", futureFriend);
+        model.addAttribute("user", user);
+        model.addAttribute("requestFriendCount", user.getFriendRequestList().size());
+        model.addAttribute("respondFriendCount", user.getFriendRespondList().size());
+        model.addAttribute("FriendListSize", user.getFriendList().size());
         return "profile";
     }
 
