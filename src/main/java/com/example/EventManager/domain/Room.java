@@ -34,6 +34,7 @@ public class Room implements Serializable {
     {
         this.admin = admin;
         this.roomName = roomName;
+        participants.add(admin);
     }
 
     public String getRoomName() {

@@ -83,7 +83,7 @@
             <button type="submit" class="btn btn-primary ml-2">Create</button>
           </div>
           <#if userToCreateDialogNotFounded==true>
-            <p>User not founded</p>
+            <p>User not founded or you try to talk with yourself</p>
           </#if>
         </form>
         <form method="post">
@@ -116,8 +116,8 @@
                     <textarea class="form-control" id="roomName" rows="1" name="roomName"></textarea>
                   </div>
 
-                  <div class="placeHold" hidden name="strFriendToRoom">
-
+                  <div>
+                    <input type="text" hidden name="strFriendToRoom" class="placeHold">
                   </div>
 
                   <div class="frientSelected">
@@ -192,14 +192,15 @@
         console.log("Hello")
         inputs.forEach(el => {
           el.addEventListener('click', () => {
-            placeHold.textContent = '';
+            placeHold.value = '';
 
             let input_checkeds = document.querySelectorAll('input:checked');
             console.log(input_checkeds.length);
 
 
             input_checkeds.forEach(el_checked => {
-              placeHold.insertAdjacentHTML('beforeend', el_checked.value);
+              //placeHold.insertAdjacentHTML('beforeend', el_checked.value);
+              placeHold.value = placeHold.value +  el_checked.value;
             });
           });
         });

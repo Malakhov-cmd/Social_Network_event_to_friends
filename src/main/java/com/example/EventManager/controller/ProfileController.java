@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -109,63 +111,91 @@ public class ProfileController {
                 if (dialogUser == null) {
                     model.addAttribute("userToCreateDialogNotFounded", true);
                 } else {
+                    if (dialogUser.getId().equals(user.getId())) {
+                        model.addAttribute("userToCreateDialogNotFounded", true);
+                    } else {
+                        Integer dialogFromFirstId = null;
+                        Integer dialogFromSecondId = null;
 
-                    Integer dialogFromFirstId = null;
-                    Integer dialogFromSecondId = null;
-
-                    for (Dialog dialog
-                            : dialogRepo.findAll()) {
-                        if (dialog.getFirstUser().getId().equals(user.getId())
-                                && dialog.getSecondUser().getId().equals(dialogUser.getId())) {
-                            dialogFromFirstId = dialog.getId();
-                        } else {
-                            if (dialog.getFirstUser().getId().equals(dialogUser.getId())
-                                    && dialog.getSecondUser().getId().equals(user.getId())) {
-                                dialogFromSecondId = dialog.getId();
+                        for (Dialog dialog
+                                : dialogRepo.findAll()) {
+                            if (dialog.getFirstUser().getId().equals(user.getId())
+                                    && dialog.getSecondUser().getId().equals(dialogUser.getId())) {
+                                dialogFromFirstId = dialog.getId();
+                            } else {
+                                if (dialog.getFirstUser().getId().equals(dialogUser.getId())
+                                        && dialog.getSecondUser().getId().equals(user.getId())) {
+                                    dialogFromSecondId = dialog.getId();
+                                }
                             }
                         }
-                    }
 
-                    if (dialogFromFirstId == null || dialogFromSecondId == null) {
-                        Dialog uploadedDialogFromFirst = null;
-                        Dialog uploadedDialogFromSecond = null;
+                        if (dialogFromFirstId == null || dialogFromSecondId == null) {
+                            Dialog uploadedDialogFromFirst = null;
+                            Dialog uploadedDialogFromSecond = null;
 
-                        Dialog newDialogFromFirst = new Dialog(user, dialogUser, new ArrayList<>());
-                        dialogRepo.save(newDialogFromFirst);
-                        uploadedDialogFromFirst = dialogRepo.findByid(newDialogFromFirst.getId());
+                            Dialog newDialogFromFirst = new Dialog(user, dialogUser, new ArrayList<>());
+                            dialogRepo.save(newDialogFromFirst);
+                            uploadedDialogFromFirst = dialogRepo.findByid(newDialogFromFirst.getId());
 
-                        Dialog newDialogFromSecond = new Dialog(dialogUser, user, new ArrayList<>());
-                        dialogRepo.save(newDialogFromSecond);
-                        uploadedDialogFromSecond = dialogRepo.findByid(newDialogFromSecond.getId());
+                            Dialog newDialogFromSecond = new Dialog(dialogUser, user, new ArrayList<>());
+                            dialogRepo.save(newDialogFromSecond);
+                            uploadedDialogFromSecond = dialogRepo.findByid(newDialogFromSecond.getId());
 
 
-                        List<Dialog> userDialogList = user.getDialogList();
-                        List<Dialog> secondUserToDialogList = dialogUser.getDialogList();
+                            List<Dialog> userDialogList = user.getDialogList();
+                            List<Dialog> secondUserToDialogList = dialogUser.getDialogList();
 
-                        userDialogList.add(uploadedDialogFromFirst);
-                        secondUserToDialogList.add(uploadedDialogFromSecond);
+                            userDialogList.add(uploadedDialogFromFirst);
+                            secondUserToDialogList.add(uploadedDialogFromSecond);
 
-                        user.setDialogList(userDialogList);
-                        dialogUser.setDialogList(secondUserToDialogList);
+                            user.setDialogList(userDialogList);
+                            dialogUser.setDialogList(secondUserToDialogList);
 
-                        userRepo.save(dialogUser);
-                        userRepo.save(user);
+                            userRepo.save(dialogUser);
+                            userRepo.save(user);
+                        }
                     }
                 }
             } else {
                 //добавление комнаты
                 if (roomName != null) {
                     Room room = new Room(user, roomName);
-                    roomRepo.save(room);
 
                     if (strFriendToRoom == null){
                         List<Room> listRoomUser = user.getRooms();
                         listRoomUser.add(room);
                         user.setRooms(listRoomUser);
                         userRepo.save(user);
-                        System.out.println("ROOM_ID: " + roomRepo.findByRoomName(roomName));
+                        roomRepo.save(room);
                     } else {
-                        System.out.println(strFriendToRoom);
+                        String[] usernamesAdded = strFriendToRoom.split(" ");
+                        List<User> userToAdded = new ArrayList<>();
+
+                        for (int i=0; i < usernamesAdded.length; i++){
+                            User usr = userRepo.findByUsername(usernamesAdded[i]);
+                            if (usr != null) {
+                                userToAdded.add(usr);
+                                System.out.println("Guest_id: " + usr.getId());
+                            }
+                        }
+
+                        List<User> paticipantUser = room.getParticipants();
+                        paticipantUser.addAll(userToAdded);
+                        room.setParticipants(paticipantUser);
+                        roomRepo.save(room);
+
+                        System.out.println("Get count of paticipant: " + roomRepo.findByRoomName(room.getRoomName()).getParticipants().size());
+
+                        User[] userParticipate = new User[paticipantUser.size()];
+                        for(int i = 0; i < userParticipate.length; i++)
+                        {
+                            User usr = paticipantUser.get(i);
+                            List<Room> listRoomUser = usr.getRooms();
+                            listRoomUser.add(room);
+                            usr.setRooms(listRoomUser);
+                            userRepo.save(usr);
+                        }
                     }
                 } else {
                     model.addAttribute("notRootNameSelected", true);
@@ -183,8 +213,20 @@ public class ProfileController {
 
                     return "profile";
                 } else {
-                    if (!user.getFriendList().contains(futureFriend)
-                            || !user.getFriendRespondList().contains(futureFriend)) {
+                    boolean alreadyInRelation = false;
+                    for (User usr:
+                         user.getFriendList()) {
+                        if (usr.getId().equals(futureFriend.getId())){
+                            alreadyInRelation = true;
+                        }
+                    }
+                    for (User usr:
+                            user.getFriendRespondList()) {
+                        if (usr.getId().equals(futureFriend.getId())){
+                            alreadyInRelation = true;
+                        }
+                    }
+                    if (!alreadyInRelation && !user.getId().equals(futureFriend.getId())) {
                         List<User> listRespond = user.getFriendRespondList();
                         listRespond.add(futureFriend);
 
