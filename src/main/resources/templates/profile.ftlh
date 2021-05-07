@@ -116,7 +116,7 @@
                     <textarea class="form-control" id="roomName" rows="1" name="roomName"></textarea>
                   </div>
 
-                  <div class="placeHold" hidden>
+                  <div class="placeHold" hidden name="strFriendToRoom">
 
                   </div>
 

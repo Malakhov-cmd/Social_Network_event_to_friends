@@ -1,12 +1,13 @@
 package com.example.EventManager.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "room_message")
-public class Room {
+public class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -33,6 +34,14 @@ public class Room {
     {
         this.admin = admin;
         this.roomName = roomName;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public User getAdmin() {

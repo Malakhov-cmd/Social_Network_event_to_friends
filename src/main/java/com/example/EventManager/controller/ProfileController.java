@@ -1,9 +1,11 @@
 package com.example.EventManager.controller;
 
 import com.example.EventManager.domain.Dialog;
+import com.example.EventManager.domain.Room;
 import com.example.EventManager.domain.User;
 import com.example.EventManager.repos.DialogMessageRepo;
 import com.example.EventManager.repos.DialogRepo;
+import com.example.EventManager.repos.RoomRepo;
 import com.example.EventManager.repos.UserRepo;
 import org.graalvm.compiler.lir.LIRInstruction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class ProfileController {
     private DialogRepo dialogRepo;
     @Autowired
     private DialogMessageRepo dialogMessageRepo;
+    @Autowired
+    private RoomRepo roomRepo;
 
     @GetMapping("/profile/{user}")
     public String getProfile(@AuthenticationPrincipal User currentUser,
@@ -49,6 +53,7 @@ public class ProfileController {
             model.addAttribute("isFriend", false);
         }
 
+        model.addAttribute("notRootNameSelected", false);
         model.addAttribute("userToCreateDialogNotFounded", false);
         model.addAttribute("friendList", friendList);
         model.addAttribute("user", userUpdated);
@@ -64,6 +69,8 @@ public class ProfileController {
                               @PathVariable("user") User user,
                               @RequestParam(required = false) Long friendId,
                               @RequestParam(required = false) Long userToDialog,
+                              @RequestParam(required = false) String roomName,
+                              @RequestParam(required = false) String strFriendToRoom,
                               Model model) {
         User futureFriend = userRepo.findByid(friendId);
 
@@ -84,6 +91,7 @@ public class ProfileController {
 
             User updatedUser = userRepo.findByid(user.getId());
 
+            model.addAttribute("notRootNameSelected", false);
             model.addAttribute("userToCreateDialogNotFounded", false);
             model.addAttribute("isFriend", false);
             model.addAttribute("friendList", updatedUser.getFriendList());
@@ -145,8 +153,26 @@ public class ProfileController {
                     }
                 }
             } else {
+                //добавление комнаты
+                if (roomName != null) {
+                    Room room = new Room(user, roomName);
+                    roomRepo.save(room);
+
+                    if (strFriendToRoom == null){
+                        List<Room> listRoomUser = user.getRooms();
+                        listRoomUser.add(room);
+                        user.setRooms(listRoomUser);
+                        userRepo.save(user);
+                        System.out.println("ROOM_ID: " + roomRepo.findByRoomName(roomName));
+                    } else {
+                        System.out.println(strFriendToRoom);
+                    }
+                } else {
+                    model.addAttribute("notRootNameSelected", true);
+                }
                 //добавление друга
                 if (futureFriend == null) {
+                    model.addAttribute("notRootNameSelected", false);
                     model.addAttribute("userToCreateDialogNotFounded", false);
                     model.addAttribute("friendList", user.getFriendList());
                     model.addAttribute("friend", null);
@@ -171,6 +197,7 @@ public class ProfileController {
                 }
             }
         }
+        model.addAttribute("notRootNameSelected", false);
         model.addAttribute("userToCreateDialogNotFounded", false);
         model.addAttribute("friendList", user.getFriendList());
         model.addAttribute("friend", futureFriend);

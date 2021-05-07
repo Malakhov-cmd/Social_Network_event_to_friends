@@ -19,7 +19,7 @@
         <a class="nav-link" href="/dialogs/${currentUserId}">Dialogs</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/room/${currentUserId}">Rooms</a>
+        <a class="nav-link" href="/rooms/${currentUserId}">Rooms</a>
       </li>
       </#if>
       <#if isAdmin>
