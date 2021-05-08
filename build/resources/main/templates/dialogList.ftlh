@@ -2,7 +2,7 @@
   <@c.page>
   <#if dialogSize!=0>
     <#list dialogs as dialog>
-    <div class="card">
+    <div class="card mb-3">
       <h5 class="card-header">${dialog.getSecondUser().getUsername()}</h5>
       <div class="card-body">
         <h5 class="card-title">@${dialog.getSecondUser().getId()}</h5>

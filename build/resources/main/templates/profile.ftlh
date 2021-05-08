@@ -18,7 +18,7 @@
       <form>
         <div class="form-group row">
           <#if user.hasAvatar()==true>
-            <img src="/img/${user.avatarFilename}" width="250" height="150" class="rounded" alt="Avatar">
+            <img src="/img/${user.avatarFilename}" width="250" height="250" class="rounded" alt="Avatar">
           </#if>
         </div>
         <div class="form-group row">
@@ -74,9 +74,9 @@
         <button type="button" class="btn btn-primary btn-lg btn-block"
           onclick="window.location.href='/dialogs/${user.id}'; return false">Dialogs</button>
         <form method="post">
-          <div class="form-group">
+          <div class="form-group mt-3">
             <label for="newDialog">Start new dialog</label>
-            <textarea class="form-control" id="newDialog" rows="1" name="userToDialog"></textarea>
+            <textarea class="form-control" id="newDialog" rows="1" name="userToDialog" placeholder="Enter user id"></textarea>
           </div>
           <input type="hidden" name="_csrf" value="${_csrf.token}" />
           <div class="form-group">
@@ -89,7 +89,7 @@
         <form method="post">
           <div class="form-group">
             <label for="findFriend">Find friend</label>
-            <textarea class="form-control" id="findFriend" rows="1" name="friendId"></textarea>
+            <textarea class="form-control" id="findFriend" rows="1" name="friendId" placeholder="Enter user id"></textarea>
           </div>
           <input type="hidden" name="_csrf" value="${_csrf.token}" />
           <div class="form-group">
@@ -108,11 +108,11 @@
               </h5>
             </div>
 
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
               <div class="card-body">
                 <form method="post">
                   <div class="form-group">
-                    <label for="roomName">Find friend</label>
+                    <label for="roomName">Room name</label>
                     <textarea class="form-control" id="roomName" rows="1" name="roomName"></textarea>
                   </div>
 
@@ -121,7 +121,8 @@
                   </div>
 
                   <div class="frientSelected">
-                    <div class="form-group">
+                  <label for="friendListDisplay">Friends</label>
+                    <div class="form-group" id="friendListDisplay">
                       <#if FriendListSize!=0>
                         <#list friendList as friend>
                           <div class="input-group">

@@ -67,14 +67,18 @@ public class MainController {
         return "main";
     }
 
-    @PostMapping("/main")
-    public String add(@AuthenticationPrincipal User user,
+    @PostMapping("/room/{roomName}/{room}/{user}")
+    public String add(@AuthenticationPrincipal User currentUser,
+                      @PathVariable String roomName,
+                      @PathVariable Room room,
+                      @PathVariable User user,
                       @RequestParam String header,
                       @RequestParam String theme,
                       @RequestParam String activityType,
                       @RequestParam String text,
                       Map<String, Object> model,
                       @RequestParam("file") MultipartFile file) throws IOException {
+
         Date date = new Date();
         Message message = new Message(header, theme, activityType, text, user);
 
@@ -114,9 +118,14 @@ public class MainController {
         message.setVoteMessage(voteMessage);
         messageRepo.save(message);
 
+        List<Message> roomMessage = room.getRoomMessage();
+        roomMessage.add(message);
+        room.setRoomMessage(roomMessage);
+        roomRepo.save(room);
+
         model.put("activity", activityType);
 
-        Iterable<Message> messages = messageRepo.findAll();
+        Iterable<Message> messages = room.getRoomMessage();
         model.put("messages", messages);
         model.put("user", user);
         return "main";
