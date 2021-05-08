@@ -19,8 +19,10 @@ public class Room implements Serializable {
     private String roomName;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "room_message_participant_room")
-    @ElementCollection
+    @JoinTable(
+            name = "user_participant",
+            joinColumns = { @JoinColumn(name = "room_message_id") }
+    )
     private List<User> participants = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)

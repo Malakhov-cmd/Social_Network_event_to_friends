@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.ManyToMany;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -47,19 +48,20 @@ public class MainController {
         return "greeting";
     }
 
-    @GetMapping("/main")
-    public String main(@AuthenticationPrincipal User user,
-                        @RequestParam(required = false, defaultValue = "") String filter,
+    @GetMapping("/room/{roomName}/{room}/{user}")
+    public String main(@AuthenticationPrincipal User currentUser,
+                       @PathVariable String roomName,
+                       @PathVariable Room room,
+                       @PathVariable User user,
+                       @RequestParam(required = false) String filter,
                        Model model) {
-        Iterable<Message> messages = messageRepo.findAll();
+        List<Message> roomMessage = room.getRoomMessage();
 
         if (filter != null && !filter.isEmpty()) {
-            messages = messageRepo.findByHeader(filter);
-        } else {
-            messages = messageRepo.findAll();
+            roomMessage = messageRepo.findByHeader(filter);
         }
 
-        model.addAttribute("messages", messages);
+        model.addAttribute("messages", roomMessage);
         model.addAttribute("filter", filter);
         model.addAttribute("user", user);
         return "main";
