@@ -58,9 +58,11 @@ public class User implements UserDetails {
     )
     private List<User> friendRespondList = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_rooms")
-    @ElementCollection
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_rooms",
+            joinColumns = { @JoinColumn(name = "user_rooms_id") }
+    )
     private List<Room> rooms = new ArrayList<>();
 
     public User(){}
