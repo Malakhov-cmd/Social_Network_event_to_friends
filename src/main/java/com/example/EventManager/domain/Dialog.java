@@ -1,10 +1,7 @@
 package com.example.EventManager.domain;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

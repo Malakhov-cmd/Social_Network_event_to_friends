@@ -7,7 +7,6 @@ import com.example.EventManager.repos.DialogMessageRepo;
 import com.example.EventManager.repos.DialogRepo;
 import com.example.EventManager.repos.RoomRepo;
 import com.example.EventManager.repos.UserRepo;
-import org.graalvm.compiler.lir.LIRInstruction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 @Controller
