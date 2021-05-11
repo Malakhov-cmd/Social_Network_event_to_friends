@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -74,62 +77,69 @@ public class MainController {
                       @PathVariable String roomName,
                       @PathVariable Room room,
                       @PathVariable User user,
-                      @RequestParam String header,
-                      @RequestParam String theme,
-                      @RequestParam String activityType,
-                      @RequestParam String text,
-                      Map<String, Object> model,
+                      @Valid Message message,
+                      BindingResult bindingResult,
+                      Model model,
                       @RequestParam("file") MultipartFile file) throws IOException {
 
         Date date = new Date();
-        Message message = new Message(header, theme, activityType, text, user);
+        message.setAuthor(user);
 
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = com.example.sweater.controller.ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("message", message);
+        } else {
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                File uploadDir = new File(uploadPath);
 
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
+
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+
+                String uuidFile = UUID.randomUUID().toString();
+                String resultFileName = uuidFile + "." + file.getOriginalFilename();
+
+                file.transferTo(new File(uploadPath + "/" + resultFileName));
+
+                message.setFilename(resultFileName);
             }
 
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file.getOriginalFilename();
+            model.addAttribute("message", null);
 
-            file.transferTo(new File(uploadPath + "/" + resultFileName));
+            message.setDate(date.toString());
 
-            message.setFilename(resultFileName);
+            VoteMessage voteMessage = new VoteMessage(user);
+
+            Vote autoVotedAuthor = new Vote(user);
+            autoVotedAuthor.setDecision("Agree");
+            autoVotedAuthor.setDate(date.toString());
+            voteRepo.save(autoVotedAuthor);
+
+            List<Vote> votedUser = voteMessage.getVotedUsers();
+            votedUser.add(autoVotedAuthor);
+            voteMessage.setVotedUsers(votedUser);
+
+            VoteMessageDialog voteMessageDialog = new VoteMessageDialog(user);
+            voteMessage.setVoteMessageDialog(voteMessageDialog);
+
+            voteMessageRepo.save(voteMessage);
+
+            message.setVoteMessage(voteMessage);
+            messageRepo.save(message);
+
+            List<Message> roomMessage = room.getRoomMessage();
+            roomMessage.add(message);
+            room.setRoomMessage(roomMessage);
+            roomRepo.save(room);
+
+            model.addAttribute("activity", message.getActivityType());
         }
 
-        message.setDate(date.toString());
-
-        VoteMessage voteMessage = new VoteMessage(user);
-
-        Vote autoVotedAuthor = new Vote(user);
-        autoVotedAuthor.setDecision("Agree");
-        autoVotedAuthor.setDate(date.toString());
-        voteRepo.save(autoVotedAuthor);
-
-        List<Vote> votedUser = voteMessage.getVotedUsers();
-        votedUser.add(autoVotedAuthor);
-        voteMessage.setVotedUsers(votedUser);
-
-        VoteMessageDialog voteMessageDialog = new VoteMessageDialog(user);
-        voteMessage.setVoteMessageDialog(voteMessageDialog);
-
-        voteMessageRepo.save(voteMessage);
-
-        message.setVoteMessage(voteMessage);
-        messageRepo.save(message);
-
-        List<Message> roomMessage = room.getRoomMessage();
-        roomMessage.add(message);
-        room.setRoomMessage(roomMessage);
-        roomRepo.save(room);
-
-        model.put("activity", activityType);
-
         Iterable<Message> messages = room.getRoomMessage();
-        model.put("messages", messages);
-        model.put("user", user);
+        model.addAttribute("messages", messages);
+        model.addAttribute("user", user);
         return "main";
     }
 
@@ -142,8 +152,7 @@ public class MainController {
     @GetMapping("/vote/{messageId}/{user}")
     public String getVoted(@PathVariable Integer messageId,
                            @PathVariable User user,
-                           Model model)
-    {
+                           Model model) {
         Message message = messageRepo.findById(messageId);
         VoteMessage thisVoteMessage = message.getVoteMessage();
 
@@ -151,15 +160,14 @@ public class MainController {
         model.addAttribute("user", user);
 
         boolean isAlreadyVoted = false;
-        for (Vote vote:
-             thisVoteMessage.getVotedUsers()) {
-            if(vote.getUser().getId().equals(user.getId()))
-            {
+        for (Vote vote :
+                thisVoteMessage.getVotedUsers()) {
+            if (vote.getUser().getId().equals(user.getId())) {
                 isAlreadyVoted = true;
             }
         }
 
-        if(isAlreadyVoted || message.getAuthor().getId().equals(user.getId())){
+        if (isAlreadyVoted || message.getAuthor().getId().equals(user.getId())) {
             System.out.println("Status:" + false);
             model.addAttribute("voteItems", false);
         } else {
@@ -176,7 +184,7 @@ public class MainController {
         model.addAttribute("usersVotedAgainst", listAgainst);
         model.addAttribute("usersVotedAbstain", listAbstain);
         int unVoted = userRepo.findAll().size() - listAgree.size()
-                -  listAgainst.size() - listAbstain.size();
+                - listAgainst.size() - listAbstain.size();
 
         model.addAttribute("usersUnVoted", unVoted);
         model.addAttribute("countUsers", userRepo.findAll().size());
@@ -189,14 +197,13 @@ public class MainController {
     public String setVote(@PathVariable Integer messageId,
                           @PathVariable User user,
                           @RequestParam("voteChoose") String voteChoose,
-                          Model model)
-    {
+                          Model model) {
         Date dateMess = new Date();
 
         Message message = messageRepo.findById(messageId);
         VoteMessage thisVoteMessage = message.getVoteMessage();
 
-        if(!message.getAuthor().getId().equals(user.getId())) {
+        if (!message.getAuthor().getId().equals(user.getId())) {
             Vote vote = new Vote(user);
             vote.setDecision(voteChoose);
             vote.setDate(dateMess.toString());
@@ -215,22 +222,21 @@ public class MainController {
         model.addAttribute("usersVotedAgainst", thisVoteMessage.getVoteAgainst());
         model.addAttribute("usersVotedAbstain", thisVoteMessage.getVoteAbstain());
         int unVoted = userRepo.findAll().size() - thisVoteMessage.getVoteAgree().size()
-                -  thisVoteMessage.getVoteAgainst().size() - thisVoteMessage.getVoteAbstain().size();
+                - thisVoteMessage.getVoteAgainst().size() - thisVoteMessage.getVoteAbstain().size();
 
         model.addAttribute("usersUnVoted", unVoted);
         model.addAttribute("countUsers", userRepo.findAll().size());
         model.addAttribute("showDiagram", true);
 
         boolean isAlreadyVoted = false;
-        for (Vote vote:
+        for (Vote vote :
                 thisVoteMessage.getVotedUsers()) {
-            if(vote.getUser().getId().equals(user.getId()))
-            {
+            if (vote.getUser().getId().equals(user.getId())) {
                 isAlreadyVoted = true;
             }
         }
 
-        if(isAlreadyVoted || message.getAuthor().getId().equals(user.getId())){
+        if (isAlreadyVoted || message.getAuthor().getId().equals(user.getId())) {
             System.out.println("Status:" + false);
             model.addAttribute("voteItems", false);
         } else {
@@ -245,8 +251,7 @@ public class MainController {
     public String getVoteMessageDialog(@PathVariable Integer messageId,
                                        @PathVariable Integer voteMessageDialogId,
                                        @PathVariable User user,
-                                       Model model)
-    {
+                                       Model model) {
         Message message = messageRepo.findById(messageId);
         VoteMessageDialog voteMessageDialog = voteMessageDialogRepo.findById(voteMessageDialogId);
 
@@ -265,8 +270,7 @@ public class MainController {
                                         @PathVariable Integer voteMessageDialogId,
                                         @PathVariable User user,
                                         Model model,
-                                        @RequestParam String MessageText)
-    {
+                                        @RequestParam String MessageText) {
         Date dateMes = new Date();
 
         Message message = messageRepo.findById(messageId);

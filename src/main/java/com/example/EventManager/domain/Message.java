@@ -1,6 +1,9 @@
 package com.example.EventManager.domain;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 
 @Entity
@@ -9,9 +12,16 @@ public class Message {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
+    @NotBlank(message = "Please, enter header to message")
     private String header;
+
+    @NotBlank(message = "Please, enter header to message")
     private String theme;
+
+    @NotBlank(message = "Please, enter header to message")
+    @Length(max = 2048, message = "Message too long")
     private String text;
+
     private String date;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -19,6 +29,8 @@ public class Message {
     private User author;
 
     private String filename;
+
+    @NotBlank(message = "Please, choose activity type")
     private String activityType;
 
     @OneToOne(fetch = FetchType.EAGER)

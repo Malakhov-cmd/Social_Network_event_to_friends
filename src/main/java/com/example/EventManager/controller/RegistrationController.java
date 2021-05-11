@@ -5,6 +5,7 @@ import com.example.EventManager.domain.User;
 import com.example.EventManager.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,9 @@ public class RegistrationController {
 
     @Value("${upload.path}")
     private String uploadPath;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/registration")
     public String registration()
@@ -48,12 +52,8 @@ public class RegistrationController {
         {
             File uploadDir = new File(uploadPath);
 
-            if(!uploadDir.exists())
-            {
-                System.out.println("YES");
-                uploadDir.createNewFile();
-                //uploadDir.mkdir();
-                System.out.println();
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
             }
 
             String uuidFile = UUID.randomUUID().toString();
@@ -66,6 +66,7 @@ public class RegistrationController {
             user.setAvatarFilename(resultFileName);
         }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
 
