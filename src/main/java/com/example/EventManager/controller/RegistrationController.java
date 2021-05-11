@@ -51,8 +51,9 @@ public class RegistrationController {
             if(!uploadDir.exists())
             {
                 System.out.println("YES");
-                uploadDir.mkdir();
-                System.out.println(uploadDir.getName());
+                uploadDir.createNewFile();
+                //uploadDir.mkdir();
+                System.out.println();
             }
 
             String uuidFile = UUID.randomUUID().toString();
