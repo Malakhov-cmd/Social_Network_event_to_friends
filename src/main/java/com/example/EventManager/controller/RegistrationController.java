@@ -58,10 +58,7 @@ public class RegistrationController {
 
             File f = new File(uploadPath + "/" + resultFileName);
 
-            if (!f.getParentFile().exists())
-                f.getParentFile().mkdirs();
-            if (!f.exists())
-                Files.createFile(f.toPath());
+            System.out.println("Path: " + f.getAbsolutePath());
 
             avatar.transferTo(f);
 
