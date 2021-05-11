@@ -47,7 +47,7 @@ public class RegistrationController {
         {
             File uploadDir = new File(uploadPath);
 
-            if(uploadDir.exists())
+            if(!uploadDir.exists())
             {
                 uploadDir.mkdir();
             }

@@ -87,7 +87,7 @@ public class MainController {
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
 
-            if (uploadDir.exists()) {
+            if (!uploadDir.exists()) {
                 uploadDir.mkdir();
             }
 
