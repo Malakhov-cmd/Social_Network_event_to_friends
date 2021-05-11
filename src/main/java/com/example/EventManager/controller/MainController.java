@@ -86,7 +86,7 @@ public class MainController {
         message.setAuthor(user);
 
         if (bindingResult.hasErrors()) {
-            Map<String, String> errorsMap = com.example.sweater.controller.ControllerUtils.getErrors(bindingResult);
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
         } else {

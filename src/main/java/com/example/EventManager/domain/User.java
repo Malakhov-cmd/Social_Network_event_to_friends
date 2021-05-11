@@ -21,6 +21,7 @@ public class User implements UserDetails {
     private String username;
     @NotBlank(message = "Password, couldn't be empty")
     private String password;
+
     private boolean isActive;
 
     private String avatarFilename;
