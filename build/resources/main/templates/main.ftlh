@@ -12,18 +12,28 @@
       aria-controls="collapseExample">
       Add new message
     </a>
-    <div class="collapse" id="collapseExample">
+    <div class="collapse <#if message??>show</#if>" id="collapseExample">
       <div class="form-group mb-3">
         <form method="POST" enctype="multipart/form-data">
           <div class="form-group mt-4">
-            <input type="text" class="form-control" name="header" placeholder="Enter header to you post">
+            <input type="text" class="form-control  ${(headerError??)?string('is-invalid', '')}" name="header" placeholder="Enter header to you post"  value="<#if message??>${message.header}</#if>">
+            <#if headerError??>
+              <div class="invalid-feedback">
+                ${headerError}
+              </div>
+            </#if>
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" name="theme" placeholder="Enter theme to you post">
+            <input type="text" class="form-control  ${(themeError??)?string('is-invalid', '')}" name="theme" placeholder="Enter theme to you post" value="<#if message??>${message.theme}</#if>">
+            <#if themeError??>
+              <div class="invalid-feedback">
+                ${themeError}
+              </div>
+            </#if>
           </div>
 
-          <div class="form-group">
-            <select class="custom-select" name="activityType">
+          <div class="form-group ">
+            <select class="custom-select ${(activityTypeError??)?string('is-invalid', '')}" name="activityType" value="<#if message??>${message.activityType}</#if>">
               <option selected>Choose your type activity</option>
               <option value="Sporty">Sporty</option>
               <option value="Tourism">Tourism</option>
@@ -35,10 +45,20 @@
               <option value="Bar">Bar</option>
               <option value="Just walk">Just walk</option>
             </select>
+            <#if activityTypeError??>
+              <div class="invalid-feedback">
+                ${activityTypeError}
+              </div>
+            </#if>
           </div>
 
           <div class="form-group">
-            <input type="text" class="form-control" name="text" placeholder="Enter text to you post">
+            <input type="text" class="form-control ${(textError??)?string('is-invalid', '')}" name="text" placeholder="Enter text to you post" value="<#if message??>${message.text}</#if>">
+            <#if textError??>
+              <div class="invalid-feedback">
+                ${textError}
+              </div>
+            </#if>
           </div>
           <div class="form-group">
             <div class="custom-file">
