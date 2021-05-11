@@ -34,7 +34,7 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String addUser(User user,
                           Map<String, Object> model,
-                          @RequestParam(name = "avatar", required = true) MultipartFile file) throws IOException {
+                          @RequestParam(name = "avatar", required = true) MultipartFile avatar) throws IOException {
         User userFromDb = userRepo.findByUsername(user.getUsername());
 
         if(userFromDb != null)
@@ -42,8 +42,8 @@ public class RegistrationController {
             model.put("message", "User exists");
             return "registration";
         }
-        System.out.println("File name: " + file.getOriginalFilename());
-        if(file != null && !file.getOriginalFilename().isEmpty())
+        System.out.println("File name: " + avatar.getOriginalFilename());
+        if(avatar != null && !avatar.getOriginalFilename().isEmpty())
         {
             File uploadDir = new File(uploadPath);
 
@@ -53,9 +53,16 @@ public class RegistrationController {
             }
 
             String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file.getOriginalFilename();
+            String resultFileName = uuidFile + "." + avatar.getOriginalFilename();
 
-            file.transferTo(new File(uploadPath + "/" + resultFileName));
+            File f = new File(uploadPath + "/" + resultFileName);
+
+            if (!f.getParentFile().exists())
+                f.getParentFile().mkdirs();
+            if (!f.exists())
+                f.createNewFile();
+
+            avatar.transferTo(f);
 
             user.setAvatarFilename(resultFileName);
         }
