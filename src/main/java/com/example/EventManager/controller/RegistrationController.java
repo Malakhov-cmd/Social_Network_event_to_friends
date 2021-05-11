@@ -57,9 +57,6 @@ public class RegistrationController {
             String resultFileName = uuidFile + "." + avatar.getOriginalFilename();
 
             File f = new File(uploadPath + "/" + resultFileName);
-            f.mkdir();
-
-            System.out.println("Path: " + f.getAbsolutePath());
 
             avatar.transferTo(f);
 
