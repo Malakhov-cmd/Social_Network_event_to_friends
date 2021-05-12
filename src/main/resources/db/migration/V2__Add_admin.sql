@@ -1,4 +1,4 @@
-insert into usr (id, username, password, is_active)
+insert into usr (id, username, password, is_activeadmin)
     values (1, 'admin', '123', true);
 
 insert into user_role (user_id, roles)
