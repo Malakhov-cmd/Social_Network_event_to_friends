@@ -17,13 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
 @Controller
 public class RegistrationController {
+
     @Autowired
     private UserRepo userRepo;
 
@@ -56,8 +56,10 @@ public class RegistrationController {
             model.mergeAttributes(errorsMap);
             model.addAttribute("userError", user);
         } else {
+
             System.out.println("File name: " + avatar.getOriginalFilename());
             if (avatar != null && !avatar.getOriginalFilename().isEmpty()) {
+
                 File uploadDir = new File(uploadPath);
 
                 if (!uploadDir.exists()) {
