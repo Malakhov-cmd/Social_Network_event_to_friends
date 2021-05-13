@@ -2,6 +2,7 @@ package com.example.EventManager.controller;
 
 import com.example.EventManager.domain.*;
 import com.example.EventManager.repos.*;
+import com.example.EventManager.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +26,8 @@ import java.util.UUID;
 
 @Controller
 public class MainController {
+    @Autowired
+    private StorageService service;
     @Autowired
     private MessageRepo messageRepo;
     @Autowired
@@ -91,7 +94,7 @@ public class MainController {
             model.addAttribute("message", message);
         } else {
             if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
+                /*File uploadDir = new File(uploadPath);
 
 
                 if (!uploadDir.exists()) {
@@ -101,8 +104,8 @@ public class MainController {
                 String uuidFile = UUID.randomUUID().toString();
                 String resultFileName = uuidFile + "." + file.getOriginalFilename();
 
-                file.transferTo(new File(uploadPath + "/" + resultFileName));
-
+                file.transferTo(new File(uploadPath + "/" + resultFileName));*/
+                String resultFileName = service.uploadFile(file);
                 message.setFilename(resultFileName);
             }
 

@@ -16,7 +16,8 @@
       <div class="form-group mb-3">
         <form method="POST" enctype="multipart/form-data">
           <div class="form-group mt-4">
-            <input type="text" class="form-control  ${(headerError??)?string('is-invalid', '')}" name="header" placeholder="Enter header to you post"  value="<#if message??>${message.header}</#if>">
+            <input type="text" class="form-control  ${(headerError??)?string('is-invalid', '')}" name="header"
+              placeholder="Enter header to you post" value="<#if message??>${message.header}</#if>">
             <#if headerError??>
               <div class="invalid-feedback">
                 ${headerError}
@@ -24,7 +25,8 @@
             </#if>
           </div>
           <div class="form-group">
-            <input type="text" class="form-control  ${(themeError??)?string('is-invalid', '')}" name="theme" placeholder="Enter theme to you post" value="<#if message??>${message.theme}</#if>">
+            <input type="text" class="form-control  ${(themeError??)?string('is-invalid', '')}" name="theme"
+              placeholder="Enter theme to you post" value="<#if message??>${message.theme}</#if>">
             <#if themeError??>
               <div class="invalid-feedback">
                 ${themeError}
@@ -33,7 +35,8 @@
           </div>
 
           <div class="form-group ">
-            <select class="custom-select ${(activityTypeError??)?string('is-invalid', '')}" name="activityType" value="<#if message??>${message.activityType}</#if>">
+            <select class="custom-select ${(activityTypeError??)?string('is-invalid', '')}" name="activityType"
+              value="<#if message??>${message.activityType}</#if>">
               <option selected>Choose your type activity</option>
               <option value="Sporty">Sporty</option>
               <option value="Tourism">Tourism</option>
@@ -53,7 +56,8 @@
           </div>
 
           <div class="form-group">
-            <input type="text" class="form-control ${(textError??)?string('is-invalid', '')}" name="text" placeholder="Enter text to you post" value="<#if message??>${message.text}</#if>">
+            <input type="text" class="form-control ${(textError??)?string('is-invalid', '')}" name="text"
+              placeholder="Enter text to you post" value="<#if message??>${message.text}</#if>">
             <#if textError??>
               <div class="invalid-feedback">
                 ${textError}
@@ -79,7 +83,7 @@
           <#if message.getActivityType()=="Sporty">
             <div class="card text-white bg-success mb-3">
               <#if message.filename??>
-                <img src="/img/${message.filename}" class="card-img-top">
+                <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
               </#if>
               <ul class="list-group list-group-flush bg-success">
                 <li class="list-group-item bg-success">
@@ -113,7 +117,7 @@
           <#if message.getActivityType()=="Tourism">
             <div class="card text-white bg-warning mb-3">
               <#if message.filename??>
-                <img src="/img/${message.filename}" class="card-img-top">
+                <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
               </#if>
               <ul class="list-group list-group-flush bg-warning">
                 <li class="list-group-item bg-warning">
@@ -148,7 +152,7 @@
       <#if message.getActivityType()=="Alcohol">
         <div class="card text-white bg-danger mb-3">
           <#if message.filename??>
-            <img src="/img/${message.filename}" class="card-img-top">
+            <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
           </#if>
           <ul class="list-group list-group-flush bg-danger">
             <li class="list-group-item bg-danger">
@@ -183,7 +187,7 @@
     <#if message.getActivityType()=="Conversation">
       <div class="card text-white bg-primary mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-primary">
           <li class="list-group-item bg-primary">
@@ -218,7 +222,7 @@
     <#if message.getActivityType()=="Game">
       <div class="card text-white bg-info mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-info">
           <li class="list-group-item bg-info">
@@ -253,7 +257,7 @@
     <#if message.getActivityType()=="Movie">
       <div class="card text-white bg-light mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-light">
           <li class="list-group-item bg-light">
@@ -288,7 +292,7 @@
     <#if message.getActivityType()=="Club">
       <div class="card text-white bg-danger mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-danger">
           <li class="list-group-item bg-danger">
@@ -323,7 +327,7 @@
     <#if message.getActivityType()=="Bar">
       <div class="card text-white bg-dark mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-dark">
           <li class="list-group-item bg-dark">
@@ -358,7 +362,7 @@
     <#if message.getActivityType()=="Just walk">
       <div class="card text-white bg-success mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-success">
           <li class="list-group-item bg-success">

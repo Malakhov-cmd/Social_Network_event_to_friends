@@ -1,6 +1,7 @@
 package com.example.EventManager.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Room implements Serializable {
     @Column(name = "room_message_admin_room")
     private User admin;
 
+    @NotBlank(message = "Please, enter room name")
     @Column(name = "room_name")
     private String roomName;
 

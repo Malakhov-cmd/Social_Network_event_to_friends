@@ -3,6 +3,7 @@ package com.example.EventManager.controller;
 import com.example.EventManager.domain.Role;
 import com.example.EventManager.domain.User;
 import com.example.EventManager.repos.UserRepo;
+import com.example.EventManager.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,9 @@ import java.util.UUID;
 
 @Controller
 public class RegistrationController {
+
+    @Autowired
+    private StorageService service;
 
     @Autowired
     private UserRepo userRepo;
@@ -60,7 +64,7 @@ public class RegistrationController {
             System.out.println("File name: " + avatar.getOriginalFilename());
             if (avatar != null && !avatar.getOriginalFilename().isEmpty()) {
 
-                File uploadDir = new File(uploadPath);
+                /*File uploadDir = new File(uploadPath);
 
                 if (!uploadDir.exists()) {
                     uploadDir.mkdir();
@@ -71,7 +75,8 @@ public class RegistrationController {
 
                 File f = new File(uploadPath + "/" + resultFileName);
 
-                avatar.transferTo(f);
+                avatar.transferTo(f);*/
+                String resultFileName = service.uploadFile(avatar);
 
                 user.setAvatarFilename(resultFileName);
             }

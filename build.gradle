@@ -21,6 +21,11 @@ dependencies {
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.5.4'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.3'
+    // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.1010'
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+
 
 
     implementation 'org.springframework.boot:spring-boot-starter-security'

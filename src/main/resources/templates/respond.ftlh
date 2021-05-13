@@ -8,7 +8,7 @@
           </h5>
         </div>
         <div class="card-body">
-          <img src="/img/${respond.avatarFilename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${respond.avatarFilename}" class="card-img-top">
           <ul class="list-group list-group-flush bg-light">
             <li class="list-group-item bg-light">
               <div class="card-text m-2">
