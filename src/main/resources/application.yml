@@ -2,8 +2,8 @@
 cloud:
   aws:
     credentials:
-      access-key: AKIAUCYWUROEAXCV7WHC
-      secret-key: 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
+      access-key: AKIAUCYWUROEICTPI7GH
+      secret-key: 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
     region:
       static: us-east-2
     stack:
@@ -23,4 +23,4 @@ spring:
       max-request-size: 10MB
 
 server:
-  port: 8080
+  port: 5432
