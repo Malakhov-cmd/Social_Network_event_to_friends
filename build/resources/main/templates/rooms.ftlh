@@ -10,13 +10,15 @@
             <div id="membersList">
               <#if room.getParticipants()?size !=0>
                 <#list room.getParticipants() as member>
-                   <p class="card-text">${member.getUsername()}</p>
+                  <p class="card-text">
+                    <button type="button" class="btn btn-light card-text"
+                      onclick="window.location.href='/profile/${member.id}'; return false">${member.getUsername()}</button>
+                  </p>
                 </#list>
-                <#else>
-                  <p class="card-text">Is only admin</p>
               </#if>
-              <a href="/room/${room.getRoomName()}/${room.getId()}/${user.getId()}" class="btn btn-primary">Go to room</a>
             </div>
+            <a href="/room/${room.getRoomName()}/${room.getId()}/${user.getId()}" class="btn btn-primary mt-3">Go to
+              room</a>
           </div>
         </div>
       </#list>
