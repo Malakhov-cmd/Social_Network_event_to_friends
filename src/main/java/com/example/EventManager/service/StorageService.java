@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class StorageService {
-    @Value("${application.bucket.name}")
+    @Value("${amazon.s3.bucket-name}")
     private String bucketName;
 
     @Autowired
