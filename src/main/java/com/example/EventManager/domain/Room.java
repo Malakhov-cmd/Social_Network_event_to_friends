@@ -16,7 +16,6 @@ public class Room implements Serializable {
     @Column(name = "room_message_admin_room")
     private User admin;
 
-    @NotBlank(message = "Please, enter room name")
     @Column(name = "room_name")
     private String roomName;
 

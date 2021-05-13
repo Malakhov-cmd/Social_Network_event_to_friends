@@ -182,11 +182,19 @@ public class MainController {
         List<Vote> listAgainst = thisVoteMessage.getVoteAgainst();
         List<Vote> listAbstain = thisVoteMessage.getVoteAbstain();
 
+        List<Room> rooms = roomRepo.findAll();
+        Room currentRoom = null;
+        for (Room room:
+                rooms) {
+            if (room.getRoomMessage().contains(message)){
+                currentRoom = room;
+            }
+        }
 
         model.addAttribute("usersVotedAgree", listAgree);
         model.addAttribute("usersVotedAgainst", listAgainst);
         model.addAttribute("usersVotedAbstain", listAbstain);
-        int unVoted = userRepo.findAll().size() - listAgree.size()
+        int unVoted = currentRoom.getParticipants().size() - listAgree.size()
                 - listAgainst.size() - listAbstain.size();
 
         model.addAttribute("usersUnVoted", unVoted);
@@ -219,12 +227,22 @@ public class MainController {
 
             voteMessageRepo.save(thisVoteMessage);
         }
+
+        List<Room> rooms = roomRepo.findAll();
+        Room currentRoom = null;
+        for (Room room:
+             rooms) {
+            if (room.getRoomMessage().contains(message)){
+                currentRoom = room;
+            }
+        }
+
         model.addAttribute("message", message);
         model.addAttribute("user", user);
         model.addAttribute("usersVotedAgree", thisVoteMessage.getVoteAgree());
         model.addAttribute("usersVotedAgainst", thisVoteMessage.getVoteAgainst());
         model.addAttribute("usersVotedAbstain", thisVoteMessage.getVoteAbstain());
-        int unVoted = userRepo.findAll().size() - thisVoteMessage.getVoteAgree().size()
+        int unVoted = currentRoom.getParticipants().size() - thisVoteMessage.getVoteAgree().size()
                 - thisVoteMessage.getVoteAgainst().size() - thisVoteMessage.getVoteAbstain().size();
 
         model.addAttribute("usersUnVoted", unVoted);

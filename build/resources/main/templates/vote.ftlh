@@ -1,9 +1,9 @@
 <#import "parts/common.ftlh" as c>
   <@c.page>
     <#if message.getActivityType()=="Sporty">
-      <div class="card bg-success mb-3">
+      <div class="card  text-white bg-success mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-success">
           <li class="list-group-item bg-success">
@@ -19,13 +19,13 @@
           </li>
           <li class="list-group-item bg-success">
             <p class="card-text">
-              <small class="text-muted">
+              <small class="text-white">
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-success">
-            <div class="card-footer text-muted">
+            <div class="card-footer text-white">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>
@@ -33,9 +33,9 @@
       </div>
     </#if>
     <#if message.getActivityType()=="Tourism">
-      <div class="card bg-warning mb-3 bg-warning">
+      <div class="card bg-warning mb-3text-white">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-warning">
           <li class="list-group-item bg-warning">
@@ -51,13 +51,13 @@
           </li>
           <li class="list-group-item bg-warning">
             <p class="card-text">
-              <small class="text-muted">
+              <small class="text-white">
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-warning">
-            <div class="card-footer text-muted">
+            <div class="card-footer text-white">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>
@@ -65,9 +65,9 @@
       </div>
     </#if>
     <#if message.getActivityType()=="Alcohol">
-      <div class="card bg-danger mb-3">
+      <div class="card bg-danger text-white mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-danger">
           <li class="list-group-item bg-danger">
@@ -83,13 +83,13 @@
           </li>
           <li class="list-group-item bg-danger">
             <p class="card-text">
-              <small class="text-muted">
+              <small class="text-white">
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-danger">
-            <div class="card-footer text-muted">
+            <div class="card-footer text-white">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>
@@ -97,9 +97,9 @@
       </div>
     </#if>
     <#if message.getActivityType()=="Conversation">
-      <div class="card bg-primary mb-3">
+      <div class="card bg-primary text-white mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-primary">
           <li class="list-group-item bg-primary">
@@ -115,13 +115,13 @@
           </li>
           <li class="list-group-item bg-primary">
             <p class="card-text">
-              <small class="text-muted">
+              <small class="text-white">
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-primary">
-            <div class="card-footer text-muted">
+            <div class="card-footer text-white">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>
@@ -129,9 +129,9 @@
       </div>
     </#if>
     <#if message.getActivityType()=="Game">
-      <div class="card bg-info mb-3">
+      <div class="card bg-info text-white mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-info">
           <li class="list-group-item bg-info">
@@ -147,13 +147,13 @@
           </li>
           <li class="list-group-item bg-info">
             <p class="card-text">
-              <small class="text-muted">
+              <small class="text-white">
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-info">
-            <div class="card-footer text-muted">
+            <div class="card-footer text-white">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>
@@ -161,9 +161,9 @@
       </div>
     </#if>
     <#if message.getActivityType()=="Movie">
-      <div class="card bg-light mb-3">
+      <div class="card bg-light text-white mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-light">
           <li class="list-group-item bg-light">
@@ -179,13 +179,13 @@
           </li>
           <li class="list-group-item bg-light">
             <p class="card-text">
-              <small class="text-muted">
+              <small class="text-white">
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-light">
-            <div class="card-footer text-muted">
+            <div class="card-footer text-white">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>
@@ -193,9 +193,9 @@
       </div>
     </#if>
     <#if message.getActivityType()=="Club">
-      <div class="card bg-danger mb-3">
+      <div class="card bg-danger text-white mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-danger">
           <li class="list-group-item bg-danger">
@@ -211,13 +211,13 @@
           </li>
           <li class="list-group-item bg-danger">
             <p class="card-text">
-              <small class="text-muted">
+              <small class="text-white">
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-danger">
-            <div class="card-footer text-muted">
+            <div class="card-footer text-white">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>
@@ -225,9 +225,9 @@
       </div>
     </#if>
     <#if message.getActivityType()=="Bar">
-      <div class="card bg-dark mb-3">
+      <div class="card bg-dark text-white mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-dark">
           <li class="list-group-item bg-dark">
@@ -243,13 +243,13 @@
           </li>
           <li class="list-group-item bg-dark">
             <p class="card-text">
-              <small class="text-muted">
+              <small class="text-white">
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-dark">
-            <div class="card-footer text-muted">
+            <div class="card-footer text-white">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>
@@ -257,9 +257,9 @@
       </div>
     </#if>
     <#if message.getActivityType()=="Just walk">
-      <div class="card bg-success mb-3">
+      <div class="card bg-success text-white mb-3">
         <#if message.filename??>
-          <img src="/img/${message.filename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
         <ul class="list-group list-group-flush bg-success">
           <li class="list-group-item bg-success">
@@ -275,13 +275,13 @@
           </li>
           <li class="list-group-item bg-success">
             <p class="card-text">
-              <small class="text-muted">
+              <small class="text-white">
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-success">
-            <div class="card-footer text-muted">
+            <div class="card-footer text-white">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>
@@ -357,7 +357,7 @@
             onchange="input_text4.value = rangeinput4.value" />
         </div>
       </form>
-      <button type="button" class="btn btn-primary"
+      <button type="button" class="btn btn-primary mb-3"
         onclick="window.location.href='/vote/discussion/${message.id}/${voteMessageDialog.id}/${user.id}'; return false">Discuss</button>
     </#if>
   </@c.page>

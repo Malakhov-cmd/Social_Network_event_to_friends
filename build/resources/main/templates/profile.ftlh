@@ -18,7 +18,7 @@
       <form>
         <div class="form-group row">
           <#if user.hasAvatar()==true>
-            <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${user.avatarFilename}" width="250" height="250" class="rounded" alt="Avatar">
+            <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${user.avatarFilename}" width="250" height="250" class="rounded ml-2" alt="Avatar">
           </#if>
         </div>
         <div class="form-group row">

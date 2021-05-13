@@ -74,9 +74,8 @@ public class ProfileController {
                               @PathVariable("user") User user,
                               @RequestParam(required = false) Long friendId,
                               @RequestParam(required = false) Long userToDialog,
+                              @RequestParam(required = false) String roomName,
                               @RequestParam(required = false) String strFriendToRoom,
-                              @Valid Room room,
-                              BindingResult bindingResult,
                               Model model) {
         User futureFriend = userRepo.findByid(friendId);
 
@@ -163,7 +162,7 @@ public class ProfileController {
                 }
             } else {
                 //добавление комнаты
-                if (roomName != null) {
+                if (roomName != null && !roomName.equals("")) {
                     Room room = new Room(user, roomName);
 
                     if (strFriendToRoom == null){
