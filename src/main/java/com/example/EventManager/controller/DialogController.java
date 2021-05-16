@@ -9,10 +9,7 @@ import com.example.EventManager.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,8 +26,7 @@ public class DialogController {
 
     @GetMapping("/dialogs/{user}")
     public String getDialogList(@PathVariable("user") User user,
-                                Model model)
-    {
+                                Model model) {
         List<Dialog> userDialogs = user.getDialogList();
 
         model.addAttribute("dialogs", userDialogs);
@@ -55,7 +51,7 @@ public class DialogController {
 
         Dialog dialog = dialogRepo.findByid(newDialog.getId());
         System.out.println("GET:" + dialog.getId());
-        if (!dialog. getDialogMessageList().isEmpty()
+        if (!dialog.getDialogMessageList().isEmpty()
                 || dialog.getDialogMessageList() != null) {
             System.out.println("GET not null");
             model.addAttribute("dialog", dialog);
@@ -77,13 +73,12 @@ public class DialogController {
                               @PathVariable("user1") User firstUser,
                               @PathVariable("user2") User secondUser,
                               Model model) {
-        if(dialogId == -1){
+        if (dialogId == -1) {
             List<Dialog> list = dialogRepo.findAll();
-            for (Dialog dialog:
+            for (Dialog dialog :
                     list) {
-                if(dialog.getFirstUser().getId().equals(firstUser.getId())
-                        && dialog.getSecondUser().getId().equals(secondUser.getId()))
-                {
+                if (dialog.getFirstUser().getId().equals(firstUser.getId())
+                        && dialog.getSecondUser().getId().equals(secondUser.getId())) {
                     dialogId = dialog.getId();
                 }
             }
@@ -102,60 +97,73 @@ public class DialogController {
         Date dateMess = new Date();
         String currentDate = dateMess.toString();
 
-        DialogMessage newDialogMessage = new DialogMessage(firstUser, secondUser, MessageText);
-        newDialogMessage.setDate(currentDate);
+        if (MessageText.equals("")
+                || MessageText == null) {
+            System.out.println("GET not null");
+            model.addAttribute("dialog", dialogFirst);
+            model.addAttribute("dialogSize", dialogFirst.getDialogMessageList().size());
 
-        dialogMessageRepo.save(newDialogMessage);
-        dialogMessageRepo.flush();
+            model.addAttribute("user", firstUser.getId());
+            model.addAttribute("target", secondUser.getId());
+            model.addAttribute("dialogMessList", dialogFirst.getDialogMessageList());
+        } else {
 
-        dialogMes.add(newDialogMessage);
-        dialogFirst.setDialogMessageList(dialogMes);
+            DialogMessage newDialogMessage = new DialogMessage(firstUser, secondUser, MessageText);
+            newDialogMessage.setDate(currentDate);
 
-        dialogRepo.save(dialogFirst);
-        dialogRepo.flush();
+            dialogMessageRepo.save(newDialogMessage);
+            dialogMessageRepo.flush();
 
-        System.out.println("First add message(size): " + dialogRepo.findByid(dialogFirst.getId()).getDialogMessageList().size());
-        System.out.println("Message from first: " + dialogMessageRepo.findByid(newDialogMessage.getId()).getText());
+            dialogMes.add(newDialogMessage);
+            dialogFirst.setDialogMessageList(dialogMes);
 
-        Dialog secondDialog = null;
-        for (Dialog dialog2:
-                dialogRepo.findAll()) {
-            if (dialog2.getFirstUser().getId().equals(secondUser.getId())
-                    && dialog2.getSecondUser().getId().equals(firstUser.getId())) {
-                secondDialog = dialog2;
-                System.out.println("Found second dialog side");
+            dialogRepo.save(dialogFirst);
+            dialogRepo.flush();
+
+            System.out.println("First add message(size): " + dialogRepo.findByid(dialogFirst.getId()).getDialogMessageList().size());
+            System.out.println("Message from first: " + dialogMessageRepo.findByid(newDialogMessage.getId()).getText());
+
+            Dialog secondDialog = null;
+            for (Dialog dialog2 :
+                    dialogRepo.findAll()) {
+                if (dialog2.getFirstUser().getId().equals(secondUser.getId())
+                        && dialog2.getSecondUser().getId().equals(firstUser.getId())) {
+                    secondDialog = dialog2;
+                    System.out.println("Found second dialog side");
+                }
             }
-        }
 
-        if(secondDialog == null) {
-            System.out.println("Not Found");
-            secondDialog = new Dialog(secondUser, firstUser, new ArrayList<>());
+            if (secondDialog == null) {
+                System.out.println("Not Found");
+                secondDialog = new Dialog(secondUser, firstUser, new ArrayList<>());
+                dialogRepo.save(secondDialog);
+                dialogRepo.flush();
+            }
+
+            DialogMessage newSecondDialogMessage = new DialogMessage(firstUser, secondUser, MessageText);
+            newSecondDialogMessage.setDate(currentDate);
+            List<DialogMessage> dialogMesSecond = secondDialog.getDialogMessageList();
+            dialogMesSecond.add(newSecondDialogMessage);
+            secondDialog.setDialogMessageList(dialogMesSecond);
+
+
             dialogRepo.save(secondDialog);
             dialogRepo.flush();
+
+            dialogMessageRepo.save(newSecondDialogMessage);
+            dialogMessageRepo.flush();
+
+            System.out.println("Dialog check: " + dialogRepo.findByid(secondDialog.getId()).getId());
+            System.out.println("Second add message: " + dialogMessageRepo.findByid(newSecondDialogMessage.getId()).getText());
+
+            model.addAttribute("dialog", dialogFirst);
+
+            model.addAttribute("dialogSize", dialogFirst.getDialogMessageList().size());
+            model.addAttribute("user", firstUser.getId());
+            model.addAttribute("target", secondUser.getId());
+            model.addAttribute("dialogMessList", dialogFirst.getDialogMessageList());
+            model.addAttribute("NewDialogMessage", newDialogMessage);
         }
-
-        DialogMessage newSecondDialogMessage = new DialogMessage(firstUser, secondUser, MessageText);
-        newSecondDialogMessage.setDate(currentDate);
-        List<DialogMessage> dialogMesSecond = secondDialog.getDialogMessageList();
-        dialogMesSecond.add(newSecondDialogMessage);
-        secondDialog.setDialogMessageList(dialogMesSecond);
-
-
-        dialogRepo.save(secondDialog);
-        dialogRepo.flush();
-
-        dialogMessageRepo.save(newSecondDialogMessage);
-        dialogMessageRepo.flush();
-
-        System.out.println("Dialog check: " + dialogRepo.findByid(secondDialog.getId()).getId());
-        System.out.println("Second add message: " + dialogMessageRepo.findByid(newSecondDialogMessage.getId()).getText());
-
-        model.addAttribute("dialogSize", dialogFirst.getDialogMessageList().size());
-        model.addAttribute("user", firstUser.getId());
-        model.addAttribute("target", secondUser.getId());
-        model.addAttribute("dialogMessList", dialogFirst.getDialogMessageList());
-        model.addAttribute("NewDialogMessage", newDialogMessage);
-
         return "dialog";
     }
 }
