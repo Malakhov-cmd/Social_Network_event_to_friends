@@ -31,9 +31,6 @@ public class Vote {
 
     public Vote(User user) {
         this.user = user;
-        //option.add("Agree");
-        //option.add("Against");
-        //option.add("Abstain");
     }
 
     public User getUser() {

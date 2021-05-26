@@ -1,6 +1,9 @@
 package com.example.EventManager.controller;
 
-import com.example.EventManager.domain.*;
+import com.example.EventManager.domain.TwitBoard;
+import com.example.EventManager.domain.TwitBoardMessage;
+import com.example.EventManager.domain.TwitBoardMessageComment;
+import com.example.EventManager.domain.User;
 import com.example.EventManager.repos.TwitBoardMessageCommentRepo;
 import com.example.EventManager.repos.TwitBoardMessageRepo;
 import com.example.EventManager.repos.TwitBoardRepo;
@@ -11,11 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,8 @@ public class TwitBoardConroller {
                        @PathVariable User user,
                        Model model) {
         TwitBoard twitBoard = twitBoardRepo.findByid(user.getIdBoard());
+
+        Collections.sort(twitBoard.getTwitBoardMessageList(), Collections.reverseOrder(TwitBoardMessage.CompareTwitsByDate));
 
         model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
         model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
@@ -71,6 +74,9 @@ public class TwitBoardConroller {
 
             List<TwitBoardMessage> twitBoardMessageList = twitBoard.getTwitBoardMessageList();
             twitBoardMessageList.add(twitBoardMessage);
+
+            Collections.sort(twitBoardMessageList, Collections.reverseOrder(TwitBoardMessage.CompareTwitsByDate));
+
             twitBoard.setTwitBoardMessageList(twitBoardMessageList);
             twitBoardRepo.save(twitBoard);
         }
@@ -100,6 +106,9 @@ public class TwitBoardConroller {
 
         List<TwitBoardMessageComment> twitBoardMessageCommentList = twitBoardMessage.getTwitBoardMessageComments();
         twitBoardMessageCommentList.add(twitBoardMessageComment);
+
+        Collections.sort(twitBoardMessageCommentList, Collections.reverseOrder(TwitBoardMessageComment.CompareTwitsCommentsByDate));
+
         twitBoardMessage.setTwitBoardMessageComments(twitBoardMessageCommentList);
 
         twitBoardMessageRepo.save(twitBoardMessage);
@@ -181,6 +190,7 @@ public class TwitBoardConroller {
 
         model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
         model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
+
         return "redirect:/twitboard/" + twitUserToReturn;
     }
 }

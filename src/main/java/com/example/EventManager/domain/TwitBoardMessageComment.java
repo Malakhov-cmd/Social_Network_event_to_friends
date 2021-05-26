@@ -2,6 +2,7 @@ package com.example.EventManager.domain;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -77,4 +78,11 @@ public class TwitBoardMessageComment {
     public void setLikesListComment(List<User> likesListComment) {
         this.likesListComment = likesListComment;
     }
+
+    public static final Comparator<TwitBoardMessageComment> CompareTwitsCommentsByDate = new Comparator<TwitBoardMessageComment>() {
+        @Override
+        public int compare(TwitBoardMessageComment o1, TwitBoardMessageComment o2) {
+            return (int) (o1.getId() - o2.getId());
+        }
+    };
 }

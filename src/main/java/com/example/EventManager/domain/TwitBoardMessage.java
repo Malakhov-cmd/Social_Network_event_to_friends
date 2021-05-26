@@ -1,9 +1,9 @@
 package com.example.EventManager.domain;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -133,4 +133,11 @@ public class TwitBoardMessage {
     public void setTwitBoardMessageComments(List<TwitBoardMessageComment> twitBoardMessageComments) {
         this.twitBoardMessageComments = twitBoardMessageComments;
     }
+
+    public static final Comparator<TwitBoardMessage> CompareTwitsByDate = new Comparator<TwitBoardMessage>() {
+        @Override
+        public int compare(TwitBoardMessage o1, TwitBoardMessage o2) {
+            return (int) (o1.getId() - o2.getId());
+        }
+    };
 }
