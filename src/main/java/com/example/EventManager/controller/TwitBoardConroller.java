@@ -8,12 +8,14 @@ import com.example.EventManager.repos.TwitBoardMessageCommentRepo;
 import com.example.EventManager.repos.TwitBoardMessageRepo;
 import com.example.EventManager.repos.TwitBoardRepo;
 import com.example.EventManager.repos.UserRepo;
+import com.example.EventManager.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -23,6 +25,9 @@ import java.util.Map;
 
 @Controller
 public class TwitBoardConroller {
+    @Autowired
+    private StorageService service;
+
     @Autowired
     private UserRepo userRepo;
 
@@ -55,7 +60,8 @@ public class TwitBoardConroller {
                       BindingResult bindingResult,
                       Model model,
                       @RequestParam(required = false) String theme,
-                      @RequestParam(required = false) String text) {
+                      @RequestParam(required = false) String text,
+                      @RequestParam(required = false) MultipartFile twitFileMessageFile) {
         Date date = new Date();
         twitMessage.setAuthor(user);
 
@@ -69,6 +75,12 @@ public class TwitBoardConroller {
             model.addAttribute("twitMessage", null);
 
             TwitBoardMessage twitBoardMessage = new TwitBoardMessage(user, theme, text);
+
+            if (twitFileMessageFile != null && !twitFileMessageFile.getOriginalFilename().isEmpty()) {
+                String resultFileName = service.uploadFile(twitFileMessageFile);
+                twitBoardMessage.setFilename(resultFileName);
+            }
+
             twitBoardMessage.setDate(date.toString());
             twitBoardMessageRepo.save(twitBoardMessage);
 
@@ -89,29 +101,45 @@ public class TwitBoardConroller {
 
     @RequestMapping(value = "/addComment", method = RequestMethod.POST)
     public String addComment(@AuthenticationPrincipal User currentUser,
+                             @Valid TwitBoardMessageComment twitMessageComment,
+                             BindingResult bindingResult,
                              Model model,
                              @RequestParam(required = false) String commentText,
                              @RequestParam(required = false) Long twitMessageRequaredTocomment,
                              @RequestParam(required = false) Long twitBoardreqiaredToComment,
-                             @RequestParam(required = false) Long twitUserToreturn) {
+                             @RequestParam(required = false) Long twitUserToreturn,
+                             @RequestParam(required = false) MultipartFile twitFileMessageCommentFile) {
         Date date = new Date();
 
         TwitBoard twitBoard = twitBoardRepo.findByid(twitBoardreqiaredToComment);
         TwitBoardMessage twitBoardMessage = twitBoardMessageRepo.findByid(twitMessageRequaredTocomment);
-        TwitBoardMessageComment twitBoardMessageComment = new TwitBoardMessageComment(currentUser, commentText);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("twitMessageComment", twitMessageComment);
+        } else {
+            model.addAttribute("twitMessageComment", null);
 
-        twitBoardMessageComment.setDateComment(date.toString());
+            TwitBoardMessageComment twitBoardMessageComment = new TwitBoardMessageComment(currentUser, commentText);
 
-        boardMessageCommentRepo.save(twitBoardMessageComment);
+            if (twitFileMessageCommentFile != null && !twitFileMessageCommentFile.getOriginalFilename().isEmpty()) {
+                String resultFileName = service.uploadFile(twitFileMessageCommentFile);
+                twitBoardMessageComment.setFilename(resultFileName);
+            }
 
-        List<TwitBoardMessageComment> twitBoardMessageCommentList = twitBoardMessage.getTwitBoardMessageComments();
-        twitBoardMessageCommentList.add(twitBoardMessageComment);
+            twitBoardMessageComment.setDateComment(date.toString());
 
-        Collections.sort(twitBoardMessageCommentList, Collections.reverseOrder(TwitBoardMessageComment.CompareTwitsCommentsByDate));
+            boardMessageCommentRepo.save(twitBoardMessageComment);
 
-        twitBoardMessage.setTwitBoardMessageComments(twitBoardMessageCommentList);
+            List<TwitBoardMessageComment> twitBoardMessageCommentList = twitBoardMessage.getTwitBoardMessageComments();
+            twitBoardMessageCommentList.add(twitBoardMessageComment);
 
-        twitBoardMessageRepo.save(twitBoardMessage);
+            Collections.sort(twitBoardMessageCommentList, Collections.reverseOrder(TwitBoardMessageComment.CompareTwitsCommentsByDate));
+
+            twitBoardMessage.setTwitBoardMessageComments(twitBoardMessageCommentList);
+
+            twitBoardMessageRepo.save(twitBoardMessage);
+        }
 
         model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
         model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());

@@ -14,7 +14,7 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
           <div class="card-body">
             <div class="form-group mb-3">
-              <form method="POST">
+              <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                   <input type="text" class="form-control  ${(themeError??)?string('is-invalid', '')}" name="theme"
                     placeholder="Enter theme to you post" value="<#if message??>${twitMessage.theme}</#if>">
@@ -33,6 +33,13 @@
                     </div>
                   </#if>
                 </div>
+                <label for="twitMesFilename">add picture if you need</label>
+                <div class="form-group" id="twitMesFilename">
+                  <div class="custom-file">
+                    <input type="file" id="customFile" name="twitFileMessageFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                  </div>
+                </div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 <div class="form-group">
                   <button type="submit" class="btn btn-primary ml-2">Add</button>
@@ -48,6 +55,9 @@
       <#list twitMessage as message>
 
         <div class="card mb-3 mt-4">
+          <#if message.filename??>
+            <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
+          </#if>
           <h5 class="card-header">${message.getTheme()}</h5>
           <div class="card-body">
             <p class="card-text">${message.getText()}</p>
@@ -81,10 +91,25 @@
                   <div class="card-body">
                     <div class="form-group mb-3">
                       <div class="form-group">
-                        <form action="/addComment" method="POST">
+                        <form action="/addComment" method="POST" enctype="multipart/form-data">
 
                           <label for="inputCommentText">Comment input</label>
-                          <input type="text" class="form-control mt-2 mb-3" name="commentText" id="inputCommentText">
+                          <input type="text" class="form-control mt-2 mb-3 ${(commentTextError??)?string('is-invalid', '')}"
+                           name="commentText" id="inputCommentText" value="<#if twitMessageComment??>${twitMessageComment.commentText}</#if>">
+                          <#if commentTextError??>
+                            <div class="invalid-feedback">
+                              ${commentTextError}
+                            </div>
+                          </#if>
+
+                          <label for="twitMesCommentFilename">add picture if you need</label>
+                          <div class="form-group" id="twitMesCommentFilename">
+                            <div class="custom-file">
+                              <input type="file" id="customFileComment" name="twitFileMessageCommentFile">
+                              <label class="custom-file-label" for="customFileComment">Choose file</label>
+                            </div>
+                          </div>
+
                           <input type="hidden" name="twitMessageRequaredTocomment" value="${message.getId()}" />
                           <input type="hidden" name="twitBoardreqiaredToComment" value="${user.getIdBoard()}" />
                           <input type="hidden" name="twitUserToreturn" value="${user.getId()}" />
@@ -97,6 +122,10 @@
                       <div class="form-group">
                         <#list message.getTwitBoardMessageComments() as comment>
                           <div class="card mb-3">
+                            <#if comment.filename??>
+                              <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${comment.filename}"
+                                class="card-img-top">
+                            </#if>
                             <h5 class="card-header">${comment.getAuthorComment().getUsername()}</h5>
                             <div class="card-body">
                               <p class="card-text">${comment.getTextComment()}</p>

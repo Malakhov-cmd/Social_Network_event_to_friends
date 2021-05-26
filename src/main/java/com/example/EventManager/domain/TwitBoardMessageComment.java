@@ -1,6 +1,7 @@
 package com.example.EventManager.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,10 +17,14 @@ public class TwitBoardMessageComment {
     private User authorComment;
 
     @Column(name = "twit_board_message_comment_text")
+    @NotBlank(message = "Please, enter text")
     private String textComment;
 
     @Column(name = "twit_board_message_comment_date")
     private String dateComment;
+
+    @Column(name = "twit_board_message_comment_filename")
+    private String filename;
 
     @ManyToMany
     @JoinTable(
@@ -69,6 +74,14 @@ public class TwitBoardMessageComment {
 
     public void setDateComment(String dateComment) {
         this.dateComment = dateComment;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public List<User> getLikesListComment() {

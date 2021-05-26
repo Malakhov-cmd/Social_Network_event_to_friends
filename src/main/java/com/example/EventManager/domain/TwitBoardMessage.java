@@ -34,6 +34,9 @@ public class TwitBoardMessage {
     @Column(name = "twit_board_message_date")
     private String date;
 
+    @Column(name = "twit_board_message_filename")
+    private String filename;
+
     @ManyToMany
     @JoinTable(
             name = "twit_board_mes_likes",
@@ -116,6 +119,14 @@ public class TwitBoardMessage {
 
     public List<User> getLikesList() {
         return likesList;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public void setLikesList(List<User> likesList) {
