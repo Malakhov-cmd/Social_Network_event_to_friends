@@ -16,6 +16,9 @@
         <a class="nav-link" href="/profile/${currentUserId}">My profile</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="/twitboard/${currentUserId}">Board</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="/dialogs/${currentUserId}">Dialogs</a>
       </li>
       <li class="nav-item">

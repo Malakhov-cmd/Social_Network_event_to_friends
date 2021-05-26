@@ -18,7 +18,8 @@
       <form>
         <div class="form-group row">
           <#if user.hasAvatar()==true>
-            <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${user.avatarFilename}" width="250" height="250" class="rounded ml-2" alt="Avatar">
+            <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${user.avatarFilename}" width="250"
+              height="250" class="rounded ml-2" alt="Avatar">
           </#if>
         </div>
         <div class="form-group row">
@@ -49,6 +50,10 @@
             </#if>
           </div>
         </div>
+        <div class="form-group row">
+          <button type="button" class="btn btn-primary btn-lg btn-block"
+            onclick="window.location.href='/twitboard/${user.id}'; return false">Board</button>
+        </div>
         <#if currentUser.id==user.id>
           <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -76,7 +81,8 @@
         <form method="post">
           <div class="form-group mt-3">
             <label for="newDialog">Start new dialog</label>
-            <textarea class="form-control" id="newDialog" rows="1" name="userToDialog" placeholder="Enter user id"></textarea>
+            <textarea class="form-control" id="newDialog" rows="1" name="userToDialog"
+              placeholder="Enter user id"></textarea>
           </div>
           <input type="hidden" name="_csrf" value="${_csrf.token}" />
           <div class="form-group">
@@ -89,7 +95,8 @@
         <form method="post">
           <div class="form-group">
             <label for="findFriend">Find friend</label>
-            <textarea class="form-control" id="findFriend" rows="1" name="friendId" placeholder="Enter user id"></textarea>
+            <textarea class="form-control" id="findFriend" rows="1" name="friendId"
+              placeholder="Enter user id"></textarea>
           </div>
           <input type="hidden" name="_csrf" value="${_csrf.token}" />
           <div class="form-group">
@@ -121,7 +128,7 @@
                   </div>
 
                   <div class="frientSelected">
-                  <label for="friendListDisplay">Friends</label>
+                    <label for="friendListDisplay">Friends</label>
                     <div class="form-group" id="friendListDisplay">
                       <#if FriendListSize!=0>
                         <#list friendList as friend>
@@ -201,7 +208,7 @@
 
             input_checkeds.forEach(el_checked => {
               //placeHold.insertAdjacentHTML('beforeend', el_checked.value);
-              placeHold.value = placeHold.value +  el_checked.value;
+              placeHold.value = placeHold.value + el_checked.value;
             });
           });
         });

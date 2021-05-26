@@ -55,28 +55,7 @@
       </script>
 
       <script type='text/javascript'>
-      document.getElementById("exampleFormControlTextarea1").focus();
-        function refresh() {
-          var XMLHttpRequestObject = false;
-          if (window.XMLHttpRequest)
-            XMLHttpRequestObject = new XMLHttpRequest();
-          else if (window.ActiveXobject)
-            XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
-
-          if (XMLHttpRequestObject) {
-            XMLHttpRequestObject.open('POST', "/dialog/${dialog.id}/${dialog.getFirstUser().getId()}/${dialog.getSecondUser().getId()}", true);
-
-            XMLHttpRequestObject.send(null);
-          }
-        }
-
-        console.log("can");
-
-
-        function update() {
-          refresh();
-          console.log("Doing update");
-        }
+        document.getElementById("exampleFormControlTextarea1").focus();
 
         const inputValue = document.getElementById('exampleFormControlTextarea1');
         const enterEmpty = document.getElementById('try_empty');
@@ -88,13 +67,6 @@
                 }, 1000 );
             }
         });
-        //inputValue.onfocus = function () {
-        //  setTimeout(update, 3000);
-       // };
-
-
-
-
       </script>
 
   </@c.page>

@@ -19,12 +19,15 @@ public class User implements UserDetails {
 
     @NotBlank(message = "Please, enter username")
     private String username;
+
     @NotBlank(message = "Password, couldn't be empty")
     private String password;
 
     private boolean isActive;
 
     private String avatarFilename;
+
+    private Long idBoard;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -112,6 +115,14 @@ public class User implements UserDetails {
 
     public void setAvatarFilename(String avatarFilename) {
         this.avatarFilename = avatarFilename;
+    }
+
+    public Long getIdBoard() {
+        return idBoard;
+    }
+
+    public void setIdBoard(Long idBoard) {
+        this.idBoard = idBoard;
     }
 
     public String getUsername() {
