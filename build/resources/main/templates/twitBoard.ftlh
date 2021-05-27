@@ -69,6 +69,7 @@
             </strong>
           </div>
           <div class="card-footer">
+            <em>${message.getAuthorName()}</em>
             <div class="form-group text-right">
               <form action="/messageLike" method="POST">
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />

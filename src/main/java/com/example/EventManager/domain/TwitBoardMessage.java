@@ -142,6 +142,10 @@ public class TwitBoardMessage {
         return author.getId();
     }
 
+    public String getAuthorName() {
+        return author.getUsername();
+    }
+
     public List<TwitBoardMessageComment> getTwitBoardMessageComments() {
         return twitBoardMessageComments;
     }
