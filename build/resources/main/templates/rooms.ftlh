@@ -1,11 +1,12 @@
 <#import "parts/common.ftlh" as c>
   <@c.page>
+   <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
     <#if roomsSize!=0>
       <#list rooms as room>
         <div class="card mb-3">
           <h5 class="card-header">${room.getRoomName()}</h5>
           <div class="card-body">
-            <h5 class="card-title">Creator: @${room.getAdmin().getUsername()}</h5>
+            <h5 class="card-title"><i class="fa fa-user-circle" aria-hidden="true"></i> Creator: @${room.getAdmin().getUsername()}</h5>
             <label for="membersList">Members: </label>
             <div id="membersList">
               <#if room.getParticipants()?size !=0>

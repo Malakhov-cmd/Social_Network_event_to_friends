@@ -1,5 +1,6 @@
 <#import "parts/common.ftlh" as c>
   <@c.page>
+  <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
     <div class="form-row">
       <div class="form-group col-md-6">
         <label class="label" for="filterLabel">Filter via Header of message</label>
@@ -118,7 +119,7 @@
                 </li>
               </ul>
               <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
+                onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
             </div>
           </#if>
           <#if message.getActivityType()=="Tourism">
@@ -153,7 +154,7 @@
                 </li>
               </ul>
               <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
+                onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
             </div>
       </div>
       </#if>
@@ -188,7 +189,7 @@
             </li>
           </ul>
           <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-            onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
+            onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
         </div>
     </div>
     </#if>
@@ -223,7 +224,7 @@
           </li>
         </ul>
         <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
+          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
       </div>
       </div>
     </#if>
@@ -258,7 +259,7 @@
           </li>
         </ul>
         <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
+          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
       </div>
       </div>
     </#if>
@@ -293,7 +294,7 @@
           </li>
         </ul>
         <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
+          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
       </div>
       </div>
     </#if>
@@ -328,7 +329,7 @@
           </li>
         </ul>
         <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
+          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
       </div>
       </div>
     </#if>
@@ -363,7 +364,7 @@
           </li>
         </ul>
         <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
+          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
       </div>
       </div>
     </#if>
@@ -398,7 +399,7 @@
           </li>
         </ul>
         <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false">Vote</button>
+          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
       </div>
       </div>
     </#if>

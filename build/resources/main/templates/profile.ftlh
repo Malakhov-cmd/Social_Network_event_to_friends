@@ -5,9 +5,9 @@
       <#else>
         <#assign name="unknown" isAdmin=false currentUserId=-1>
   </#if>
-
   <#import "parts/common.ftlh" as c>
     <@c.page>
+    <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
       <div class="container mt-5 mb-5">
         <div class="row">
           <div class="col align-self-center">
@@ -59,7 +59,7 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <button type="button" class="btn btn-primary"
                 onclick="window.location.href='/confirmationrequest/${user.id}'; return false">
-                Request friend
+                <i class="fa fa-user-plus" aria-hidden="true"></i> Request friend
                 <span class="badge badge-primary badge-pill">${requestFriendCount}</span>
                 <span class="sr-only">unread messages</span>
               </button>
@@ -67,7 +67,7 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <button type="button" class="btn btn-primary"
                 onclick="window.location.href='/respondlist/${user.id}'; return false">
-                Respond friend
+                <i class="fa fa-user" aria-hidden="true"></i> Respond friend
                 <span class="badge badge-primary badge-pill">${respondFriendCount}</span>
                 <span class="sr-only">unread messages</span>
               </button>
@@ -157,7 +157,7 @@
           <div class="container mt-5 mb-5">
             <div class="row">
               <div class="col align-self-center">
-                <p class="lead"> Friend list </p>
+                <p class="lead"><i class="fa fa-users" aria-hidden="true"></i> Friend list </p>
               </div>
             </div>
           </div>

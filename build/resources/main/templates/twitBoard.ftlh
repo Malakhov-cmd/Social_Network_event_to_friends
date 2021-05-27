@@ -85,7 +85,7 @@
                     <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
                       data-target="#aa${message.getUuid2()}" aria-expanded="false"
                       aria-controls="aa${message.getUuid2()}">
-                      Comments
+                      <i class="fa fa-comments" aria-hidden="true"></i> Comments
                     </button>
                   </h5>
                 </div>

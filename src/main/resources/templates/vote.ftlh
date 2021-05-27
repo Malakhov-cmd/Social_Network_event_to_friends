@@ -1,5 +1,6 @@
 <#import "parts/common.ftlh" as c>
   <@c.page>
+  <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
     <#if message.getActivityType()=="Sporty">
       <div class="card  text-white bg-success mb-3">
         <#if message.filename??>
@@ -358,6 +359,6 @@
         </div>
       </form>
       <button type="button" class="btn btn-primary mb-3"
-        onclick="window.location.href='/vote/discussion/${message.id}/${voteMessageDialog.id}/${user.id}'; return false">Discuss</button>
+        onclick="window.location.href='/vote/discussion/${message.id}/${voteMessageDialog.id}/${user.id}'; return false"><i class="fa fa-comments" aria-hidden="true"></i> Discuss</button>
     </#if>
   </@c.page>
