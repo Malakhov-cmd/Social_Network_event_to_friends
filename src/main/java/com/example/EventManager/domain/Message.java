@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Comparator;
 
 @Entity
 public class Message {
@@ -126,4 +127,11 @@ public class Message {
     public void setVoteMessage(VoteMessage voteMessage) {
         this.voteMessage = voteMessage;
     }
+
+    public static final Comparator<Message> CompareMessageByDate = new Comparator<Message>() {
+        @Override
+        public int compare(Message o1, Message o2) {
+            return (int) (o1.getId() - o2.getId());
+        }
+    };
 }

@@ -17,10 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Controller
@@ -66,6 +63,8 @@ public class MainController {
         if (filter != null && !filter.isEmpty()) {
             roomMessage = messageRepo.findByHeader(filter);
         }
+
+        Collections.sort(roomMessage, Collections.reverseOrder(Message.CompareMessageByDate));
 
         model.addAttribute("messages", roomMessage);
         model.addAttribute("filter", filter);
@@ -135,6 +134,9 @@ public class MainController {
 
             List<Message> roomMessage = room.getRoomMessage();
             roomMessage.add(message);
+
+            Collections.sort(roomMessage, Collections.reverseOrder(Message.CompareMessageByDate));
+
             room.setRoomMessage(roomMessage);
             roomRepo.save(room);
 

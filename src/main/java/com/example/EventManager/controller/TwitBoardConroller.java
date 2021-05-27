@@ -51,6 +51,7 @@ public class TwitBoardConroller {
 
         model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
         model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
+        model.addAttribute("currentUserId", currentUser.getId());
         return "twitBoard";
     }
 
@@ -64,7 +65,7 @@ public class TwitBoardConroller {
                       @RequestParam(required = false) String text,
                       @RequestParam(required = false) MultipartFile twitFileMessageFile) {
         Date date = new Date();
-        twitMessage.setAuthor(user);
+        twitMessage.setAuthor(currentUser);
 
         TwitBoard twitBoard = twitBoardRepo.findByid(user.getIdBoard());
 
@@ -75,7 +76,7 @@ public class TwitBoardConroller {
         } else {
             model.addAttribute("twitMessage", null);
 
-            TwitBoardMessage twitBoardMessage = new TwitBoardMessage(user, theme, text);
+            TwitBoardMessage twitBoardMessage = new TwitBoardMessage(currentUser, theme, text);
 
             if (twitFileMessageFile != null && !twitFileMessageFile.getOriginalFilename().isEmpty()) {
 
@@ -85,6 +86,7 @@ public class TwitBoardConroller {
                     String resultFileName = service.uploadFile(twitFileMessageFile);
                     twitBoardMessage.setFilename(resultFileName);
                 } else {
+                    model.addAttribute("currentUserId", currentUser.getId());
                     model.addAttribute("FileMessageError", "Incorrect type of file");
                     model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
                     model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
@@ -104,6 +106,7 @@ public class TwitBoardConroller {
             twitBoardRepo.save(twitBoard);
         }
 
+        model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
         model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
 
@@ -136,6 +139,7 @@ public class TwitBoardConroller {
                     String resultFileName = service.uploadFile(twitFileMessageCommentFile);
                     twitBoardMessageComment.setFilename(resultFileName);
                 } else {
+                    model.addAttribute("currentUserId", currentUser.getId());
                     model.addAttribute("FileMessageCommentError", "Incorrect type of file");
                     model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
                     model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
@@ -156,7 +160,7 @@ public class TwitBoardConroller {
 
             twitBoardMessageRepo.save(twitBoardMessage);
         }
-
+        model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
         model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
 
@@ -194,7 +198,7 @@ public class TwitBoardConroller {
 
             twitBoardMessageRepo.save(twitBoardMessage);
         }
-
+        model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
         model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
 
@@ -231,10 +235,33 @@ public class TwitBoardConroller {
 
             boardMessageCommentRepo.save(twitBoardMessageComment);
         }
-
+        model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
         model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
 
         return "redirect:/twitboard/" + twitUserToReturn;
+    }
+
+    @RequestMapping(value = "/deleteTwit", method = RequestMethod.POST)
+    public String deleteTwit(@AuthenticationPrincipal User currentUser,
+                              Model model,
+                              @RequestParam(required = false) Long twitDelete,
+                              @RequestParam(required = false) Long twitDeleteAuthorId
+    ) {
+        User user = userRepo.findByid(twitDeleteAuthorId);
+        TwitBoard twitBoard = twitBoardRepo.findByid(user.getIdBoard());
+
+        List<TwitBoardMessage> twitBoardMessages = twitBoard.getTwitBoardMessageList();
+
+        for (int i =0 ; i < twitBoardMessages.size(); i++) {
+            if (twitBoardMessages.get(i).getId() == twitDelete) {
+                twitBoardMessages.remove(i);
+            }
+        }
+
+        twitBoard.setTwitBoardMessageList(twitBoardMessages);
+        twitBoardRepo.save(twitBoard);
+
+        return "redirect:/twitboard/" + twitDeleteAuthorId;
     }
 }

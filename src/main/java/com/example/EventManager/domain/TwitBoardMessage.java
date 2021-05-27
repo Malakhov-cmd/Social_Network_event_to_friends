@@ -137,6 +137,11 @@ public class TwitBoardMessage {
         return likesList.size();
     }
 
+    public Long getIdAuthor()
+    {
+        return author.getId();
+    }
+
     public List<TwitBoardMessageComment> getTwitBoardMessageComments() {
         return twitBoardMessageComments;
     }
