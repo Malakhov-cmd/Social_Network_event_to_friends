@@ -246,15 +246,16 @@ public class TwitBoardConroller {
     public String deleteTwit(@AuthenticationPrincipal User currentUser,
                               Model model,
                               @RequestParam(required = false) Long twitDelete,
-                              @RequestParam(required = false) Long twitDeleteAuthorId
+                              @RequestParam(required = false) Long twitDeleteAuthorId,
+                             @RequestParam(required = false) Long boardToDelete
     ) {
-        User user = userRepo.findByid(twitDeleteAuthorId);
-        TwitBoard twitBoard = twitBoardRepo.findByid(user.getIdBoard());
+        User boardowner = userRepo.findByid(boardToDelete);
+        TwitBoard twitBoard = twitBoardRepo.findByid(boardowner.getIdBoard());
 
         List<TwitBoardMessage> twitBoardMessages = twitBoard.getTwitBoardMessageList();
 
         for (int i =0 ; i < twitBoardMessages.size(); i++) {
-            if (twitBoardMessages.get(i).getId() == twitDelete) {
+            if (twitBoardMessages.get(i).getId().equals(twitDelete)) {
                 twitBoardMessages.remove(i);
             }
         }
@@ -262,6 +263,6 @@ public class TwitBoardConroller {
         twitBoard.setTwitBoardMessageList(twitBoardMessages);
         twitBoardRepo.save(twitBoard);
 
-        return "redirect:/twitboard/" + twitDeleteAuthorId;
+        return "redirect:/twitboard/" + boardToDelete;
     }
 }

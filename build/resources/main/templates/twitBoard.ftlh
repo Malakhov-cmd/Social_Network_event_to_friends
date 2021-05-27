@@ -160,14 +160,13 @@
                 </div>
               </div>
             </div>
-            ${currentUserId}
-            ${message.getIdAuthor()}
             <#if currentUserId = message.getIdAuthor()>
               <form action="/deleteTwit" method="POST">
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 <input type="hidden" name="twitDelete" value="${message.getId()}" />
                 <input type="hidden" name="twitDeleteAuthorId" value=${currentUserId} />
-                <button type="submit" class="btn btn-primary ml-2">Delete</button>
+                <input type="hidden" name="boardToDelete" value=${user.getId()} />
+                <button type="submit" class="btn btn-primary ml-2 mt-2">Delete</button>
               </form>
             </#if>
           </div>
