@@ -44,11 +44,25 @@
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div class="form-group">
-          <button type="submit" class="btn btn-primary ml-2">Send</button>
+          <button type="submit" class="btn btn-primary ml-2" id="try_empty">Send</button>
         </div>
       </form>
       <script type="text/javascript">
         window.scrollTo(0, document.body.scrollHeight);
+      </script>
+      <script type='text/javascript'>
+        document.getElementById("exampleFormControlTextarea1").focus();
+
+        const inputValue = document.getElementById('exampleFormControlTextarea1');
+        const enterEmpty = document.getElementById('try_empty');
+
+        inputValue.addEventListener("focusout", () => {
+          if (!document.querySelector('textarea:focus')) {
+            setTimeout(function () {
+              enterEmpty.click();
+            }, 1000);
+          }
+        });
       </script>
     </div>
   </@c.page>

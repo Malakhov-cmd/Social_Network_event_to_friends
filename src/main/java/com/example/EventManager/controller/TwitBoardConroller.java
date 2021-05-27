@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Controller
 public class TwitBoardConroller {
@@ -77,8 +78,18 @@ public class TwitBoardConroller {
             TwitBoardMessage twitBoardMessage = new TwitBoardMessage(user, theme, text);
 
             if (twitFileMessageFile != null && !twitFileMessageFile.getOriginalFilename().isEmpty()) {
-                String resultFileName = service.uploadFile(twitFileMessageFile);
-                twitBoardMessage.setFilename(resultFileName);
+
+                Pattern patternCheckFormat = Pattern.compile("\\S*((.gif)|(.jpeg)|(.jpg)|(.png))$");
+
+                if (patternCheckFormat.matcher(twitFileMessageFile.getOriginalFilename()).matches()) {
+                    String resultFileName = service.uploadFile(twitFileMessageFile);
+                    twitBoardMessage.setFilename(resultFileName);
+                } else {
+                    model.addAttribute("FileMessageError", "Incorrect type of file");
+                    model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
+                    model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
+                    return "twitBoard";
+                }
             }
 
             twitBoardMessage.setDate(date.toString());
@@ -101,8 +112,6 @@ public class TwitBoardConroller {
 
     @RequestMapping(value = "/addComment", method = RequestMethod.POST)
     public String addComment(@AuthenticationPrincipal User currentUser,
-                             @Valid TwitBoardMessageComment twitMessageComment,
-                             BindingResult bindingResult,
                              Model model,
                              @RequestParam(required = false) String commentText,
                              @RequestParam(required = false) Long twitMessageRequaredTocomment,
@@ -113,18 +122,25 @@ public class TwitBoardConroller {
 
         TwitBoard twitBoard = twitBoardRepo.findByid(twitBoardreqiaredToComment);
         TwitBoardMessage twitBoardMessage = twitBoardMessageRepo.findByid(twitMessageRequaredTocomment);
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errorsMap);
-            model.addAttribute("twitMessageComment", twitMessageComment);
-        } else {
+
+        if (!commentText.equals("") && commentText != null) {
             model.addAttribute("twitMessageComment", null);
 
             TwitBoardMessageComment twitBoardMessageComment = new TwitBoardMessageComment(currentUser, commentText);
 
             if (twitFileMessageCommentFile != null && !twitFileMessageCommentFile.getOriginalFilename().isEmpty()) {
-                String resultFileName = service.uploadFile(twitFileMessageCommentFile);
-                twitBoardMessageComment.setFilename(resultFileName);
+
+                Pattern patternCheckFormat = Pattern.compile("\\S*((.gif)|(.jpeg)|(.jpg)|(.png))$");
+
+                if (patternCheckFormat.matcher(twitFileMessageCommentFile.getOriginalFilename()).matches()) {
+                    String resultFileName = service.uploadFile(twitFileMessageCommentFile);
+                    twitBoardMessageComment.setFilename(resultFileName);
+                } else {
+                    model.addAttribute("FileMessageCommentError", "Incorrect type of file");
+                    model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
+                    model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
+                    return "redirect:/twitboard/" + twitUserToreturn;
+                }
             }
 
             twitBoardMessageComment.setDateComment(date.toString());

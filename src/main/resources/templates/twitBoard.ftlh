@@ -39,6 +39,9 @@
                     <input type="file" id="customFile" name="twitFileMessageFile">
                     <label class="custom-file-label" for="customFile">Choose file</label>
                   </div>
+                  <#if FileMessageError??>
+                    <label class="col-sm-2 col-form-label">${FileMessageError}</label>
+                  </#if>
                 </div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 <div class="form-group">
@@ -94,8 +97,10 @@
                         <form action="/addComment" method="POST" enctype="multipart/form-data">
 
                           <label for="inputCommentText">Comment input</label>
-                          <input type="text" class="form-control mt-2 mb-3 ${(commentTextError??)?string('is-invalid', '')}"
-                           name="commentText" id="inputCommentText" value="<#if twitMessageComment??>${twitMessageComment.commentText}</#if>">
+                          <input type="text"
+                            class="form-control mt-2 mb-3 ${(commentTextError??)?string('is-invalid', '')}"
+                            name="commentText" id="inputCommentText"
+                            value="<#if twitMessageComment??>${twitMessageComment.commentText}</#if>">
                           <#if commentTextError??>
                             <div class="invalid-feedback">
                               ${commentTextError}
@@ -109,6 +114,9 @@
                               <label class="custom-file-label" for="customFileComment">Choose file</label>
                             </div>
                           </div>
+                          <#if FileMessageCommentError??>
+                            <label class="col-sm-2 col-form-label">${FileMessageCommentError}</label>
+                          </#if>
 
                           <input type="hidden" name="twitMessageRequaredTocomment" value="${message.getId()}" />
                           <input type="hidden" name="twitBoardreqiaredToComment" value="${user.getIdBoard()}" />

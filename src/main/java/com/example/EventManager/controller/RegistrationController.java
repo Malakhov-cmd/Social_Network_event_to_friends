@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Controller
 public class RegistrationController {
@@ -50,7 +51,7 @@ public class RegistrationController {
     public String addUser(@Valid User user,
                           BindingResult bindingResult,
                           Model model,
-                          @RequestParam(name = "avatar", required = true) MultipartFile avatar) throws IOException {
+                          @RequestParam(name = "avatar") MultipartFile avatar) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
 
         if(userFromDb != null)
@@ -63,20 +64,28 @@ public class RegistrationController {
             model.mergeAttributes(errorsMap);
             model.addAttribute("userError", user);
         } else {
+            model.addAttribute("userError", null);
 
-            System.out.println("File name: " + avatar.getOriginalFilename());
             if (avatar != null && !avatar.getOriginalFilename().isEmpty()) {
 
-                String resultFileName = service.uploadFile(avatar);
+                Pattern patternCheckFormat = Pattern.compile("\\S*((.gif)|(.jpeg)|(.jpg)|(.png))$");
 
-                user.setAvatarFilename(resultFileName);
+                if (patternCheckFormat.matcher(avatar.getOriginalFilename()).matches()) {
+                    String resultFileName = service.uploadFile(avatar);
+                    user.setAvatarFilename(resultFileName);
+                    System.out.println("MATCH");
+                } else {
+                    model.addAttribute("FormatException", "Incorrect type file");
+                    return "registration";
+                }
+            } else {
+                model.addAttribute("FormatException", "Incorrect type file");
+                return "registration";
             }
 
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.USER));
-
-            model.addAttribute("userError", null);
 
             TwitBoard twitBoard = new TwitBoard(user);
             twitBoardRepo.save(twitBoard);
@@ -84,6 +93,8 @@ public class RegistrationController {
             user.setIdBoard(twitBoard.getId());
 
             userRepo.save(user);
+
+            model.addAttribute("FormatException", null);
 
             return "redirect:/login";
         }

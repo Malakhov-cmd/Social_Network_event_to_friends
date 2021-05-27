@@ -17,9 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Controller
 public class MainController {
@@ -44,7 +46,6 @@ public class MainController {
     @Autowired
     private RoomRepo roomRepo;
 
-    //получение значение properties
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -68,7 +69,10 @@ public class MainController {
 
         model.addAttribute("messages", roomMessage);
         model.addAttribute("filter", filter);
+
         model.addAttribute("user", user);
+        model.addAttribute("room", room);
+
         return "main";
     }
 
@@ -90,13 +94,23 @@ public class MainController {
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
         } else {
+            model.addAttribute("message", null);
+
             if (file != null && !file.getOriginalFilename().isEmpty()) {
 
-                String resultFileName = service.uploadFile(file);
-                message.setFilename(resultFileName);
-            }
+                Pattern patternCheckFormat = Pattern.compile("\\S*((.gif)|(.jpeg)|(.jpg)|(.png))$");
 
-            model.addAttribute("message", null);
+                if (patternCheckFormat.matcher(file.getOriginalFilename()).matches()) {
+                    String resultFileName = service.uploadFile(file);
+                    message.setFilename(resultFileName);
+                } else {
+                    Iterable<Message> messages = room.getRoomMessage();
+                    model.addAttribute("messages", messages);
+                    model.addAttribute("user", user);
+                    model.addAttribute("FormatException", "Incorrect type file");
+                    return "main";
+                }
+            }
 
             message.setDate(date.toString());
 
@@ -130,12 +144,6 @@ public class MainController {
         Iterable<Message> messages = room.getRoomMessage();
         model.addAttribute("messages", messages);
         model.addAttribute("user", user);
-        return "main";
-    }
-
-    @PostMapping("filter")
-    public String filter(@RequestParam String filter,
-                         Map<String, Object> model) {
         return "main";
     }
 
@@ -279,21 +287,25 @@ public class MainController {
                                         @PathVariable User user,
                                         Model model,
                                         @RequestParam String MessageText) {
+
         Date dateMes = new Date();
 
         Message message = messageRepo.findById(messageId);
         VoteMessageDialog voteMessageDialog = voteMessageDialogRepo.findById(voteMessageDialogId);
 
-        VoteMessageDialogMes dialogMessage = new VoteMessageDialogMes(user);
-        dialogMessage.setText(MessageText);
-        dialogMessage.setDate(dateMes.toString());
-        voteMessageDialogMesRepo.save(dialogMessage);
-
         List<VoteMessageDialogMes> listMessage = voteMessageDialog.getDialogMessageList();
-        listMessage.add(dialogMessage);
-        voteMessageDialog.setDialogMessageList(listMessage);
-        voteMessageDialogRepo.save(voteMessageDialog);
+        if (MessageText != null &&
+                !MessageText.equals("")) {
+            VoteMessageDialogMes dialogMessage = new VoteMessageDialogMes(user);
+            dialogMessage.setText(MessageText);
+            dialogMessage.setDate(dateMes.toString());
+            voteMessageDialogMesRepo.save(dialogMessage);
 
+
+            listMessage.add(dialogMessage);
+            voteMessageDialog.setDialogMessageList(listMessage);
+            voteMessageDialogRepo.save(voteMessageDialog);
+        }
         model.addAttribute("user", user);
         model.addAttribute("message", message);
         model.addAttribute("dialog", voteMessageDialog);

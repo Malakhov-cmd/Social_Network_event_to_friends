@@ -2,7 +2,8 @@
   <@c.page>
     <div class="form-row">
       <div class="form-group col-md-6">
-        <form method="get" action="/main" class="form-inline">
+        <label class="label" for="filterLabel">Filter via Header of message</label>
+        <form method="get" class="form-inline" id="filterLabel">
           <input type="text" name="filter" value="${filter?ifExists}" class="form-control" placeholder="Search">
           <button type="submit" class="btn btn-primary ml-2">find</button>
         </form>
@@ -70,6 +71,11 @@
               <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
           </div>
+
+          <#if FormatException??>
+            <label class="col-sm-2 col-form-label">${FormatException}</label>
+          </#if>
+
           <input type="hidden" name="_csrf" value="${_csrf.token}" />
           <div class="form-group">
             <button type="submit" class="btn btn-primary ml-2">Add</button>
@@ -83,7 +89,8 @@
           <#if message.getActivityType()=="Sporty">
             <div class="card text-white bg-success mb-3">
               <#if message.filename??>
-                <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
+                <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                  class="card-img-top">
               </#if>
               <ul class="list-group list-group-flush bg-success">
                 <li class="list-group-item bg-success">
@@ -117,7 +124,8 @@
           <#if message.getActivityType()=="Tourism">
             <div class="card text-white bg-warning mb-3">
               <#if message.filename??>
-                <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
+                <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                  class="card-img-top">
               </#if>
               <ul class="list-group list-group-flush bg-warning">
                 <li class="list-group-item bg-warning">
