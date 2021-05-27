@@ -244,9 +244,9 @@ public class TwitBoardConroller {
 
     @RequestMapping(value = "/deleteTwit", method = RequestMethod.POST)
     public String deleteTwit(@AuthenticationPrincipal User currentUser,
-                              Model model,
-                              @RequestParam(required = false) Long twitDelete,
-                              @RequestParam(required = false) Long twitDeleteAuthorId,
+                             Model model,
+                             @RequestParam(required = false) Long twitDelete,
+                             @RequestParam(required = false) Long twitDeleteAuthorId,
                              @RequestParam(required = false) Long boardToDelete
     ) {
         User boardowner = userRepo.findByid(boardToDelete);
@@ -254,7 +254,7 @@ public class TwitBoardConroller {
 
         List<TwitBoardMessage> twitBoardMessages = twitBoard.getTwitBoardMessageList();
 
-        for (int i =0 ; i < twitBoardMessages.size(); i++) {
+        for (int i = 0; i < twitBoardMessages.size(); i++) {
             if (twitBoardMessages.get(i).getId().equals(twitDelete)) {
                 twitBoardMessages.remove(i);
             }
@@ -264,5 +264,28 @@ public class TwitBoardConroller {
         twitBoardRepo.save(twitBoard);
 
         return "redirect:/twitboard/" + boardToDelete;
+    }
+
+    @RequestMapping(value = "/deleteComment", method = RequestMethod.POST)
+    public String deleteComment(@AuthenticationPrincipal User currentUser,
+                                Model model,
+                                @RequestParam(required = false) Long twitCommentDelete,
+                                @RequestParam(required = false) Long twitCommentDeleteAuthorId,
+                                @RequestParam(required = false) Long boardMessageCommentToDelete
+    ) {
+        TwitBoardMessage twitBoardMessage = twitBoardMessageRepo.findByid(boardMessageCommentToDelete);
+
+        List<TwitBoardMessageComment> twitBoardMessagesComments = twitBoardMessage.getTwitBoardMessageComments();
+
+        for (int i = 0; i < twitBoardMessagesComments.size(); i++) {
+            if (twitBoardMessagesComments.get(i).getId().equals(twitCommentDelete)) {
+                twitBoardMessagesComments.remove(i);
+            }
+        }
+
+        twitBoardMessage.setTwitBoardMessageComments(twitBoardMessagesComments);
+        twitBoardMessageRepo.save(twitBoardMessage);
+
+        return "redirect:/twitboard/" + twitCommentDeleteAuthorId;
     }
 }

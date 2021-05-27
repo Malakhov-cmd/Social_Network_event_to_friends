@@ -151,6 +151,15 @@
                                       aria-hidden="true"></i> <em> ${comment.getCommentLikesCount()}</em> </button>
                                 </form>
                               </div>
+                              <#if currentUserId=comment.getAuthorId()>
+                                <form action="/deleteComment" method="POST">
+                                  <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                                  <input type="hidden" name="twitCommentDelete" value="${comment.getId()}" />
+                                  <input type="hidden" name="twitCommentDeleteAuthorId" value=${user.getId()} />
+                                  <input type="hidden" name="boardMessageCommentToDelete" value=${message.getId()} />
+                                  <button type="submit" class="btn btn-primary ml-2 mt-2">Delete</button>
+                                </form>
+                              </#if>
                             </div>
                           </div>
                         </#list>
@@ -160,7 +169,7 @@
                 </div>
               </div>
             </div>
-            <#if currentUserId = message.getIdAuthor()>
+            <#if currentUserId=message.getIdAuthor()>
               <form action="/deleteTwit" method="POST">
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 <input type="hidden" name="twitDelete" value="${message.getId()}" />

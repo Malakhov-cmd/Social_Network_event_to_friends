@@ -92,6 +92,10 @@ public class TwitBoardMessageComment {
         this.likesListComment = likesListComment;
     }
 
+    public Long getAuthorId() {
+        return authorComment.getId();
+    }
+
     public static final Comparator<TwitBoardMessageComment> CompareTwitsCommentsByDate = new Comparator<TwitBoardMessageComment>() {
         @Override
         public int compare(TwitBoardMessageComment o1, TwitBoardMessageComment o2) {
