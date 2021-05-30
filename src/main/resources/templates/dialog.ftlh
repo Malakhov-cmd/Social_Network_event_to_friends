@@ -1,6 +1,6 @@
 <div id="Chat_Mess">
-<#import "parts/common.ftlh" as c>
-  <@c.page>
+  <#import "parts/common.ftlh" as c>
+    <@c.page>
 
       <div class="container">
         <div id="update_pls">
@@ -49,24 +49,34 @@
         </form>
 
       </div>
-      </div>
-      <script type="text/javascript">
-        window.scrollTo(0, document.body.scrollHeight);
-      </script>
+</div>
+<script type="text/javascript">
+  window.scrollTo(0, document.body.scrollHeight);
+</script>
 
-      <script type='text/javascript'>
-        document.getElementById("exampleFormControlTextarea1").focus();
+<script type='text/javascript'>
+  var xmlDocument;
 
-        const inputValue = document.getElementById('exampleFormControlTextarea1');
-        const enterEmpty = document.getElementById('try_empty');
+  setInterval(function refresh() {
+    var XMLHttpRequestObject = false;
+    if (window.XMLHttpRequest)
+      XMLHttpRequestObject = new XMLHttpRequest();
+    else if (window.ActiveXobject)
+      XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
 
-        inputValue.addEventListener("focusout", () => {
-            if(!document.querySelector('textarea:focus')) {
-            setTimeout(function() {
-                enterEmpty.click();
-                }, 1000 );
-            }
-        });
-      </script>
-
-  </@c.page>
+    if (XMLHttpRequestObject) {
+      XMLHttpRequestObject.open('GET', "/dialog/${dialog.id}/${dialog.getFirstUser().getId()}/${dialog.getSecondUser().getId()}", true);
+      XMLHttpRequestObject.responseType = 'document';
+      XMLHttpRequestObject.onreadystatechange = function () {
+        if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+          xmlDocument = XMLHttpRequestObject.responseXML;
+          document.getElementById('update_pls').innerHTML = xmlDocument.getElementById('update_pls').innerHTML;
+          console.log("Update");
+          window.scrollTo(0, document.body.scrollHeight);
+        }
+      }
+      XMLHttpRequestObject.send(null);
+    }
+  }, 2000);
+</script>
+</@c.page>
