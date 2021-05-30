@@ -1,6 +1,6 @@
 <#import "parts/common.ftlh" as c>
   <@c.page>
-  <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
+    <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
     <div class="form-row">
       <div class="form-group col-md-6">
         <label class="label" for="filterLabel">Filter via Header of message</label>
@@ -85,325 +85,351 @@
       </div>
     </div>
     <div>
-      <div class="card-columns m-3">
+      <div class="row mt-3 mb-2">
         <#list messages as message>
           <#if message.getActivityType()=="Sporty">
-            <div class="card text-white bg-success mb-3">
-              <#if message.filename??>
-                <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
-                  class="card-img-top">
-              </#if>
-              <ul class="list-group list-group-flush bg-success">
-                <li class="list-group-item bg-success">
-                  <h5 class="card-title">${message.getHeader()}</h5>
-                </li>
-                <li class="list-group-item bg-success">
-                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                </li>
-                <li class="list-group-item bg-success">
-                  <div class="card-text m-2">
-                    <span>${message.getText()}</span>
-                  </div>
-                </li>
-                <li class="list-group-item bg-success">
-                  <p class="card-text">
-                    <small class="text-white">
-                      <i><em>${message.getDate()}</em></i>
-                    </small>
-                  </p>
-                </li>
-                <li class="list-group-item bg-success">
-                  <div class="card-footer text-white">
-                    <strong><em>${message.getAuthorName()}</em></strong>
-                  </div>
-                </li>
-              </ul>
-              <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
+            <div class="col-md-6 col-xl-3">
+              <div class="card mx-auto mb-4 text-white bg-success" style="max-width: 300px;">
+                <#if message.filename??>
+                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                    class="card-img-top">
+                </#if>
+                <ul class="list-group list-group-flush bg-success">
+                  <li class="list-group-item bg-success">
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                  </li>
+                  <li class="list-group-item bg-success">
+                    <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                  </li>
+                  <li class="list-group-item bg-success">
+                    <div class="card-text m-2">
+                      <span>${message.getText()}</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item bg-success">
+                    <p class="card-text">
+                      <small class="text-white">
+                        <i><em>${message.getDate()}</em></i>
+                      </small>
+                    </p>
+                  </li>
+                  <li class="list-group-item bg-success">
+                    <div class="card-footer text-white">
+                      <strong><em>${message.getAuthorName()}</em></strong>
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false" style="max-width: 92%;"><i class="fa fa-users"
+                    aria-hidden="true"></i> Vote</button>
+              </div>
             </div>
           </#if>
           <#if message.getActivityType()=="Tourism">
-            <div class="card text-white bg-warning mb-3">
-              <#if message.filename??>
-                <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
-                  class="card-img-top">
-              </#if>
-              <ul class="list-group list-group-flush bg-warning">
-                <li class="list-group-item bg-warning">
-                  <h5 class="card-title">${message.getHeader()}</h5>
-                </li>
-                <li class="list-group-item bg-warning">
-                  <h5 class="card-title"></h5>${message.getTheme()}</h5>
-                </li>
-                <li class="list-group-item bg-warning">
-                  <div class="card-text m-2">
-                    <span>${message.getText()}</span>
-                  </div>
-                </li>
-                <li class="list-group-item bg-warning">
-                  <p class="card-text">
-                    <small class="text-white">
-                      <i><em>${message.getDate()}</em>></i>
-                    </small>
-                  </p>
-                </li>
-                <li class="list-group-item bg-warning">
-                  <div class="card-footer text-white">
-                    <strong><em>${message.getAuthorName()}</em>></strong>
-                  </div>
-                </li>
-              </ul>
-              <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
+            <div class="col-md-6 col-xl-3">
+              <div class="card mx-auto mb-4 text-white bg-warning" style="max-width: 300px;">
+                <#if message.filename??>
+                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                    class="card-img-top">
+                </#if>
+                <ul class="list-group list-group-flush bg-warning">
+                  <li class="list-group-item bg-warning">
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                  </li>
+                  <li class="list-group-item bg-warning">
+                    <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                  </li>
+                  <li class="list-group-item bg-warning">
+                    <div class="card-text m-2">
+                      <span>${message.getText()}</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item bg-warning">
+                    <p class="card-text">
+                      <small class="text-white">
+                        <i><em>${message.getDate()}</em>></i>
+                      </small>
+                    </p>
+                  </li>
+                  <li class="list-group-item bg-warning">
+                    <div class="card-footer text-white">
+                      <strong><em>${message.getAuthorName()}</em>></strong>
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                    aria-hidden="true"></i> Vote</button>
+              </div>
             </div>
-      </div>
-      </#if>
-      <#if message.getActivityType()=="Alcohol">
-        <div class="card text-white bg-danger mb-3">
-          <#if message.filename??>
-            <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
           </#if>
-          <ul class="list-group list-group-flush bg-danger">
-            <li class="list-group-item bg-danger">
-              <h5 class="card-title">${message.getHeader()}</h5>
-            </li>
-            <li class="list-group-item bg-danger">
-              <h5 class="card-title"></h5>${message.getTheme()}</h5>
-            </li>
-            <li class="list-group-item bg-danger">
-              <div class="card-text m-2">
-                <span>${message.getText()}</span>
+          <#if message.getActivityType()=="Alcohol">
+            <div class="col-md-6 col-xl-3">
+              <div class="card mx-auto mb-4 text-white bg-danger" style="max-width: 300px;">
+                <#if message.filename??>
+                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                    class="card-img-top">
+                </#if>
+                <ul class="list-group list-group-flush bg-danger">
+                  <li class="list-group-item bg-danger">
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                  </li>
+                  <li class="list-group-item bg-danger">
+                    <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                  </li>
+                  <li class="list-group-item bg-danger">
+                    <div class="card-text m-2">
+                      <span>${message.getText()}</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item bg-danger">
+                    <p class="card-text">
+                      <small class="text-white">
+                        <i><em>${message.getDate()}</em></i>
+                      </small>
+                    </p>
+                  </li>
+                  <li class="list-group-item bg-danger">
+                    <div class="card-footer text-white">
+                      <strong><em>${message.getAuthorName()}</em></strong>
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                    aria-hidden="true"></i> Vote</button>
               </div>
-            </li>
-            <li class="list-group-item bg-danger">
-              <p class="card-text">
-                <small class="text-white">
-                  <i><em>${message.getDate()}</em></i>
-                </small>
-              </p>
-            </li>
-            <li class="list-group-item bg-danger">
-              <div class="card-footer text-white">
-                <strong><em>${message.getAuthorName()}</em></strong>
+            </div>
+          </#if>
+          <#if message.getActivityType()=="Conversation">
+            <div class="col-md-6 col-xl-3">
+              <div class="card mx-auto mb-4 text-white bg-primary" style="max-width: 300px;">
+                <#if message.filename??>
+                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                    class="card-img-top">
+                </#if>
+                <ul class="list-group list-group-flush bg-primary">
+                  <li class="list-group-item bg-primary">
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                  </li>
+                  <li class="list-group-item bg-primary">
+                    <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                  </li>
+                  <li class="list-group-item bg-primary">
+                    <div class="card-text m-2">
+                      <span>${message.getText()}</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item bg-primary">
+                    <p class="card-text">
+                      <small class="text-white">
+                        <i><em>${message.getDate()}</em></i>
+                      </small>
+                    </p>
+                  </li>
+                  <li class="list-group-item bg-primary">
+                    <div class="card-footer text-white">
+                      <strong><em>${message.getAuthorName()}</em></strong>
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                    aria-hidden="true"></i> Vote</button>
               </div>
-            </li>
-          </ul>
-          <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-            onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
-        </div>
-    </div>
-    </#if>
-    <#if message.getActivityType()=="Conversation">
-      <div class="card text-white bg-primary mb-3">
-        <#if message.filename??>
-          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
-        </#if>
-        <ul class="list-group list-group-flush bg-primary">
-          <li class="list-group-item bg-primary">
-            <h5 class="card-title">${message.getHeader()}</h5>
-          </li>
-          <li class="list-group-item bg-primary">
-            <h5 class="card-title"></h5>${message.getTheme()}</h5>
-          </li>
-          <li class="list-group-item bg-primary">
-            <div class="card-text m-2">
-              <span>${message.getText()}</span>
             </div>
-          </li>
-          <li class="list-group-item bg-primary">
-            <p class="card-text">
-              <small class="text-white">
-                <i><em>${message.getDate()}</em></i>
-              </small>
-            </p>
-          </li>
-          <li class="list-group-item bg-primary">
-            <div class="card-footer text-white">
-              <strong><em>${message.getAuthorName()}</em></strong>
+          </#if>
+          <#if message.getActivityType()=="Game">
+            <div class="col-md-6 col-xl-3">
+              <div class="card mx-auto mb-4 text-white bg-info" style="max-width: 300px;">
+                <#if message.filename??>
+                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                    class="card-img-top">
+                </#if>
+                <ul class="list-group list-group-flush bg-info">
+                  <li class="list-group-item bg-info">
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                  </li>
+                  <li class="list-group-item bg-info">
+                    <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                  </li>
+                  <li class="list-group-item bg-info">
+                    <div class="card-text m-2">
+                      <span>${message.getText()}</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item bg-info">
+                    <p class="card-text">
+                      <small class="text-white">
+                        <i><em>${message.getDate()}</em></i>
+                      </small>
+                    </p>
+                  </li>
+                  <li class="list-group-item bg-info">
+                    <div class="card-footer text-white">
+                      <strong><em>${message.getAuthorName()}</em></strong>
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                    aria-hidden="true"></i> Vote</button>
+              </div>
             </div>
-          </li>
-        </ul>
-        <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
-      </div>
-      </div>
-    </#if>
-    <#if message.getActivityType()=="Game">
-      <div class="card text-white bg-info mb-3">
-        <#if message.filename??>
-          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
-        </#if>
-        <ul class="list-group list-group-flush bg-info">
-          <li class="list-group-item bg-info">
-            <h5 class="card-title">${message.getHeader()}</h5>
-          </li>
-          <li class="list-group-item bg-info">
-            <h5 class="card-title"></h5>${message.getTheme()}</h5>
-          </li>
-          <li class="list-group-item bg-info">
-            <div class="card-text m-2">
-              <span>${message.getText()}</span>
+          </#if>
+          <#if message.getActivityType()=="Movie">
+            <div class="col-md-6 col-xl-3">
+              <div class="card mx-auto mb-4 text-white bg-light" style="max-width: 300px;">
+                <#if message.filename??>
+                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                    class="card-img-top">
+                </#if>
+                <ul class="list-group list-group-flush bg-light">
+                  <li class="list-group-item bg-light">
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                  </li>
+                  <li class="list-group-item bg-light">
+                    <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                  </li>
+                  <li class="list-group-item bg-light">
+                    <div class="card-text m-2">
+                      <span>${message.getText()}</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item bg-light">
+                    <p class="card-text">
+                      <small class="text-white">
+                        <i><em>${message.getDate()}</em></i>
+                      </small>
+                    </p>
+                  </li>
+                  <li class="list-group-item bg-light">
+                    <div class="card-footer text-white">
+                      <strong><em>${message.getAuthorName()}</em></strong>
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                    aria-hidden="true"></i> Vote</button>
+              </div>
             </div>
-          </li>
-          <li class="list-group-item bg-info">
-            <p class="card-text">
-              <small class="text-white">
-                <i><em>${message.getDate()}</em></i>
-              </small>
-            </p>
-          </li>
-          <li class="list-group-item bg-info">
-            <div class="card-footer text-white">
-              <strong><em>${message.getAuthorName()}</em></strong>
+          </#if>
+          <#if message.getActivityType()=="Club">
+            <div class="col-md-6 col-xl-3">
+              <div class="card mx-auto mb-4 text-white bg-danger" style="max-width: 300px;">
+                <#if message.filename??>
+                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                    class="card-img-top">
+                </#if>
+                <ul class="list-group list-group-flush bg-danger">
+                  <li class="list-group-item bg-danger">
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                  </li>
+                  <li class="list-group-item bg-danger">
+                    <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                  </li>
+                  <li class="list-group-item bg-danger">
+                    <div class="card-text m-2">
+                      <span>${message.getText()}</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item bg-danger">
+                    <p class="card-text">
+                      <small class="text-white">
+                        <i><em>${message.getDate()}</em></i>
+                      </small>
+                    </p>
+                  </li>
+                  <li class="list-group-item bg-danger">
+                    <div class="card-footer text-white">
+                      <strong><em>${message.getAuthorName()}</em></strong>
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                    aria-hidden="true"></i> Vote</button>
+              </div>
             </div>
-          </li>
-        </ul>
-        <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
-      </div>
-      </div>
-    </#if>
-    <#if message.getActivityType()=="Movie">
-      <div class="card text-white bg-light mb-3">
-        <#if message.filename??>
-          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
-        </#if>
-        <ul class="list-group list-group-flush bg-light">
-          <li class="list-group-item bg-light">
-            <h5 class="card-title">${message.getHeader()}</h5>
-          </li>
-          <li class="list-group-item bg-light">
-            <h5 class="card-title"></h5>${message.getTheme()}</h5>
-          </li>
-          <li class="list-group-item bg-light">
-            <div class="card-text m-2">
-              <span>${message.getText()}</span>
+          </#if>
+          <#if message.getActivityType()=="Bar">
+            <div class="col-md-6 col-xl-3">
+              <div class="card mx-auto mb-4 text-white bg-dark" style="max-width: 300px;">
+                <#if message.filename??>
+                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                    class="card-img-top">
+                </#if>
+                <ul class="list-group list-group-flush bg-dark">
+                  <li class="list-group-item bg-dark">
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                  </li>
+                  <li class="list-group-item bg-dark">
+                    <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                  </li>
+                  <li class="list-group-item bg-dark">
+                    <div class="card-text m-2">
+                      <span>${message.getText()}</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item bg-dark">
+                    <p class="card-text">
+                      <small class="text-white">
+                        <i><em>${message.getDate()}</em></i>
+                      </small>
+                    </p>
+                  </li>
+                  <li class="list-group-item bg-dark">
+                    <div class="card-footer text-white">
+                      <strong><em>${message.getAuthorName()}</em></strong>
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                    aria-hidden="true"></i> Vote</button>
+              </div>
             </div>
-          </li>
-          <li class="list-group-item bg-light">
-            <p class="card-text">
-              <small class="text-white">
-                <i><em>${message.getDate()}</em></i>
-              </small>
-            </p>
-          </li>
-          <li class="list-group-item bg-light">
-            <div class="card-footer text-white">
-              <strong><em>${message.getAuthorName()}</em></strong>
+          </#if>
+          <#if message.getActivityType()=="Just walk">
+            <div class="col-md-6 col-xl-3">
+              <div class="card mx-auto mb-4 text-white bg-success" style="max-width: 300px;">
+                <#if message.filename??>
+                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}"
+                    class="card-img-top">
+                </#if>
+                <ul class="list-group list-group-flush bg-success">
+                  <li class="list-group-item bg-success">
+                    <h5 class="card-title">${message.getHeader()}</h5>
+                  </li>
+                  <li class="list-group-item bg-success">
+                    <h5 class="card-title"></h5>${message.getTheme()}</h5>
+                  </li>
+                  <li class="list-group-item bg-success">
+                    <div class="card-text m-2">
+                      <span>${message.getText()}</span>
+                    </div>
+                  </li>
+                  <li class="list-group-item bg-success">
+                    <p class="card-text">
+                      <small class="text-white">
+                        <i><em>${message.getDate()}</em></i>
+                      </small>
+                    </p>
+                  </li>
+                  <li class="list-group-item bg-success">
+                    <div class="card-footer text-white">
+                      <strong><em>${message.getAuthorName()}</em></strong>
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                    aria-hidden="true"></i> Vote</button>
+              </div>
             </div>
-          </li>
-        </ul>
-        <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
+          </#if>
+        </#list>
       </div>
-      </div>
-    </#if>
-    <#if message.getActivityType()=="Club">
-      <div class="card text-white bg-danger mb-3">
-        <#if message.filename??>
-          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
-        </#if>
-        <ul class="list-group list-group-flush bg-danger">
-          <li class="list-group-item bg-danger">
-            <h5 class="card-title">${message.getHeader()}</h5>
-          </li>
-          <li class="list-group-item bg-danger">
-            <h5 class="card-title"></h5>${message.getTheme()}</h5>
-          </li>
-          <li class="list-group-item bg-danger">
-            <div class="card-text m-2">
-              <span>${message.getText()}</span>
-            </div>
-          </li>
-          <li class="list-group-item bg-danger">
-            <p class="card-text">
-              <small class="text-white">
-                <i><em>${message.getDate()}</em></i>
-              </small>
-            </p>
-          </li>
-          <li class="list-group-item bg-danger">
-            <div class="card-footer text-white">
-              <strong><em>${message.getAuthorName()}</em></strong>
-            </div>
-          </li>
-        </ul>
-        <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
-      </div>
-      </div>
-    </#if>
-    <#if message.getActivityType()=="Bar">
-      <div class="card text-white bg-dark mb-3">
-        <#if message.filename??>
-          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
-        </#if>
-        <ul class="list-group list-group-flush bg-dark">
-          <li class="list-group-item bg-dark">
-            <h5 class="card-title">${message.getHeader()}</h5>
-          </li>
-          <li class="list-group-item bg-dark">
-            <h5 class="card-title"></h5>${message.getTheme()}</h5>
-          </li>
-          <li class="list-group-item bg-dark">
-            <div class="card-text m-2">
-              <span>${message.getText()}</span>
-            </div>
-          </li>
-          <li class="list-group-item bg-dark">
-            <p class="card-text">
-              <small class="text-white">
-                <i><em>${message.getDate()}</em></i>
-              </small>
-            </p>
-          </li>
-          <li class="list-group-item bg-dark">
-            <div class="card-footer text-white">
-              <strong><em>${message.getAuthorName()}</em></strong>
-            </div>
-          </li>
-        </ul>
-        <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
-      </div>
-      </div>
-    </#if>
-    <#if message.getActivityType()=="Just walk">
-      <div class="card text-white bg-success mb-3">
-        <#if message.filename??>
-          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
-        </#if>
-        <ul class="list-group list-group-flush bg-success">
-          <li class="list-group-item bg-success">
-            <h5 class="card-title">${message.getHeader()}</h5>
-          </li>
-          <li class="list-group-item bg-success">
-            <h5 class="card-title"></h5>${message.getTheme()}</h5>
-          </li>
-          <li class="list-group-item bg-success">
-            <div class="card-text m-2">
-              <span>${message.getText()}</span>
-            </div>
-          </li>
-          <li class="list-group-item bg-success">
-            <p class="card-text">
-              <small class="text-white">
-                <i><em>${message.getDate()}</em></i>
-              </small>
-            </p>
-          </li>
-          <li class="list-group-item bg-success">
-            <div class="card-footer text-white">
-              <strong><em>${message.getAuthorName()}</em></strong>
-            </div>
-          </li>
-        </ul>
-        <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-          onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users" aria-hidden="true"></i> Vote</button>
-      </div>
-      </div>
-    </#if>
-    </#list>
-    </div>
     </div>
   </@c.page>
