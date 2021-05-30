@@ -25,10 +25,10 @@
                   <div class="col-sm">
                     <#if dialogMes.getFromId()==user>
                       <div class="shadow p-3 mb-5 bg-white rounded">
-                        <p class="lead">
+                        <p class="lead" align="right">
                           ${dialogMes.getText()}
                         </p>
-                        <small class="form-text text-muted">${dialogMes.getDate()}</small>
+                        <small class="form-text text-muted" align="right">${dialogMes.getDate()}</small>
                       </div>
                     </#if>
                   </div>
@@ -50,33 +50,36 @@
 
       </div>
 </div>
-<script type="text/javascript">
-  window.scrollTo(0, document.body.scrollHeight);
-</script>
+      <script type="text/javascript">
+        window.scrollTo(0, document.body.scrollHeight);
+      </script>
+      <script type="text/javascript" src="//web-ptica.ru/VRV-files/jquery-2.1.3.min.js"></script>
+      <script type="text/javascript" src="//web-ptica.ru/VRV-files/knopkavverh/3.js"></script>
+      <script type='text/javascript'>
+        var xmlDocument;
 
-<script type='text/javascript'>
-  var xmlDocument;
+        setInterval(function refresh() {
+          var XMLHttpRequestObject = false;
+          if (window.XMLHttpRequest)
+            XMLHttpRequestObject = new XMLHttpRequest();
+          else if (window.ActiveXobject)
+            XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
 
-  setInterval(function refresh() {
-    var XMLHttpRequestObject = false;
-    if (window.XMLHttpRequest)
-      XMLHttpRequestObject = new XMLHttpRequest();
-    else if (window.ActiveXobject)
-      XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
-
-    if (XMLHttpRequestObject) {
-      XMLHttpRequestObject.open('GET', "/dialog/${dialog.id}/${dialog.getFirstUser().getId()}/${dialog.getSecondUser().getId()}", true);
-      XMLHttpRequestObject.responseType = 'document';
-      XMLHttpRequestObject.onreadystatechange = function () {
-        if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
-          xmlDocument = XMLHttpRequestObject.responseXML;
-          document.getElementById('update_pls').innerHTML = xmlDocument.getElementById('update_pls').innerHTML;
-          console.log("Update");
-          window.scrollTo(0, document.body.scrollHeight);
-        }
-      }
-      XMLHttpRequestObject.send(null);
-    }
-  }, 2000);
-</script>
+          if (XMLHttpRequestObject) {
+            XMLHttpRequestObject.open('GET', "/dialog/${dialog.id}/${dialog.getFirstUser().getId()}/${dialog.getSecondUser().getId()}", true);
+            XMLHttpRequestObject.responseType = 'document';
+            XMLHttpRequestObject.onreadystatechange = function () {
+              if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                xmlDocument = XMLHttpRequestObject.responseXML;
+                document.getElementById('update_pls').innerHTML = xmlDocument.getElementById('update_pls').innerHTML;
+                console.log("Update");
+                if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
+                  window.scrollTo(0, document.body.scrollHeight);
+                }
+              }
+            }
+            XMLHttpRequestObject.send(null);
+          }
+        }, 2000);
+      </script>
 </@c.page>

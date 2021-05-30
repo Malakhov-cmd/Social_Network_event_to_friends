@@ -2,67 +2,85 @@
   <@c.page>
     <div id="Chat_Mess">
       <div class="container">
-        <#if dialogSize==0>
-          No messages yet
-          <#else>
-            <#list listMessages as dialogMes>
-              <div class="row">
-                <div class="col-sm">
-                  <#if dialogMes.getAuthor().getId()!=user.getId()>
-                    <div class="shadow p-3 mb-5 bg-white rounded">
-                      <p class="lead">
-                        ${dialogMes.getText()}
-                      </p>
-                      <p class="lead">
-                        ${dialogMes.getAuthor().getUsername()}
-                      </p>
-                      <small class="form-text text-muted">${dialogMes.getDate()}</small>
-                    </div>
-                  </#if>
-                </div>
-                <div class="col-sm">
+        <div id="update_pls">
+          <#if dialogSize==0>
+            No messages yet
+            <#else>
+              <#list listMessages as dialogMes>
+                <div class="row">
+                  <div class="col-sm">
+                    <#if dialogMes.getAuthor().getId()!=user.getId()>
+                      <div class="shadow p-3 mb-5 bg-white rounded">
+                        <p class="lead">
+                          ${dialogMes.getText()}
+                        </p>
+                        <p class="lead">
+                          ${dialogMes.getAuthor().getUsername()}
+                        </p>
+                        <small class="form-text text-muted">${dialogMes.getDate()}</small>
+                      </div>
+                    </#if>
+                  </div>
+                  <div class="col-sm">
 
+                  </div>
+                  <div class="col-sm">
+                    <#if dialogMes.getAuthor().getId()==user.getId()>
+                      <div class="shadow p-3 mb-5 bg-white rounded">
+                        <p class="lead">
+                          ${dialogMes.getText()}
+                        </p>
+                        <small class="form-text text-muted">${dialogMes.getDate()}</small>
+                      </div>
+                    </#if>
+                  </div>
                 </div>
-                <div class="col-sm">
-                  <#if dialogMes.getAuthor().getId()==user.getId()>
-                    <div class="shadow p-3 mb-5 bg-white rounded">
-                      <p class="lead">
-                        ${dialogMes.getText()}
-                      </p>
-                      <small class="form-text text-muted">${dialogMes.getDate()}</small>
-                    </div>
-                  </#if>
-                </div>
-              </div>
-            </#list>
-        </#if>
+              </#list>
+          </#if>
+        </div>
+
+        <form method="post">
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Message</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="MessageText"></textarea>
+          </div>
+          <input type="hidden" name="_csrf" value="${_csrf.token}" />
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary ml-2" id="try_empty">Send</button>
+          </div>
+        </form>
       </div>
-      <form method="post">
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Message</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="MessageText"></textarea>
-        </div>
-        <input type="hidden" name="_csrf" value="${_csrf.token}" />
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary ml-2" id="try_empty">Send</button>
-        </div>
-      </form>
       <script type="text/javascript">
         window.scrollTo(0, document.body.scrollHeight);
       </script>
+      <script type="text/javascript" src="//web-ptica.ru/VRV-files/jquery-2.1.3.min.js"></script>
+      <script type="text/javascript" src="//web-ptica.ru/VRV-files/knopkavverh/3.js"></script>
       <script type='text/javascript'>
-        document.getElementById("exampleFormControlTextarea1").focus();
+              var xmlDocument;
 
-        const inputValue = document.getElementById('exampleFormControlTextarea1');
-        const enterEmpty = document.getElementById('try_empty');
+              setInterval(function refresh() {
+                var XMLHttpRequestObject = false;
+                if (window.XMLHttpRequest)
+                  XMLHttpRequestObject = new XMLHttpRequest();
+                else if (window.ActiveXobject)
+                  XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
 
-        inputValue.addEventListener("focusout", () => {
-          if (!document.querySelector('textarea:focus')) {
-            setTimeout(function () {
-              enterEmpty.click();
-            }, 1000);
-          }
-        });
-      </script>
+                if (XMLHttpRequestObject) {
+                  XMLHttpRequestObject.open('GET', "/vote/discussion/${message.getId()}/${dialog.getId()}/${user.getId()}", true);
+                  XMLHttpRequestObject.responseType = 'document';
+                  XMLHttpRequestObject.onreadystatechange = function () {
+                    if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                          xmlDocument = XMLHttpRequestObject.responseXML;
+                          document.getElementById('update_pls').innerHTML = xmlDocument.getElementById('update_pls').innerHTML;
+                          console.log("Update");
+                          if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
+                          window.scrollTo(0, document.body.scrollHeight);
+                        }
+                      }
+                    }
+                  XMLHttpRequestObject.send(null);
+                }
+              }, 2000);
+            </script>
     </div>
   </@c.page>
