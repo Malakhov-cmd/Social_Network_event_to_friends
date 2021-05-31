@@ -55,24 +55,26 @@
             onclick="window.location.href='/twitboard/${user.id}'; return false">Board</button>
         </div>
         <#if currentUser.id==user.id>
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <button type="button" class="btn btn-primary"
-                onclick="window.location.href='/confirmationrequest/${user.id}'; return false">
-                <i class="fa fa-user-plus" aria-hidden="true"></i> Request friend
-                <span class="badge badge-primary badge-pill">${requestFriendCount}</span>
-                <span class="sr-only">unread messages</span>
-              </button>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <button type="button" class="btn btn-primary"
-                onclick="window.location.href='/respondlist/${user.id}'; return false">
-                <i class="fa fa-user" aria-hidden="true"></i> Respond friend
-                <span class="badge badge-primary badge-pill">${respondFriendCount}</span>
-                <span class="sr-only">unread messages</span>
-              </button>
-            </li>
-          </ul>
+          <div id="update_friendReq">
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-primary"
+                  onclick="window.location.href='/confirmationrequest/${user.id}'; return false">
+                  <i class="fa fa-user-plus" aria-hidden="true"></i> Request friend
+                  <span class="badge badge-primary badge-pill">${requestFriendCount}</span>
+                  <span class="sr-only">unread messages</span>
+                </button>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-primary"
+                  onclick="window.location.href='/respondlist/${user.id}'; return false">
+                  <i class="fa fa-user" aria-hidden="true"></i> Respond friend
+                  <span class="badge badge-primary badge-pill">${respondFriendCount}</span>
+                  <span class="sr-only">unread messages</span>
+                </button>
+              </li>
+            </ul>
+          </div>
         </#if>
       </form>
       <#if currentUser.id==user.id>
@@ -124,16 +126,48 @@
             <p>User not founded or you try to talk with yourself</p>
           </#if>
         </form>
-        <form method="post">
+        <form method="post" id="postFormFindFriend">
           <div class="form-group">
             <label for="findFriend">Find friend</label>
             <textarea class="form-control" id="findFriend" rows="1" name="friendId"
               placeholder="Enter user id"></textarea>
           </div>
-          <input type="hidden" name="_csrf" value="${_csrf.token}" />
+          <input type="hidden" name="_csrf" value="${_csrf.token}" id="_csrfNewFriend" />
           <div class="form-group">
             <button type="submit" class="btn btn-primary ml-2">Find</button>
           </div>
+          <script type='text/javascript'>
+            var xmlDocument;
+            var formFriends = document.getElementById('postFormFindFriend');
+
+            formFriends.onsubmit = function refresh(event) {
+
+              var textNewFriendValue = document.getElementById('findFriend');
+              var valFriend = textNewFriendValue.value;
+
+              event.preventDefault();
+              var XMLHttpRequestObject = false;
+              if (window.XMLHttpRequest)
+                XMLHttpRequestObject = new XMLHttpRequest();
+              else if (window.ActiveXobject)
+                XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+              if (XMLHttpRequestObject) {
+                XMLHttpRequestObject.open('POST', "/profile/${user.getId()}", true);
+                XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', document.getElementById('_csrfNewFriend').value);
+                XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                XMLHttpRequestObject.responseType = 'document';
+                XMLHttpRequestObject.onreadystatechange = function () {
+                  if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                    xmlDocument = XMLHttpRequestObject.responseXML;
+                    document.getElementById('update_friendReq').innerHTML = xmlDocument.getElementById('update_friendReq').innerHTML;
+                    console.log("Update friend req");
+                  }
+                }
+                XMLHttpRequestObject.send("friendId=" + valFriend);
+              }
+            };
+          </script>
         </form>
 
         <div class="accordion" id="accordionExample">
