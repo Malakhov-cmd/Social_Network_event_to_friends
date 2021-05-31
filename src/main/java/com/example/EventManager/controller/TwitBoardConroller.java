@@ -67,6 +67,10 @@ public class TwitBoardConroller {
         Date date = new Date();
         twitMessage.setAuthor(currentUser);
 
+        System.out.println("THEME:" + theme);
+        System.out.println("TEXT" + text);
+        //System.out.println("FILE:" + twitFileMessageFile.getOriginalFilename());
+
         TwitBoard twitBoard = twitBoardRepo.findByid(user.getIdBoard());
 
         if (bindingResult.hasErrors()) {
