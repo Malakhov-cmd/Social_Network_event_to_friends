@@ -183,14 +183,14 @@
 
             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
               <div class="card-body">
-                <form method="post">
+                <form method="post" id="from_groupCreator">
                   <div class="form-group">
                     <label for="roomName">Room name</label>
                     <textarea class="form-control" id="roomName" rows="1" name="roomName"></textarea>
                   </div>
 
                   <div>
-                    <input type="text" hidden name="strFriendToRoom" class="placeHold">
+                    <input type="text" hidden id="str_Friend_to_room" name="strFriendToRoom" class="placeHold">
                   </div>
 
                   <div class="frientSelected">
@@ -212,10 +212,43 @@
                       </#if>
                     </div>
                   </div>
-                  <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                  <input type="hidden" name="_csrf" value="${_csrf.token}" id="_csrfFriendListToCreateRoom"/>
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary ml-2">Create</button>
                   </div>
+                  <script type='text/javascript'>
+                    var xmlDocument;
+                    var formGroupCreat = document.getElementById('from_groupCreator');
+
+                    formGroupCreat.onsubmit = function refresh(event) {
+
+                      var textNewRoomNameValue = document.getElementById('roomName');
+                      var valRoomName = textNewRoomNameValue.value;
+
+                      var textNewFriendToRoomListValue = document.getElementById('str_Friend_to_room');
+                      var valFriendList = textNewFriendToRoomListValue.value;
+
+                      event.preventDefault();
+                      var XMLHttpRequestObject = false;
+                      if (window.XMLHttpRequest)
+                        XMLHttpRequestObject = new XMLHttpRequest();
+                      else if (window.ActiveXobject)
+                        XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+                      if (XMLHttpRequestObject) {
+                        XMLHttpRequestObject.open('POST', "/profile/${user.getId()}", true);
+                        XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', document.getElementById('_csrfFriendListToCreateRoom').value);
+                        XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        XMLHttpRequestObject.responseType = 'document';
+                        XMLHttpRequestObject.onreadystatechange = function () {
+                          if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                            console.log("Update room members");
+                          }
+                        }
+                        XMLHttpRequestObject.send("roomName=" + valRoomName + "&strFriendToRoom=" + valFriendList);
+                      }
+                    };
+                  </script>
                 </form>
               </div>
             </div>
