@@ -119,6 +119,7 @@
                   }
                   XMLHttpRequestObject.send("userToDialog=" + valDialog);
                 }
+                textNewDialogValue.value = "";
               };
             </script>
           </div>
@@ -166,6 +167,7 @@
                 }
                 XMLHttpRequestObject.send("friendId=" + valFriend);
               }
+              textNewFriendValue.value = "";
             };
           </script>
         </form>
@@ -212,7 +214,7 @@
                       </#if>
                     </div>
                   </div>
-                  <input type="hidden" name="_csrf" value="${_csrf.token}" id="_csrfFriendListToCreateRoom"/>
+                  <input type="hidden" name="_csrf" value="${_csrf.token}" id="_csrfFriendListToCreateRoom" />
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary ml-2">Create</button>
                   </div>
@@ -247,6 +249,8 @@
                         }
                         XMLHttpRequestObject.send("roomName=" + valRoomName + "&strFriendToRoom=" + valFriendList);
                       }
+                      textNewRoomNameValue.value = "";
+                      textNewFriendToRoomListValue.value = "";
                     };
                   </script>
                 </form>
