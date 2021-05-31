@@ -165,11 +165,11 @@
                     <div class="card-body">
                       <div class="form-group mb-3">
                         <div class="form-group">
-                          <form action="/addComment" method="POST" enctype="multipart/form-data">
+                          <form action="/addComment" method="POST" enctype="multipart/form-data" class="cls_comment">
 
                             <label for="inputCommentText">Comment input</label>
                             <input type="text"
-                              class="form-control mt-2 mb-3 ${(commentTextError??)?string('is-invalid', '')}"
+                              class="cls_comment_txt form-control mt-2 mb-3 ${(commentTextError??)?string('is-invalid', '')}"
                               name="commentText" id="inputCommentText"
                               value="<#if twitMessageComment??>${twitMessageComment.commentText}</#if>">
                             <#if commentTextError??>
@@ -177,11 +177,11 @@
                                 ${commentTextError}
                               </div>
                             </#if>
-
                             <label for="twitMesCommentFilename">add picture if you need</label>
                             <div class="form-group" id="twitMesCommentFilename">
                               <div class="custom-file">
-                                <input type="file" id="customFileComment" name="twitFileMessageCommentFile">
+                                <input type="file" id="customFileComment" name="twitFileMessageCommentFile"
+                                  class="cls_commentFile">
                                 <label class="custom-file-label" for="customFileComment">Choose file</label>
                               </div>
                             </div>
@@ -189,16 +189,19 @@
                               <label class="col-sm-2 col-form-label">${FileMessageCommentError}</label>
                             </#if>
 
-                            <input type="hidden" name="twitMessageRequaredTocomment" value="${message.getId()}" />
-                            <input type="hidden" name="twitBoardreqiaredToComment" value="${user.getIdBoard()}" />
-                            <input type="hidden" name="twitUserToreturn" value="${user.getId()}" />
-                            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                            <input type="hidden" name="twitMessageRequaredTocomment" value="${message.getId()}"
+                              class="cls_messageToComment" />
+                            <input type="hidden" name="twitBoardreqiaredToComment" value="${user.getIdBoard()}"
+                              class="cls_twitBoardToComment" />
+                            <input type="hidden" name="twitUserToreturn" value="${user.getId()}"
+                              class="cls_twitUserToReturn" />
+                            <input type="hidden" name="_csrf" value="${_csrf.token}" class="cls__csrfComment" />
 
                             <button type="submit" class="btn btn-primary ml-2">Add</button>
                           </form>
                         </div>
 
-                        <div class="form-group">
+                        <div class="cls_updateComment form-group">
                           <#list message.getTwitBoardMessageComments() as comment>
                             <div class="card mb-3">
                               <#if comment.filename??>
@@ -259,7 +262,6 @@
     <script type='text/javascript'>
       var xmlDocument;
       var formTwitLike = document.querySelectorAll('.cls_form_twitLike').forEach((elem, index) => {
-        console.log(index);
         elem.onsubmit = function refresh(event) {
 
           var textTwitReturnValue = elem.querySelector('.cls_twit_MessageLiked');
@@ -285,16 +287,91 @@
                 xmlDocument = XMLHttpRequestObject.responseXML;
 
                 var responseLikes = xmlDocument.querySelectorAll('.cls_update_twitLike').forEach((like, indexLike) => {
-                    if(indexLike === index){
-                      elem.querySelector('.cls_update_twitLike').innerHTML = like.innerHTML;
-                      console.log("Update twit like");
-                    }
+                  if (indexLike === index) {
+                    elem.querySelector('.cls_update_twitLike').innerHTML = like.innerHTML;
+                    console.log("Update twit like");
+                  }
                 });
               }
             }
             XMLHttpRequestObject.send("twitMessageLiked=" + valTwitReturn + "&twitUserToReturn=" + valUserReturn);
           }
           //textNewFriendValue.value = "";
+        };
+      });
+    </script>
+    <script type='text/javascript'>
+      var xmlDocument;
+      var formTwitCreate = document.querySelectorAll('.cls_comment').forEach((elem, index) => {
+        elem.onsubmit = function refresh(event) {
+
+          var commentTxt = elem.querySelector('.cls_comment_txt');
+          var valcommentTxt = commentTxt.value;
+
+          var fileComment = elem.querySelector('.cls_commentFile');
+          var valfileComment = fileComment.value;
+
+          var messageToComment = elem.querySelector('.cls_messageToComment');
+          var valmessageToComment = messageToComment.value;
+
+          var twitVoardComment = elem.querySelector('.cls_twitBoardToComment');
+          var valtwitVoardComment = twitVoardComment.value;
+
+          var userToReturn = elem.querySelector('.cls_twitUserToReturn');
+          var valuserToReturn = userToReturn.value;
+
+          if (valfileComment == "") {
+            var data = {
+              commentText: valcommentTxt,
+              twitMessageRequaredTocomment: valmessageToComment,
+              twitBoardreqiaredToComment: valtwitVoardComment,
+              twitUserToreturn: valuserToReturn,
+            };
+
+            var boundary = String(Math.random()).slice(4);
+            var boundaryMiddle = '--' + boundary + '\r\n';
+            var boundaryLast = '--' + boundary + '--\r\n';
+
+            var body = ['\r\n'];
+            for (var key in data) {
+              // добавление поля
+              body.push('Content-Disposition: form-data; name="' + key + '"\r\n\r\n' + data[key] + '\r\n');
+            }
+
+            body = body.join(boundaryMiddle) + boundaryLast;
+
+            event.preventDefault();
+            var XMLHttpRequestObject = false;
+            if (window.XMLHttpRequest)
+              XMLHttpRequestObject = new XMLHttpRequest();
+            else if (window.ActiveXobject)
+              XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+            if (XMLHttpRequestObject) {
+              XMLHttpRequestObject.open('POST', "/addComment", true);
+              XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('.cls__csrfComment').value);
+              XMLHttpRequestObject.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);
+              XMLHttpRequestObject.responseType = 'document';
+              XMLHttpRequestObject.onreadystatechange = function () {
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                  xmlDocument = XMLHttpRequestObject.responseXML;
+
+                  var existsComments = document.querySelectorAll('.cls_updateComment').forEach((commnetToUp, indexUp) => {
+                    if (indexUp === index) {
+                      var responseComments = xmlDocument.querySelectorAll('.cls_updateComment').forEach((comment, indexComment) => {
+                        if (indexComment === index) {
+                          commnetToUp.innerHTML = comment.innerHTML;
+                          console.log("Update twit comment");
+                        }
+                      });
+                    }
+                  });
+                }
+              }
+              XMLHttpRequestObject.send(body);
+            }
+            valcommentTxt.value = "";
+          }
         };
       });
     </script>
