@@ -75,7 +75,12 @@ public class ProfileController {
                               @RequestParam(required = false) String strFriendToRoom,
                               Model model) {
         User futureFriend = userRepo.findByid(friendId);
-
+        System.out.println("CURRENT USER: " + currentUser.getId());
+        System.out.println("USER:" + user.getId());
+        System.out.println("FRIEND ID: " + friendId);
+        System.out.println("USER TO DIALOG:" + userToDialog);
+        System.out.println("ROOM NAME: " + roomName);
+        System.out.println("STR FRIEND TO ROOM: " + strFriendToRoom);
         //удаление из друзей
         if (!currentUser.getId().equals(user.getId())) {
             User currentUserUpdated = userRepo.findByid(currentUser.getId());
@@ -104,6 +109,7 @@ public class ProfileController {
             model.addAttribute("FriendListSize", updatedUser.getFriendList().size());
         } else {
             //создание диалога
+
             if (userToDialog != null
                     && userToDialog >= 1) {
                 User dialogUser = userRepo.findByid(userToDialog);

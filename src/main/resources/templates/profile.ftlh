@@ -7,7 +7,7 @@
   </#if>
   <#import "parts/common.ftlh" as c>
     <@c.page>
-    <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
+      <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
       <div class="container mt-5 mb-5">
         <div class="row">
           <div class="col align-self-center">
@@ -78,15 +78,47 @@
       <#if currentUser.id==user.id>
         <button type="button" class="btn btn-primary btn-lg btn-block"
           onclick="window.location.href='/dialogs/${user.id}'; return false">Dialogs</button>
-        <form method="post">
+        <form method="post" id="formUpdateCreatenewDialog">
           <div class="form-group mt-3">
             <label for="newDialog">Start new dialog</label>
             <textarea class="form-control" id="newDialog" rows="1" name="userToDialog"
               placeholder="Enter user id"></textarea>
           </div>
-          <input type="hidden" name="_csrf" value="${_csrf.token}" />
+          <input type="hidden" name="_csrf" value="${_csrf.token}" id="_csrfNewDialog" />
           <div class="form-group">
-            <button type="submit" class="btn btn-primary ml-2">Create</button>
+            <button type="submit" class="btn btn-primary ml-2" id="startDialogBtn">Create</button>
+
+            <script type='text/javascript'>
+              var xmlDocument;
+              var btn = document.getElementById('formUpdateCreatenewDialog');
+
+              btn.onsubmit = function refresh(event) {
+
+                var textNewDialogValue = document.getElementById('newDialog');
+                var valDialog = textNewDialogValue.value;
+
+                event.preventDefault();
+                var XMLHttpRequestObject = false;
+                if (window.XMLHttpRequest)
+                  XMLHttpRequestObject = new XMLHttpRequest();
+                else if (window.ActiveXobject)
+                  XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+                if (XMLHttpRequestObject) {
+                  XMLHttpRequestObject.open('POST', "/profile/${user.getId()}", true);
+                  XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', document.getElementById('_csrfNewDialog').value);
+                  XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                  XMLHttpRequestObject.responseType = 'document';
+                  XMLHttpRequestObject.onreadystatechange = function () {
+                    if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                      console.log("post_create_dialog");
+                      console.log(valDialog);
+                    }
+                  }
+                  XMLHttpRequestObject.send("userToDialog=" + valDialog);
+                }
+              };
+            </script>
           </div>
           <#if userToCreateDialogNotFounded==true>
             <p>User not founded or you try to talk with yourself</p>
@@ -162,37 +194,39 @@
             </div>
           </div>
       </#if>
-      <#if currentUser.id!=user.id && isFriend==true>
-        <form method="post">
-          <div class="form-group">
-            <label for="deleteFriend">Delete from friend</label>
-          </div>
-          <input type="hidden" name="_csrf" value="${_csrf.token}" />
-          <div class="form-group">
-            <button type="submit" id="deleteFriend" class="btn btn-primary ml-2">Delete</button>
-          </div>
-        </form>
-      </#if>
-      <table class="table table-hover mt-6">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Username</th>
-            <th scope="col">Id</th>
-          </tr>
-        </thead>
-        <tbody>
-          <#if FriendListSize!=0>
-            <#list friendList as friend>
-              <tr onclick="window.location.href='/profile/${friend.id}'; return false">
-                <th scope="row">${friend_index}</th>
-                <td>${friend.username}</td>
-                <td>${friend.id}</td>
-              </tr>
-            </#list>
-          </#if>
-        </tbody>
-      </table>
+      <div id="update_this">
+        <#if currentUser.id!=user.id && isFriend==true>
+          <form method="post">
+            <div class="form-group">
+              <label for="deleteFriend">Delete from friend</label>
+            </div>
+            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+            <div class="form-group">
+              <button type="submit" id="deleteFriend" class="btn btn-primary ml-2">Delete</button>
+            </div>
+          </form>
+        </#if>
+        <table class="table table-hover mt-6">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Username</th>
+              <th scope="col">Id</th>
+            </tr>
+          </thead>
+          <tbody>
+            <#if FriendListSize!=0>
+              <#list friendList as friend>
+                <tr onclick="window.location.href='/profile/${friend.id}'; return false">
+                  <th scope="row">${friend_index}</th>
+                  <td>${friend.username}</td>
+                  <td>${friend.id}</td>
+                </tr>
+              </#list>
+            </#if>
+          </tbody>
+        </table>
+      </div>
       <script>
         const inputs = document.querySelectorAll('.inputFriend');
         console.log(inputs.length);
@@ -212,5 +246,50 @@
             });
           });
         });
+      </script>
+      <script>
+        var areaFriend = document.getElementById('newDialog')
+        areaFriend.addEventListener('keydown', () => {
+          areaFriend.value = areaFriend.value.replace(/\D/g, '')
+        })
+
+        areaFriend.addEventListener('keyup', () => {
+          areaFriend.value = areaFriend.value.replace(/\D/g, '')
+        })
+
+        var areaDialog = document.getElementById('findFriend')
+        areaDialog.addEventListener('keydown', () => {
+          areaDialog.value = areaDialog.value.replace(/\D/g, '')
+        })
+
+        areaDialog.addEventListener('keyup', () => {
+          areaDialog.value = areaDialog.value.replace(/\D/g, '')
+        })
+      </script>
+      <script type='text/javascript'>
+        var xmlDocument;
+        var areaFriend = document.getElementById('newDialog')
+        var areaDialog = document.getElementById('findFriend')
+
+        setInterval(function refresh() {
+          var XMLHttpRequestObject = false;
+          if (window.XMLHttpRequest)
+            XMLHttpRequestObject = new XMLHttpRequest();
+          else if (window.ActiveXobject)
+            XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+          if (XMLHttpRequestObject) {
+            XMLHttpRequestObject.open('GET', "/profile/${user.getId()}", true);
+            XMLHttpRequestObject.responseType = 'document';
+            XMLHttpRequestObject.onreadystatechange = function () {
+              if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                xmlDocument = XMLHttpRequestObject.responseXML;
+                document.getElementById('update_this').innerHTML = xmlDocument.getElementById('update_this').innerHTML;
+                console.log("Update");
+              }
+            }
+            XMLHttpRequestObject.send(null);
+          }
+        }, 2000);
       </script>
     </@c.page>
