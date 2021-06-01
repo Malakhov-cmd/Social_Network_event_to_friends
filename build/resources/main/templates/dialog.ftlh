@@ -2,7 +2,7 @@
   <#import "parts/common.ftlh" as c>
     <@c.page>
 
-      <div class="container">
+      <div class="container mb-4">
         <div id="update_pls">
           <#if dialogSize==0>
             No messages yet
@@ -40,9 +40,10 @@
         <form method="post" id="sendMsg" class="cls_sendMsg">
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Message</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="MessageText" class="cls_MsgText"></textarea>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="MessageText"
+              class="cls_MsgText"></textarea>
           </div>
-          <input type="hidden" name="_csrf" value="${_csrf.token}" class="cls__csrfMsg"/>
+          <input type="hidden" name="_csrf" value="${_csrf.token}" class="cls__csrfMsg" />
           <div class="form-group">
             <button type="submit" class="btn btn-primary ml-2" id="try_empty">Send</button>
           </div>
@@ -80,7 +81,7 @@
         XMLHttpRequestObject.send(null);
       }
     }
-  }, 1000);
+  }, 500);
 </script>
 <script type='text/javascript'>
   var xmlDocument;

@@ -162,7 +162,7 @@
       </div>
     </#if>
     <#if message.getActivityType()=="Movie">
-      <div class="card bg-light text-white mb-3">
+      <div class="card bg-light mb-3">
         <#if message.filename??>
           <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${message.filename}" class="card-img-top">
         </#if>
@@ -180,13 +180,13 @@
           </li>
           <li class="list-group-item bg-light">
             <p class="card-text">
-              <small class="text-white">
+              <small>
                 <i>${message.getDate()}</i>
               </small>
             </p>
           </li>
           <li class="list-group-item bg-light">
-            <div class="card-footer text-white">
+            <div class="card-footer">
               <strong>${message.getAuthorName()}</strong>
             </div>
           </li>

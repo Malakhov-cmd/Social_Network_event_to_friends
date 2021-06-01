@@ -87,7 +87,7 @@
       </div>
     </div>
     <div id="updateRoomName">
-      <div class="row mt-3 mb-2">
+      <div class="row mt-3 mb-4">
         <#list messages as message>
           <#if message.getActivityType()=="Sporty">
             <div class="col-md-6 col-xl-3">

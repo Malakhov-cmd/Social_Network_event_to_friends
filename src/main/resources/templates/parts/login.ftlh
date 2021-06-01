@@ -28,7 +28,7 @@
       <div class="form-group">
         <div class="custom-file">
           <input type="file" id="customFile" name="avatar">
-          <label class="custom-file-label" for="customFile">Choose avatar photo in ong format</label>
+          <label class="custom-file-label" for="customFile">Choose avatar photo in images format</label>
         </div>
         <#if FormatException??>
           <label class="col-sm-2 col-form-label">${FormatException}</label>

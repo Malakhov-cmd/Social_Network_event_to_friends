@@ -77,7 +77,7 @@
         </div>
       </div>
     </div>
-    <blockquote class="blockquote mt-4 mb-2">
+    <blockquote class="blockquote mt-4 mb-3">
       <p class="mb-0 lead">Communicate, get together, have fun, fall in love, be together</p>
       <footer class="blockquote-footer">Developer and designer <cite title="Source Title">George Malakhov</cite></footer>
     </blockquote>

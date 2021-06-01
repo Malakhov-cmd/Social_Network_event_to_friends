@@ -1,14 +1,15 @@
 <#import "parts/common.ftlh" as c>
   <@c.page>
     <#list userRespond as respond>
-      <div class="card">
+      <div class="card mt-3 mb-4">
         <div class="card-header" id=${respond_index}>
           <h5 class="mb-0">
             <p>Request ${respond_index}</p>
           </h5>
         </div>
         <div class="card-body">
-          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${respond.avatarFilename}" class="card-img-top">
+          <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${respond.avatarFilename}"
+            class="card-img-top">
           <ul class="list-group list-group-flush bg-light">
             <li class="list-group-item bg-light">
               <div class="card-text m-2">

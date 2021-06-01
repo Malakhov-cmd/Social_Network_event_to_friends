@@ -102,6 +102,8 @@ public class ProfileController {
             model.addAttribute("requestFriendCount", updatedUser.getFriendRequestList().size());
             model.addAttribute("respondFriendCount", updatedUser.getFriendRespondList().size());
             model.addAttribute("FriendListSize", updatedUser.getFriendList().size());
+
+            return "redirect:/profile/"+currentUser.getId();
         } else {
             //создание диалога
 
@@ -257,7 +259,7 @@ public class ProfileController {
         List<User> userRequest = user.getFriendRequestList();
 
         model.addAttribute("futureFriendRequest", userRequest);
-
+        model.addAttribute("user", user);
         return "confirmationFriendRequest";
     }
 
@@ -267,7 +269,6 @@ public class ProfileController {
                                    @RequestParam Long secondUser,
                                    Model model) {
         User potentialFriend = userRepo.findByid(secondUser);
-
         switch (design) {
             case ("add"):
                 List<User> userFriend = user.getFriendList();

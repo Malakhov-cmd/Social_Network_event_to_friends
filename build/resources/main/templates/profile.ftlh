@@ -8,10 +8,15 @@
   <#import "parts/common.ftlh" as c>
     <@c.page>
       <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
-      <div class="container mt-5 mb-5">
+      <div class="container mt-5 mb-3">
         <div class="row">
           <div class="col align-self-center">
             <p class="lead"> Profile </p>
+            <style>
+              .lead {
+                font-size: 1.8rem;
+              }
+            </style>
           </div>
         </div>
       </div>
@@ -277,7 +282,7 @@
             </div>
           </form>
         </#if>
-        <table class="table table-hover mt-6">
+        <table class="table table-hover mt-6 mb-4">
           <thead>
             <tr>
               <th scope="col">#</th>
