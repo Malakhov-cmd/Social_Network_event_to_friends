@@ -83,7 +83,7 @@ public class MainController {
                       @Valid Message message,
                       BindingResult bindingResult,
                       Model model,
-                      @RequestParam("file") MultipartFile file) throws IOException {
+                      @RequestParam(required = false) MultipartFile file) throws IOException {
 
         Date date = new Date();
         message.setAuthor(user);
@@ -92,6 +92,7 @@ public class MainController {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
+
         } else {
             model.addAttribute("message", null);
 
