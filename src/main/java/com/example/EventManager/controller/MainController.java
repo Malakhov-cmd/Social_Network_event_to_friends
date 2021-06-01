@@ -314,6 +314,8 @@ public class MainController {
         model.addAttribute("listMessages", listMessage);
         model.addAttribute("dialogSize", listMessage.size());
 
+        System.out.println("Got it");
+
         return "voteDialog";
     }
 }
