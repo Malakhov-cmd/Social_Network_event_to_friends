@@ -50,59 +50,63 @@
                 </div>
                 <script type='text/javascript'>
                   var xmlDocument;
-                  var formTwitCreate = document.getElementById('form_createTwit');
+                  setInterval(function upd() {
+                    var formTwitCreate = document.getElementById('form_createTwit');
 
-                  formTwitCreate.onsubmit = function refresh(event) {
+                    formTwitCreate.onsubmit = function refresh(event) {
 
-                    var textNewTwitThemeValue = document.getElementById('twitTheme');
-                    var valTwitThemeName = textNewTwitThemeValue.value;
+                      var textNewTwitThemeValue = document.getElementById('twitTheme');
+                      var valTwitThemeName = textNewTwitThemeValue.value;
 
-                    var textNewTwitTextValue = document.getElementById('twitText');
-                    var valTwitTextList = textNewTwitTextValue.value;
+                      var textNewTwitTextValue = document.getElementById('twitText');
+                      var valTwitTextList = textNewTwitTextValue.value;
 
-                    var textNewTwitFileValue = document.getElementById('customFile');
-                    var valTwitFile = textNewTwitFileValue.value;
-                    if (valTwitFile == "") {
-                      var data = {
-                        theme: valTwitThemeName,
-                        text: valTwitTextList,
-                      };
+                      var textNewTwitFileValue = document.getElementById('customFile');
+                      var valTwitFile = textNewTwitFileValue.value;
+                      if (valTwitFile == "") {
+                        var data = {
+                          theme: valTwitThemeName,
+                          text: valTwitTextList,
+                        };
 
-                      var boundary = String(Math.random()).slice(3);
-                      var boundaryMiddle = '--' + boundary + '\r\n';
-                      var boundaryLast = '--' + boundary + '--\r\n';
+                        var boundary = String(Math.random()).slice(3);
+                        var boundaryMiddle = '--' + boundary + '\r\n';
+                        var boundaryLast = '--' + boundary + '--\r\n';
 
-                      var body = ['\r\n'];
-                      for (var key in data) {
-                        // добавление поля
-                        body.push('Content-Disposition: form-data; name="' + key + '"\r\n\r\n' + data[key] + '\r\n');
-                      }
-
-                      body = body.join(boundaryMiddle) + boundaryLast;
-
-                      event.preventDefault();
-                      var XMLHttpRequestObject = false;
-                      if (window.XMLHttpRequest)
-                        XMLHttpRequestObject = new XMLHttpRequest();
-                      else if (window.ActiveXobject)
-                        XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
-
-                      if (XMLHttpRequestObject) {
-                        XMLHttpRequestObject.open('POST', "/twitboard/${user.getId()}", true);
-                        XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', document.getElementById('_csrfAddTwit').value);
-                        XMLHttpRequestObject.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);
-                        XMLHttpRequestObject.responseType = 'document';
-                        XMLHttpRequestObject.onreadystatechange = function () {
-                          if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
-                            xmlDocument = XMLHttpRequestObject.responseXML;
-                            document.getElementById('updateTwitBoad').innerHTML = xmlDocument.getElementById('updateTwitBoad').innerHTML;
-                            console.log("Update twit board");
-                          }
+                        var body = ['\r\n'];
+                        for (var key in data) {
+                          // добавление поля
+                          body.push('Content-Disposition: form-data; name="' + key + '"\r\n\r\n' + data[key] + '\r\n');
                         }
-                        XMLHttpRequestObject.send(body);
+
+                        body = body.join(boundaryMiddle) + boundaryLast;
+
+                        event.preventDefault();
+                        var XMLHttpRequestObject = false;
+                        if (window.XMLHttpRequest)
+                          XMLHttpRequestObject = new XMLHttpRequest();
+                        else if (window.ActiveXobject)
+                          XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+                        if (XMLHttpRequestObject) {
+                          XMLHttpRequestObject.open('POST', "/twitboard/${user.getId()}", true);
+                          XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', document.getElementById('_csrfAddTwit').value);
+                          XMLHttpRequestObject.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);
+                          XMLHttpRequestObject.responseType = 'document';
+                          XMLHttpRequestObject.onreadystatechange = function () {
+                            if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                              xmlDocument = XMLHttpRequestObject.responseXML;
+                              document.getElementById('updateTwitBoad').innerHTML = xmlDocument.getElementById('updateTwitBoad').innerHTML;
+                              console.log("Update twit board");
+                            }
+                          }
+                          XMLHttpRequestObject.send(body);
+                          textNewTwitThemeValue.value = "";
+                          textNewTwitTextValue.value = "";
+                        }
                       }
-                    }
-                  };
+                    };
+                  }, 500);
                 </script>
               </form>
             </div>
@@ -201,46 +205,57 @@
                           </form>
                         </div>
 
-                        <div class="cls_updateComment form-group">
-                          <#list message.getTwitBoardMessageComments() as comment>
-                            <div class="card mb-3">
-                              <#if comment.filename??>
-                                <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${comment.filename}"
-                                  class="card-img-top">
-                              </#if>
-                              <h5 class="card-header">${comment.getAuthorComment().getUsername()}</h5>
-                              <div class="card-body">
-                                <p class="card-text">${comment.getTextComment()}</p>
-                                <strong>
-                                  <em>${comment.getDateComment()}</em>
-                                </strong>
-                              </div>
-                              <div class="card-footer">
-                                <div class="form-group text-right">
-                                  <form action="/commentLike" method="POST" class="cls_comment_likes">
-                                    <input type="hidden" name="_csrf" value="${_csrf.token}" class="cls__csrf_commentLikes"/>
-                                    <input type="hidden" name="twitCommentLiked" value="${comment.getId()}" class="cls_commentLiked"/>
-                                    <input type="hidden" name="twitUserToReturn" value="${user.getId()}" class="cls_commentuserToReturn"/>
-                                    <button type="submit" class="btn btn-primary ml-2">
-                                      <i class="fa fa-heart" aria-hidden="true"> </i>
-                                       <em class="cls_commentLikesCount">
-                                         ${comment.getCommentLikesCount()}
-                                       </em>
-                                      </button>
-                                  </form>
-                                </div>
-                                <#if currentUserId=comment.getAuthorId()>
-                                  <form action="/deleteComment" method="POST" class="cls_deleteTwitComment">
-                                    <input type="hidden" name="_csrf" value="${_csrf.token}" class="cls__csrf_TwitCommentDelete"/>
-                                    <input type="hidden" name="twitCommentDelete" value="${comment.getId()}" class="cls_TwitCommentToDelete"/>
-                                    <input type="hidden" name="twitCommentDeleteAuthorId" value=${user.getId()} class="cls_TwitCommentDeleteAuthorId"/>
-                                    <input type="hidden" name="boardMessageCommentToDelete" value=${message.getId()} class="cls_TwitCommentDeleteBoard"/>
-                                    <button type="submit" class="btn btn-primary ml-2 mt-2">Delete</button>
-                                  </form>
+                        <div class="cls_commentDeleteUpdate">
+                          <div class="cls_updateComment form-group">
+                            <#list message.getTwitBoardMessageComments() as comment>
+                              <div class="card mb-3">
+                                <#if comment.filename??>
+                                  <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${comment.filename}"
+                                    class="card-img-top">
                                 </#if>
+                                <h5 class="card-header">${comment.getAuthorComment().getUsername()}</h5>
+                                <div class="card-body">
+                                  <p class="card-text">${comment.getTextComment()}</p>
+                                  <strong>
+                                    <em>${comment.getDateComment()}</em>
+                                  </strong>
+                                </div>
+                                <div class="card-footer">
+                                  <div class="form-group text-right">
+                                    <form action="/commentLike" method="POST" class="cls_comment_likes">
+                                      <input type="hidden" name="_csrf" value="${_csrf.token}"
+                                        class="cls__csrf_commentLikes" />
+                                      <input type="hidden" name="twitCommentLiked" value="${comment.getId()}"
+                                        class="cls_commentLiked" />
+                                      <input type="hidden" name="twitUserToReturn" value="${user.getId()}"
+                                        class="cls_commentuserToReturn" />
+                                      <button type="submit" class="btn btn-primary ml-2">
+                                        <i class="fa fa-heart" aria-hidden="true"> </i>
+                                        <em class="cls_commentLikesCount">
+                                          ${comment.getCommentLikesCount()}
+                                        </em>
+                                      </button>
+                                    </form>
+                                  </div>
+                                  <#if currentUserId=comment.getAuthorId()>
+                                    <form action="/deleteComment" method="POST" class="cls_deleteTwitComment">
+                                      <input type="hidden" name="_csrf" value="${_csrf.token}"
+                                        class="cls__csrf_TwitCommentDelete" />
+                                      <input type="hidden" name="twitIdexToDelteMessage" value="${message_index}"
+                                        class="cls__messageIndexCommentDelete" />
+                                      <input type="hidden" name="twitCommentDelete" value="${comment.getId()}"
+                                        class="cls_TwitCommentToDelete" />
+                                      <input type="hidden" name="twitCommentDeleteAuthorId" value=${user.getId()}
+                                        class="cls_TwitCommentDeleteAuthorId" />
+                                      <input type="hidden" name="boardMessageCommentToDelete" value=${message.getId()}
+                                        class="cls_TwitCommentDeleteBoard" />
+                                      <button type="submit" class="btn btn-primary ml-2 mt-2">Delete</button>
+                                    </form>
+                                  </#if>
+                                </div>
                               </div>
-                            </div>
-                          </#list>
+                            </#list>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -249,10 +264,11 @@
               </div>
               <#if currentUserId=message.getIdAuthor()>
                 <form action="/deleteTwit" method="POST" class="cls_deleteTwit">
-                  <input type="hidden" name="_csrf" value="${_csrf.token}" class="cls__csrf_TwitDelete"/>
-                  <input type="hidden" name="twitDelete" value="${message.getId()}" class="cls_TwitToDelete"/>
-                  <input type="hidden" name="twitDeleteAuthorId" value=${currentUserId} class="cls_TwitDeleteAuthorId"/>
-                  <input type="hidden" name="boardToDelete" value=${user.getId()} class="cls_TwitDeleteBoard"/>
+                  <input type="hidden" name="_csrf" value="${_csrf.token}" class="cls__csrf_TwitDelete" />
+                  <input type="hidden" name="twitDelete" value="${message.getId()}" class="cls_TwitToDelete" />
+                  <input type="hidden" name="twitDeleteAuthorId" value=${currentUserId}
+                    class="cls_TwitDeleteAuthorId" />
+                  <input type="hidden" name="boardToDelete" value=${user.getId()} class="cls_TwitDeleteBoard" />
                   <button type="submit" class="btn btn-primary ml-2 mt-2">Delete</button>
                 </form>
               </#if>
@@ -265,84 +281,15 @@
     </div>
     <script type='text/javascript'>
       var xmlDocument;
-      var formTwitLike = document.querySelectorAll('.cls_form_twitLike').forEach((elem, index) => {
-        elem.onsubmit = function refresh(event) {
+      setInterval(function upd() {
+        var formTwitLike = document.querySelectorAll('.cls_form_twitLike').forEach((elem, index) => {
+          elem.onsubmit = function refresh(event) {
 
-          var textTwitReturnValue = elem.querySelector('.cls_twit_MessageLiked');
-          var valTwitReturn = textTwitReturnValue.value;
+            var textTwitReturnValue = elem.querySelector('.cls_twit_MessageLiked');
+            var valTwitReturn = textTwitReturnValue.value;
 
-          var textTwitUserToReturnValue = elem.querySelector('.cls_twit_MessageUser');
-          var valUserReturn = textTwitUserToReturnValue.value;
-
-          event.preventDefault();
-          var XMLHttpRequestObject = false;
-          if (window.XMLHttpRequest)
-            XMLHttpRequestObject = new XMLHttpRequest();
-          else if (window.ActiveXobject)
-            XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
-
-          if (XMLHttpRequestObject) {
-            XMLHttpRequestObject.open('POST', "/messageLike", true);
-            XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('._csrf_twitLike').value);
-            XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            XMLHttpRequestObject.responseType = 'document';
-            XMLHttpRequestObject.onreadystatechange = function () {
-              if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
-                xmlDocument = XMLHttpRequestObject.responseXML;
-
-                var responseLikes = xmlDocument.querySelectorAll('.cls_update_twitLike').forEach((like, indexLike) => {
-                  if (indexLike === index) {
-                    elem.querySelector('.cls_update_twitLike').innerHTML = like.innerHTML;
-                    console.log("Update twit like");
-                  }
-                });
-              }
-            }
-            XMLHttpRequestObject.send("twitMessageLiked=" + valTwitReturn + "&twitUserToReturn=" + valUserReturn);
-          }
-          //textNewFriendValue.value = "";
-        };
-      });
-    </script>
-    <script type='text/javascript'>
-      var xmlDocument;
-      var formTwitCreate = document.querySelectorAll('.cls_comment').forEach((elem, index) => {
-        elem.onsubmit = function refresh(event) {
-
-          var commentTxt = elem.querySelector('.cls_comment_txt');
-          var valcommentTxt = commentTxt.value;
-
-          var fileComment = elem.querySelector('.cls_commentFile');
-          var valfileComment = fileComment.value;
-
-          var messageToComment = elem.querySelector('.cls_messageToComment');
-          var valmessageToComment = messageToComment.value;
-
-          var twitVoardComment = elem.querySelector('.cls_twitBoardToComment');
-          var valtwitVoardComment = twitVoardComment.value;
-
-          var userToReturn = elem.querySelector('.cls_twitUserToReturn');
-          var valuserToReturn = userToReturn.value;
-
-          if (valfileComment == "") {
-            var data = {
-              commentText: valcommentTxt,
-              twitMessageRequaredTocomment: valmessageToComment,
-              twitBoardreqiaredToComment: valtwitVoardComment,
-              twitUserToreturn: valuserToReturn,
-            };
-
-            var boundary = String(Math.random()).slice(4);
-            var boundaryMiddle = '--' + boundary + '\r\n';
-            var boundaryLast = '--' + boundary + '--\r\n';
-
-            var body = ['\r\n'];
-            for (var key in data) {
-              // добавление поля
-              body.push('Content-Disposition: form-data; name="' + key + '"\r\n\r\n' + data[key] + '\r\n');
-            }
-
-            body = body.join(boundaryMiddle) + boundaryLast;
+            var textTwitUserToReturnValue = elem.querySelector('.cls_twit_MessageUser');
+            var valUserReturn = textTwitUserToReturnValue.value;
 
             event.preventDefault();
             var XMLHttpRequestObject = false;
@@ -352,157 +299,235 @@
               XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
 
             if (XMLHttpRequestObject) {
-              XMLHttpRequestObject.open('POST', "/addComment", true);
-              XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('.cls__csrfComment').value);
-              XMLHttpRequestObject.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);
+              XMLHttpRequestObject.open('POST', "/messageLike", true);
+              XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('._csrf_twitLike').value);
+              XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
               XMLHttpRequestObject.responseType = 'document';
               XMLHttpRequestObject.onreadystatechange = function () {
                 if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
                   xmlDocument = XMLHttpRequestObject.responseXML;
 
-                  var existsComments = document.querySelectorAll('.cls_updateComment').forEach((commnetToUp, indexUp) => {
-                    if (indexUp === index) {
-                      var responseComments = xmlDocument.querySelectorAll('.cls_updateComment').forEach((comment, indexComment) => {
-                        if (indexComment === index) {
-                          commnetToUp.innerHTML = comment.innerHTML;
-                          console.log("Update twit comment");
+                  var responseLikes = xmlDocument.querySelectorAll('.cls_update_twitLike').forEach((like, indexLike) => {
+                    if (indexLike === index) {
+                      elem.querySelector('.cls_update_twitLike').innerHTML = like.innerHTML;
+                      console.log("Update twit like");
+                    }
+                  });
+                }
+              }
+              XMLHttpRequestObject.send("twitMessageLiked=" + valTwitReturn + "&twitUserToReturn=" + valUserReturn);
+            }
+          };
+        });
+      }, 500);
+    </script>
+    <script type='text/javascript'>
+      var xmlDocument;
+      setInterval(function upd() {
+        var formTwitCreate = document.querySelectorAll('.cls_comment').forEach((elem, index) => {
+          elem.onsubmit = function refresh(event) {
+
+            var commentTxt = elem.querySelector('.cls_comment_txt');
+            var valcommentTxt = commentTxt.value;
+
+            var fileComment = elem.querySelector('.cls_commentFile');
+            var valfileComment = fileComment.value;
+
+            var messageToComment = elem.querySelector('.cls_messageToComment');
+            var valmessageToComment = messageToComment.value;
+
+            var twitVoardComment = elem.querySelector('.cls_twitBoardToComment');
+            var valtwitVoardComment = twitVoardComment.value;
+
+            var userToReturn = elem.querySelector('.cls_twitUserToReturn');
+            var valuserToReturn = userToReturn.value;
+
+            if (valfileComment == "") {
+              var data = {
+                commentText: valcommentTxt,
+                twitMessageRequaredTocomment: valmessageToComment,
+                twitBoardreqiaredToComment: valtwitVoardComment,
+                twitUserToreturn: valuserToReturn,
+              };
+
+              var boundary = String(Math.random()).slice(4);
+              var boundaryMiddle = '--' + boundary + '\r\n';
+              var boundaryLast = '--' + boundary + '--\r\n';
+
+              var body = ['\r\n'];
+              for (var key in data) {
+                body.push('Content-Disposition: form-data; name="' + key + '"\r\n\r\n' + data[key] + '\r\n');
+              }
+
+              body = body.join(boundaryMiddle) + boundaryLast;
+
+              event.preventDefault();
+              var XMLHttpRequestObject = false;
+              if (window.XMLHttpRequest)
+                XMLHttpRequestObject = new XMLHttpRequest();
+              else if (window.ActiveXobject)
+                XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+              if (XMLHttpRequestObject) {
+                XMLHttpRequestObject.open('POST', "/addComment", true);
+                XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('.cls__csrfComment').value);
+                XMLHttpRequestObject.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);
+                XMLHttpRequestObject.responseType = 'document';
+                XMLHttpRequestObject.onreadystatechange = function () {
+                  if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                    xmlDocument = XMLHttpRequestObject.responseXML;
+
+                    var existsComments = document.querySelectorAll('.cls_updateComment').forEach((commnetToUp, indexUp) => {
+                      if (indexUp === index) {
+                        var responseComments = xmlDocument.querySelectorAll('.cls_updateComment').forEach((comment, indexComment) => {
+                          if (indexComment === index) {
+                            commnetToUp.innerHTML = comment.innerHTML;
+                            console.log("Update twit comment");
+                          }
+                        });
+                      }
+                    });
+                  }
+                }
+                XMLHttpRequestObject.send(body);
+              }
+              commentTxt.value = "";
+            }
+          };
+        });
+      }, 500);
+    </script>
+    <script type='text/javascript'>
+      var xmlDocument;
+      setInterval(function upd() {
+        var formTwitCommentLike = document.querySelectorAll('.cls_comment_likes').forEach((elem, index) => {
+          elem.onsubmit = function refresh(event) {
+
+            var commentLike = elem.querySelector('.cls_commentLiked');
+            var valcommentLike = commentLike.value;
+
+            var commenLiketUser = elem.querySelector('.cls_commentuserToReturn');
+            var valcommenLiketUser = commenLiketUser.value;
+
+            event.preventDefault();
+            var XMLHttpRequestObject = false;
+            if (window.XMLHttpRequest)
+              XMLHttpRequestObject = new XMLHttpRequest();
+            else if (window.ActiveXobject)
+              XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+            if (XMLHttpRequestObject) {
+              XMLHttpRequestObject.open('POST', "/commentLike", true);
+              XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('.cls__csrf_commentLikes').value);
+              XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              XMLHttpRequestObject.responseType = 'document';
+              XMLHttpRequestObject.onreadystatechange = function () {
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                  xmlDocument = XMLHttpRequestObject.responseXML;
+
+                  var responseLikes = xmlDocument.querySelectorAll('.cls_commentLikesCount').forEach((commentLike, indexLike) => {
+                    if (indexLike === index) {
+                      elem.querySelector('.cls_commentLikesCount').innerHTML = commentLike.innerHTML;
+                      console.log("Update twit comment like");
+                    }
+                  });
+                }
+              }
+              XMLHttpRequestObject.send("twitCommentLiked=" + valcommentLike + "&twitUserToReturn=" + valcommenLiketUser);
+            }
+          };
+        });
+      }, 500);
+    </script>
+    <script type='text/javascript'>
+      var xmlDocument;
+      setInterval(function upd() {
+        var formTwit = document.querySelectorAll('.cls_deleteTwit').forEach((elem, index) => {
+          elem.onsubmit = function refresh(event) {
+
+            var twitDelete = elem.querySelector('.cls_TwitToDelete');
+            var valtwitDelete = twitDelete.value;
+
+            var twitDeleteAuthor = elem.querySelector('.cls_TwitDeleteAuthorId');
+            var valtwitDeleteAuthor = twitDeleteAuthor.value;
+
+            var twitDeleleteBoard = elem.querySelector('.cls_TwitDeleteBoard');
+            var valtwitDeleleteBoard = twitDeleleteBoard.value;
+
+            event.preventDefault();
+            var XMLHttpRequestObject = false;
+            if (window.XMLHttpRequest)
+              XMLHttpRequestObject = new XMLHttpRequest();
+            else if (window.ActiveXobject)
+              XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+            if (XMLHttpRequestObject) {
+              XMLHttpRequestObject.open('POST', "/deleteTwit", true);
+              XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('.cls__csrf_TwitDelete').value);
+              XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              XMLHttpRequestObject.responseType = 'document';
+              XMLHttpRequestObject.onreadystatechange = function () {
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                  xmlDocument = XMLHttpRequestObject.responseXML;
+                  document.getElementById('updateTwitBoad').innerHTML = xmlDocument.getElementById('updateTwitBoad').innerHTML;
+                  console.log("Update twit board");
+                }
+              }
+              XMLHttpRequestObject.send("twitDelete=" + valtwitDelete + "&twitDeleteAuthorId=" + valtwitDeleteAuthor + "&boardToDelete=" + valtwitDeleleteBoard);
+            }
+          };
+        });
+      }, 500);
+    </script>
+    <script type='text/javascript'>
+      var xmlDocument;
+      setInterval(function updComment() {
+        var formTwit = document.querySelectorAll('.cls_deleteTwitComment').forEach((elem, index) => {
+          elem.onsubmit = function refresh(event) {
+
+            var twitCommentDelete = elem.querySelector('.cls_TwitCommentToDelete');
+            var valtwitCommentDelete = twitCommentDelete.value;
+
+            var twitCommentDeleteAuthor = elem.querySelector('.cls_TwitCommentDeleteAuthorId');
+            var valtwitCommentDeleteAuthor = twitCommentDeleteAuthor.value;
+
+            var twitCommentDeleleteBoard = elem.querySelector('.cls_TwitCommentDeleteBoard');
+            var valtwitCommentDeleleteBoard = twitCommentDeleleteBoard.value;
+
+            var twitCommentDeleleteBoardIndex = elem.querySelector('.cls__messageIndexCommentDelete');
+            var valtwitCommentDeleleteBoardIndex = twitCommentDeleleteBoardIndex.value;
+
+            event.preventDefault();
+            var XMLHttpRequestObject = false;
+            if (window.XMLHttpRequest)
+              XMLHttpRequestObject = new XMLHttpRequest();
+            else if (window.ActiveXobject)
+              XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+            if (XMLHttpRequestObject) {
+              XMLHttpRequestObject.open('POST', "/deleteComment", true);
+              XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('.cls__csrf_TwitCommentDelete').value);
+              XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              XMLHttpRequestObject.responseType = 'document';
+              XMLHttpRequestObject.onreadystatechange = function () {
+                if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
+                  xmlDocument = XMLHttpRequestObject.responseXML;
+                  var existsCommentsToDelete = document.querySelectorAll('.cls_updateComment').forEach((commnetToDelete, indexDelete) => {
+                    if (indexDelete == valtwitCommentDeleleteBoardIndex) {
+                      var responseCommentsDelete = xmlDocument.querySelectorAll('.cls_updateComment').forEach((commentToDeleteXML, indexCommentToDelete) => {
+                        if (indexCommentToDelete == valtwitCommentDeleleteBoardIndex) {
+                          commnetToDelete.innerHTML = commentToDeleteXML.innerHTML;
+                          console.log("Update twit comment delete");
                         }
                       });
                     }
                   });
                 }
               }
-              XMLHttpRequestObject.send(body);
+              XMLHttpRequestObject.send("twitCommentDelete=" + valtwitCommentDelete + "&twitCommentDeleteAuthorId=" + valtwitCommentDeleteAuthor + "&boardMessageCommentToDelete=" + valtwitCommentDeleleteBoard);
             }
-            valcommentTxt.value = "";
-          }
-        };
-      });
-    </script>
-    <script type='text/javascript'>
-      var xmlDocument;
-      var formTwitCommentLike = document.querySelectorAll('.cls_comment_likes').forEach((elem, index) => {
-        elem.onsubmit = function refresh(event) {
-
-          var commentLike = elem.querySelector('.cls_commentLiked');
-          var valcommentLike = commentLike.value;
-
-          var commenLiketUser = elem.querySelector('.cls_commentuserToReturn');
-          var valcommenLiketUser = commenLiketUser.value;
-
-          event.preventDefault();
-          var XMLHttpRequestObject = false;
-          if (window.XMLHttpRequest)
-            XMLHttpRequestObject = new XMLHttpRequest();
-          else if (window.ActiveXobject)
-            XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
-
-          if (XMLHttpRequestObject) {
-            XMLHttpRequestObject.open('POST', "/commentLike", true);
-            XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('.cls__csrf_commentLikes').value);
-            XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            XMLHttpRequestObject.responseType = 'document';
-            XMLHttpRequestObject.onreadystatechange = function () {
-              if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
-                xmlDocument = XMLHttpRequestObject.responseXML;
-
-                var responseLikes = xmlDocument.querySelectorAll('.cls_commentLikesCount').forEach((commentLike, indexLike) => {
-                  if (indexLike === index) {
-                    elem.querySelector('.cls_commentLikesCount').innerHTML = commentLike.innerHTML;
-                    console.log("Update twit comment like");
-                  }
-                });
-              }
-            }
-            XMLHttpRequestObject.send("twitCommentLiked=" + valcommentLike + "&twitUserToReturn=" + valcommenLiketUser);
-          }
-          //textNewFriendValue.value = "";
-        };
-      });
-    </script>
-    <script type='text/javascript'>
-      var xmlDocument;
-      var formTwit = document.querySelectorAll('.cls_deleteTwit').forEach((elem, index) => {
-        elem.onsubmit = function refresh(event) {
-
-          var twitDelete = elem.querySelector('.cls_TwitToDelete');
-          var valtwitDelete = twitDelete.value;
-
-          var twitDeleteAuthor = elem.querySelector('.cls_TwitDeleteAuthorId');
-          var valtwitDeleteAuthor = twitDeleteAuthor.value;
-
-          var twitDeleleteBoard = elem.querySelector('.cls_TwitDeleteBoard');
-          var valtwitDeleleteBoard = twitDeleleteBoard.value;
-
-          event.preventDefault();
-          var XMLHttpRequestObject = false;
-          if (window.XMLHttpRequest)
-            XMLHttpRequestObject = new XMLHttpRequest();
-          else if (window.ActiveXobject)
-            XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
-
-          if (XMLHttpRequestObject) {
-            XMLHttpRequestObject.open('POST', "/deleteTwit", true);
-            XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('.cls__csrf_TwitDelete').value);
-            XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            XMLHttpRequestObject.responseType = 'document';
-            XMLHttpRequestObject.onreadystatechange = function () {
-              if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
-                xmlDocument = XMLHttpRequestObject.responseXML;
-                document.getElementById('updateTwitBoad').innerHTML = xmlDocument.getElementById('updateTwitBoad').innerHTML;
-                console.log("Update twit board");
-              }
-            }
-            XMLHttpRequestObject.send("twitDelete=" + valtwitDelete + "&twitDeleteAuthorId=" + valtwitDeleteAuthor + "&boardToDelete=" + valtwitDeleleteBoard);
-          }
-        };
-      });
-    </script>
-    <script type='text/javascript'>
-      var xmlDocument;
-      var formTwit = document.querySelectorAll('.cls_deleteTwitComment').forEach((elem, index) => {
-        elem.onsubmit = function refresh(event) {
-
-          var twitCommentDelete = elem.querySelector('.cls_TwitCommentToDelete');
-          var valtwitCommentDelete = twitCommentDelete.value;
-
-          var twitCommentDeleteAuthor = elem.querySelector('.cls_TwitCommentDeleteAuthorId');
-          var valtwitCommentDeleteAuthor = twitCommentDeleteAuthor.value;
-
-          var twitCommentDeleleteBoard = elem.querySelector('.cls_TwitCommentDeleteBoard');
-          var valtwitCommentDeleleteBoard = twitCommentDeleleteBoard.value;
-
-          event.preventDefault();
-          var XMLHttpRequestObject = false;
-          if (window.XMLHttpRequest)
-            XMLHttpRequestObject = new XMLHttpRequest();
-          else if (window.ActiveXobject)
-            XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
-
-          if (XMLHttpRequestObject) {
-            XMLHttpRequestObject.open('POST', "/deleteComment", true);
-            XMLHttpRequestObject.setRequestHeader('X-CSRF-Token', elem.querySelector('.cls__csrf_TwitCommentDelete').value);
-            XMLHttpRequestObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            XMLHttpRequestObject.responseType = 'document';
-            XMLHttpRequestObject.onreadystatechange = function () {
-              if (XMLHttpRequestObject.readyState == 4 && XMLHttpRequestObject.status == 200) {
-                xmlDocument = XMLHttpRequestObject.responseXML;
-
-                var existsComments = document.querySelectorAll('.cls_updateComment').forEach((commnetToUp, indexUp) => {
-                  if (indexUp === index) {
-                    var responseComments = xmlDocument.querySelectorAll('.cls_updateComment').forEach((comment, indexComment) => {
-                      if (indexComment === index) {
-                        commnetToUp.innerHTML = comment.innerHTML;
-                        console.log("Update twit comment");
-                      }
-                    });
-                  }
-                });
-              }
-            }
-            XMLHttpRequestObject.send("twitCommentDelete=" + valtwitCommentDelete + "&twitCommentDeleteAuthorId=" + valtwitCommentDeleteAuthor + "&boardMessageCommentToDelete=" + valtwitCommentDeleleteBoard);
-          }
-        };
-      });
+          };
+        });
+      }, 500);
     </script>
   </@c.page>
