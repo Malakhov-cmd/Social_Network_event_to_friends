@@ -50,10 +50,8 @@ public class DialogController {
         dialogRepo.flush();
 
         Dialog dialog = dialogRepo.findByid(newDialog.getId());
-        System.out.println("GET:" + dialog.getId());
         if (!dialog.getDialogMessageList().isEmpty()
                 || dialog.getDialogMessageList() != null) {
-            System.out.println("GET not null");
             model.addAttribute("dialog", dialog);
             model.addAttribute("dialogSize", dialog.getDialogMessageList().size());
 
@@ -61,7 +59,6 @@ public class DialogController {
             model.addAttribute("target", secondUser.getId());
             model.addAttribute("dialogMessList", dialog.getDialogMessageList());
         } else {
-            System.out.println("GET true null");
             model.addAttribute("dialog", null);
         }
         return "dialog";
@@ -83,8 +80,6 @@ public class DialogController {
                 }
             }
         }
-
-        System.out.println("POST: " + dialogId);
 
         Dialog dialogFirst = dialogRepo.findByid(dialogId);
         if (dialogFirst.getDialogMessageList().isEmpty()

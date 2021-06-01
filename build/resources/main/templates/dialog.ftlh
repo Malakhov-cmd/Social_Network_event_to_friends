@@ -90,7 +90,6 @@
 
     var clsMsg = document.getElementById('exampleFormControlTextarea1');
     var valclsMsg = clsMsg.value;
-    console.log(valclsMsg );
 
     event.preventDefault();
     var XMLHttpRequestObject = false;
