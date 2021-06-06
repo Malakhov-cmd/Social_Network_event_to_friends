@@ -1,8 +1,8 @@
-<script src="https://cdn.jsdelivr.net/npm/emoji-button@latest/dist/index.min.js"></script>
-<script src="https://use.fontawesome.com/712d2bbdad.js"></script>
 <div id="Chat_Mess">
   <#import "parts/common.ftlh" as c>
     <@c.page>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-button@latest/dist/index.min.js"></script>
+    <script src="https://use.fontawesome.com/712d2bbdad.js"></script>
       <div class="container mb-4">
         <div id="update_pls">
           <#if dialogSize==0>
