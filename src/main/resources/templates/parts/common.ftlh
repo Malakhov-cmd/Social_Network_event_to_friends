@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="/static/style.css">
     <link rel="icon" type="image/png" sizes="16x16"
-      href="http://s1.iconbird.com/ico/2013/3/637/w128h128139396832912.png">
+      href="https://cdn.icon-icons.com/icons2/3006/PNG/64/omg_cryptocurrencies_icon_188362.png">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
