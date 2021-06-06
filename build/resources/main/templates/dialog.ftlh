@@ -1,7 +1,8 @@
+<script src="https://cdn.jsdelivr.net/npm/emoji-button@latest/dist/index.min.js"></script>
+<script src="https://use.fontawesome.com/712d2bbdad.js"></script>
 <div id="Chat_Mess">
   <#import "parts/common.ftlh" as c>
     <@c.page>
-
       <div class="container mb-4">
         <div id="update_pls">
           <#if dialogSize==0>
@@ -11,11 +12,11 @@
                 <div class="row">
                   <div class="col-sm">
                     <#if dialogMes.getFromId()==target>
-                      <div class="shadow p-3 mb-5 bg-white rounded">
-                        <p class="lead">
+                      <div class="shadow p-3 mb-5" style="background: #4188e6; border-radius: 15px 15px 15px 0px;">
+                        <p class="lead text-white">
                           ${dialogMes.getText()}
                         </p>
-                        <small class="form-text text-muted">${dialogMes.getDate()}</small>
+                        <small class="form-text text-white">${dialogMes.getDate()}</small>
                       </div>
                     </#if>
                   </div>
@@ -24,7 +25,7 @@
                   </div>
                   <div class="col-sm">
                     <#if dialogMes.getFromId()==user>
-                      <div class="shadow p-3 mb-5 bg-white rounded">
+                      <div class="shadow p-3 mb-5 bg-white" style="border-radius: 15px 15px 0px 15px;">
                         <p class="lead" align="right">
                           ${dialogMes.getText()}
                         </p>
@@ -40,8 +41,14 @@
         <form method="post" id="sendMsg" class="cls_sendMsg">
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Message</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="MessageText"
-              class="cls_MsgText"></textarea>
+            <div class="row">
+            <textarea class="textMessageArea form-control mr-1" id="exampleFormControlTextarea1" rows="3" name="MessageText"
+              class="cls_MsgText" style="max-width: 80%;"></textarea>
+              <button class="smileChoser btn btn-primary" type="button"
+                style="border-radius: 21.5px; max-height: 45px; max-width: 45px; margin-top: 25px; margin-left: 15px;">
+                <i class="fa fa-smile-o" aria-hidden="true"></i>
+              </button>
+              </div>
           </div>
           <input type="hidden" name="_csrf" value="${_csrf.token}" class="cls__csrfMsg" />
           <div class="form-group">
@@ -116,5 +123,21 @@
     }
     clsMsg.value = "";
   };
+</script>
+<script>
+  var input = document.querySelector('.textMessageArea');
+  var btnSmileChosser = document.querySelector('.smileChoser');
+
+  var picker = new EmojiButton({
+    position: 'top-end'
+  })
+
+  picker.on('emoji', function (emoji) {
+    input.value += emoji;
+  })
+
+  btnSmileChosser.addEventListener('click', function () {
+    picker.pickerVisible ? picker.hidePicker() : picker.showPicker(input);
+  })
 </script>
 </@c.page>

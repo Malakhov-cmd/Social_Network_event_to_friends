@@ -5,6 +5,11 @@
     <title>Event Manager</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="/static/style.css">
+    <link
+          href="http://s1.iconbird.com/ico/2013/3/637/w128h128139396832912.png"
+          rel="shortcut icon"
+          type="image/x-icon"
+        />
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 

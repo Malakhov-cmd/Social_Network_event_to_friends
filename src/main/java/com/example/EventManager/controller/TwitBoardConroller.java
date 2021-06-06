@@ -94,7 +94,7 @@ public class TwitBoardConroller {
                     model.addAttribute("FileMessageError", "Incorrect type of file");
                     model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
                     model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
-                    return "twitBoard";
+                    return "redirect:/twitboard/"+user.getId();
                 }
             }
 
@@ -114,7 +114,7 @@ public class TwitBoardConroller {
         model.addAttribute("twitMessageSize", twitBoard.getTwitBoardMessageList().size());
         model.addAttribute("twitMessage", twitBoard.getTwitBoardMessageList());
 
-        return "twitBoard";
+        return "redirect:/twitboard/"+user.getId();
     }
 
     @RequestMapping(value = "/addComment", method = RequestMethod.POST)

@@ -108,7 +108,7 @@ public class MainController {
                     model.addAttribute("messages", messages);
                     model.addAttribute("user", user);
                     model.addAttribute("FormatException", "Incorrect type file");
-                    return "main";
+                    return "redirect:/main";
                 }
             }
 
@@ -147,7 +147,7 @@ public class MainController {
         Iterable<Message> messages = room.getRoomMessage();
         model.addAttribute("messages", messages);
         model.addAttribute("user", user);
-        return "main";
+        return "redirect:/room/"+roomName+"/"+room.getId()+"/"+user.getId();
     }
 
     @GetMapping("/vote/{messageId}/{user}")

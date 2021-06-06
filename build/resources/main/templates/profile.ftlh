@@ -21,38 +21,38 @@
         </div>
       </div>
       <form>
-        <div class="form-group row">
-          <#if user.hasAvatar()==true>
-            <img src="https://springeventmanager.s3.us-east-2.amazonaws.com/${user.avatarFilename}" width="250"
-              height="250" class="rounded ml-2" alt="Avatar">
-          </#if>
-        </div>
-        <div class="form-group row">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Username</span>
-            </div>
-            <input type="text" readonly aria-label="First name" class="form-control" value="${user.getUsername()}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Id</span>
-            </div>
-            <input type="text" readonly aria-label="First name" class="form-control" value="${user.getId()}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Rank</span>
-            </div>
-            <#if user.isAdmin()==true>
-              <input type="text" readonly aria-label="First name" class="form-control" value="Admin">
-              <#else>
-                <input type="text" readonly aria-label="First name" class="form-control" value="User">
+
+        <div class="media ml-1">
+          <div class="form-group row">
+            <#if user.hasAvatar()==true>
+              <img class="rounded-circle"
+                src="https://springeventmanager.s3.us-east-2.amazonaws.com/${user.avatarFilename}" width="250"
+                height="250" class="rounded ml-2" alt="Avatar">
             </#if>
+          </div>
+          <div class="media-body ml-4 mt-5">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Username</span>
+              </div>
+              <input type="text" readonly aria-label="First name" class="form-control" value="${user.getUsername()}">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Id</span>
+              </div>
+              <input type="text" readonly aria-label="First name" class="form-control" value="${user.getId()}">
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Rank</span>
+              </div>
+              <#if user.isAdmin()==true>
+                <input type="text" readonly aria-label="First name" class="form-control" value="Admin">
+                <#else>
+                  <input type="text" readonly aria-label="First name" class="form-control" value="User">
+              </#if>
+            </div>
           </div>
         </div>
         <div class="form-group row">
@@ -368,4 +368,19 @@
           }
         }, 2000);
       </script>
+      <style>
+        @media (max-width: 556px) {
+          .rounded-circle {
+            margin-top: 25px;
+            width: 113px;
+            height: 113px;
+          }
+
+          .media-body {
+            margin-top: 7px;
+            margin-left: 7px;
+            margin-bottom: 15px;
+          }
+        }
+      </style>
     </@c.page>

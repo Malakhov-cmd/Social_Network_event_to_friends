@@ -7,7 +7,7 @@
         <form method="get" class="cls_filter form-inline" id="filterLabel">
           <input type="text" name="filter" value="${filter?ifExists}" class="cls_filterTxt form-control"
             placeholder="Search">
-          <button type="submit" class="btn btn-primary ml-2">find</button>
+          <button type="submit" class="fndBtn btn btn-primary ml-2">find</button>
         </form>
       </div>
     </div>
@@ -149,7 +149,7 @@
                   <li class="list-group-item bg-warning">
                     <p class="card-text">
                       <small class="text-white">
-                        <i><em>${message.getDate()}</em>></i>
+                        <i><em>${message.getDate()}</em></i>
                       </small>
                     </p>
                   </li>
@@ -160,7 +160,7 @@
                   </li>
                 </ul>
                 <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false" style="max-width: 92%;"><i class="fa fa-users"
                     aria-hidden="true"></i> Vote</button>
               </div>
             </div>
@@ -198,7 +198,7 @@
                   </li>
                 </ul>
                 <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false" style="max-width: 92%;"><i class="fa fa-users"
                     aria-hidden="true"></i> Vote</button>
               </div>
             </div>
@@ -236,7 +236,7 @@
                   </li>
                 </ul>
                 <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false" style="max-width: 92%;"><i class="fa fa-users"
                     aria-hidden="true"></i> Vote</button>
               </div>
             </div>
@@ -274,7 +274,7 @@
                   </li>
                 </ul>
                 <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false" style="max-width: 92%;"><i class="fa fa-users"
                     aria-hidden="true"></i> Vote</button>
               </div>
             </div>
@@ -312,7 +312,7 @@
                   </li>
                 </ul>
                 <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false" style="max-width: 92%;"><i class="fa fa-users"
                     aria-hidden="true"></i> Vote</button>
               </div>
             </div>
@@ -350,7 +350,7 @@
                   </li>
                 </ul>
                 <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false" style="max-width: 92%;"><i class="fa fa-users"
                     aria-hidden="true"></i> Vote</button>
               </div>
             </div>
@@ -388,7 +388,7 @@
                   </li>
                 </ul>
                 <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false" style="max-width: 92%;"><i class="fa fa-users"
                     aria-hidden="true"></i> Vote</button>
               </div>
             </div>
@@ -426,7 +426,7 @@
                   </li>
                 </ul>
                 <button type="button" class="btn btn-primary mt-3 mb-2 ml-2"
-                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false"><i class="fa fa-users"
+                  onclick="window.location.href='/vote/${message.id}/${user.id}'; return false" style="max-width: 92%;"><i class="fa fa-users"
                     aria-hidden="true"></i> Vote</button>
               </div>
             </div>
@@ -558,4 +558,11 @@
         };
       }, 500);
     </script>
+    <style>
+      @media (max-width: 556px) {
+        .fndBtn {
+          margin-top: 25px;
+        }
+      }
+    </style>
   </@c.page>
